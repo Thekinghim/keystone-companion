@@ -1,9 +1,17 @@
-KeystoneCompanion.communication = { prefix = "keystonecomp", handlers = {}}
+KeystoneCompanion.communication = { prefix = "keystonecomp", messageTypes = {LOGON = "LOGON", INVENTORY_UPDATE = "INV_UPDATE"}, handlers = {}}
 
-function KeystoneCompanion.communication.SendMessage(messageType, data)
+function KeystoneCompanion.communication.SendPartyMessage(...)
+  local messageType, data = select(1, ...)
   local message = messageType .. '::';
   if(data ~= nil and strlen(data) > 0) then message = message .. data end
   C_ChatInfo.SendAddonMessage(KeystoneCompanion.communication.prefix, message, "PARTY")
+end
+
+function KeystoneCompanion.communication.SendDirectMessage(...)
+  local target, messageType, data = select(1, ...)
+  local message = messageType .. "::";
+  if(data ~= nil and strlen(data) > 0) then message = message .. data end
+  C_ChatInfo.SendAddonMessage(KeystoneCompanion.communication.prefix, message, "WHISPER", target)
 end
 
 function KeystoneCompanion.communication:RegisterMessageHandler(messageType, callbackFunc)
@@ -27,7 +35,7 @@ function KeystoneCompanion.communication:OnMessageReceived(prefix, text, channel
   end
 
   for _, handler in ipairs(handlers) do
-    handler(messageData, channel, sender)
+    handler(sender, channel, messageData)
   end
 end
 
