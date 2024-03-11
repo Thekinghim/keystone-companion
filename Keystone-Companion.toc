@@ -1,0 +1,9 @@
+## Interface: 100205
+## Version: 0.0.1-dev
+## Title: Keystone Companion |cffff0000(DEV build - unstable!)|r
+## Author: Kaelon/Jordy141
+## Notes: Keystone companion.
+## SavedVariables: KeystoneCompanionDB
+## DefaultState: enabled
+
+embeds.xml
