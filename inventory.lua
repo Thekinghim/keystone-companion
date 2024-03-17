@@ -49,11 +49,11 @@ function KeystoneCompanion.inventory:ScanInventory()
 
   local keystoneMapId = C_MythicPlus.GetOwnedKeystoneMapID();
   if(keystoneMapId == nil) then
-    self.self.keystone = { mapId = nil, level = nil }; 
+    self.self.keystone = { mapId = nil, level = nil };
+  else
+    local keystoneLevel = C_MythicPlus.GetOwnedKeystoneLevel();
+    self.self.keystone = { mapID = keystoneLevel, level = keystoneLevel };
   end
-
-  local keystoneLevel = C_MythicPlus.GetOwnedKeystoneLevel();
-  self.self.keystone = { mapID = keystoneLevel, level = keystoneLevel };
 
   self.self.knownTeleports = {};
   for instanceId, dungeonTeleportInfo in pairs(KeystoneCompanion.constants.dungeonTeleports) do 
