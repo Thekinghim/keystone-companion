@@ -1,6 +1,12 @@
-KeystoneCompanion.communication = { prefix = "keystonecomp", messageTypes = {LOGON = "LOGON", INVENTORY_UPDATE = "INV_UPDATE"}, handlers = {}}
+KeystoneCompanion.communication = { prefix = "keystonecomp", messageTypes = {LOGON = "LOGON", QUERY = "QUERY", UPDATE = "UPDATE"}, handlers = {}}
+local devPrint = KeystoneCompanion.dev.print;
 
 function KeystoneCompanion.communication.SendPartyMessage(...)
+  if(UnitInParty("player") == false and KeystoneCompanion.isDev()) then
+    KeystoneCompanion.communication.SendDirectMessage(GetUnitName("player"), ...);
+    return;
+  end
+
   local messageType, data = select(1, ...)
   local message = messageType .. '::';
   if(data ~= nil and strlen(data) > 0) then message = message .. data end
@@ -20,6 +26,7 @@ function KeystoneCompanion.communication:RegisterMessageHandler(messageType, cal
 end
 
 function KeystoneCompanion.communication:OnMessageReceived(prefix, text, channel, sender)
+  sender = Ambiguate(sender, "none")
   if (prefix ~= KeystoneCompanion.communication.prefix) then return end
 
   local prefixSeparatorIndex = string.find(text, '::');
