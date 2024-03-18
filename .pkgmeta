@@ -1,0 +1,6 @@
+package-as: Keystone-Companion
+
+ignore:
+  - .git
+  - .vscode
+  - README.md
