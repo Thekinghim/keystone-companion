@@ -1,11 +1,10 @@
 ## Interface: 100205
-## Version: 0.0.1-dev
-## Title: Keystone Companion |cffff0000(DEV build - unstable!)|r
+## Version: 1.0.0-alpha.1
+## Title: Keystone Companion |cff0070dd(Alpha build 1)|r
 ## IconTexture: Interface\AddOns\Keystone-Companion\textures\addon-icon
 ## Author: Kaelon/Jordy141
 ## Notes: See your party's M+ keystones, dungeon reagents, and dungeon portals.
 ## SavedVariables: KeystoneCompanionDB
 ## DefaultState: enabled
-
 
 embeds.xml
