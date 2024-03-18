@@ -1,5 +1,6 @@
 KeystoneCompanion.loaded = false;
 local print, colorise, devPrint = KeystoneCompanion.print, KeystoneCompanion.colorise, KeystoneCompanion.dev.print
+local LibSerialize = LibStub:GetLibrary("LibSerialize");
 
 local playerName = UnitName('player');
 
@@ -17,9 +18,26 @@ KeystoneCompanion.EventFrame:SetScript('OnEvent', function(self, event, ...)
       end
       KeystoneCompanion.loaded = true
   elseif event == 'GROUP_ROSTER_UPDATE' and KeystoneCompanion.loaded == true then
-    
+    local playersByName = {};
+    local homePartyPlayers = GetHomePartyInfo();
+    if(homePartyPlayers ~= nil) then
+      for _, v in ipairs(homePartyPlayers) do playersByName[v] = true end
+    end
+    for key, value in pairs(KeystoneCompanion.inventory) do
+      if(type(value) == "table" and key ~= 'self' and playersByName[key] == nil) then
+        KeystoneCompanion.inventory[key] = nil;
+      end
+    end
+    KeystoneCompanion.UI.Rerender();
   elseif event == 'BAG_UPDATE' and KeystoneCompanion.loaded == true then
-    devPrint('debug - scan inventory')
+    local currentInventoryData = LibSerialize:Serialize(KeystoneCompanion.inventory.self);
+  
+    KeystoneCompanion.inventory:ScanInventory();
+    local inventoryDataAfterScan = LibSerialize:Serialize(KeystoneCompanion.inventory.self);
+
+    if(currentInventoryData ~= inventoryDataAfterScan) then
+      KeystoneCompanion.communication.SendPartyMessage(KeystoneCompanion.communication.messageTypes.UPDATE, KeystoneCompanion.inventory:GetInventoryString())
+    end
   end
 end)
 
@@ -42,7 +60,12 @@ function SlashCmdList.KEYSTONECOMPANION(msg, editBox)
   for word in msg:gmatch('%S+') do args[#args+1] = word end
 
   if(#args == 0) then
-    print('TODO - open UI')
+    if(KeystoneCompanion.UI.Frame:IsShown()) then
+      KeystoneCompanion.UI.Frame:Hide();
+    else
+      KeystoneCompanion.UI.Rerender();
+      KeystoneCompanion.UI.Frame:Show();
+    end
   end
 
   if(args[1] == 'dev') then
@@ -57,3 +80,5 @@ function SlashCmdList.KEYSTONECOMPANION(msg, editBox)
     end
   end
 end
+
+print('type ' .. colorise('00ffff', '/kc') .. ' to open the KeystoneCompanion UI.')

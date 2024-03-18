@@ -2,6 +2,10 @@
   "Lua.diagnostics.globals": [
     "message",
     "SlashCmdList",
-    "enabled"
+    "enabled",
+    "HIGH",
+    "ContainerFrameItemButtonMixin",
+    "SetItemButtonTexture",
+    "SetItemButtonCount"
   ]
 }
