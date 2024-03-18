@@ -9,5 +9,6 @@
     <Script file="dev.lua"/>
     <Script file="communication.lua"/>
     <Script file="inventory.lua"/>
+    <Script file="ui.lua"/>
     <Script file="main.lua"/>
 </Ui>

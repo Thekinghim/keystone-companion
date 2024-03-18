@@ -70,4 +70,7 @@ function KeystoneCompanion.inventory:LoadString(sender, inventoryString)
   if (not success) then return end;
 
   self[sender] = inventory;
+  if(#self[sender]['keystone'] == 0) then
+    self[sender]['keystone'] = { mapID = nil, level = nil }
+  end
 end

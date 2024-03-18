@@ -1,11 +1,8 @@
 KeystoneCompanion.dev = {};
 
-function KeystoneCompanion.dev:LogonTest()
-  KeystoneCompanion.communication.SendPartyMessage("LOGON", "");
-end
-
-function KeystoneCompanion.dev:SendInventory()
-  
+function KeystoneCompanion.dev.CloneInventory(from, to)
+  KeystoneCompanion.inventory[to] = KeystoneCompanion.inventory[from];
+  KeystoneCompanion.UI.Rerender();
 end
 
 function KeystoneCompanion.dev.print(...) 
