@@ -13,17 +13,45 @@ UI:SetSize(438, 485)
 UI.Bg = UI:CreateTexture("Background", 'BACKGROUND');
 UI.Bg:SetAllPoints(UI);
 UI.Bg:SetTexture("Interface/AddOns/Keystone-Companion/textures/ui-backdrop")
-
-UI.BgMask = UI:CreateMaskTexture()
-UI.BgMask:SetAllPoints(UI.Bg)
-UI.BgMask:SetTexture('Interface\\AddOns\\Keystone-Companion\\textures\\ui-backdrop', 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE');
-UI.Bg:AddMaskTexture(UI.BgMask)
+UI.Bg.Mask = UI:CreateMaskTexture()
+UI.Bg.Mask:SetAllPoints(UI.Bg)
+UI.Bg.Mask:SetTexture('Interface/AddOns/Keystone-Companion/textures/ui-backdrop', 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE');
+UI.Bg:AddMaskTexture(UI.Bg.Mask)
 
 UI.Top = CreateFrame('Frame', 'KeystoneCompanionTop', UI);
 UI.Top:SetSize(384, 56)
+UI.Top:SetPoint("TOPRIGHT", UI, "TOPRIGHT", -13, -13)
 
 UI.Title = CreateFrame('Frame', 'KeystoneCompanionTitle', UI);
-UI.Title:SetSize(345, 56)
+UI.Title:SetSize(345, 56);
+UI.Title:SetPoint("LEFT", UI.Top, "LEFT");
+UI.Title.Mask = UI.Title:CreateMaskTexture();
+UI.Title.Mask:SetAllPoints(UI.Title);
+UI.Title.Mask:SetTexture('Interface/AddOns/Keystone-Companion/textures/ui-title-mask', "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE");
+UI.Title.Texture = UI.Title:CreateTexture('KeystoneCompanionTitleBg', "ARTWORK");
+UI.Title.Texture:SetAllPoints(UI.Title);
+UI.Title.Texture:SetColorTexture(28 / 255, 29 / 255, 32 / 255, 1);
+UI.Title.Texture:AddMaskTexture(UI.Title.Mask);
+
+UI.CloseButton = CreateFrame('Frame', 'KeystoneCompanionCloseButton', UI);
+UI.CloseButton:SetSize(25, 25);
+UI.CloseButton:SetPoint("TOPRIGHT", UI.Top, "TOPRIGHT");
+UI.CloseButton.Mask = UI.CloseButton:CreateMaskTexture();
+UI.CloseButton.Mask:SetAllPoints(UI.CloseButton);
+UI.CloseButton.Mask:SetTexture('Interface/AddOns/Keystone-Companion/textures/ui-close-button', 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE');
+UI.CloseButton.Texture = UI.CloseButton:CreateTexture('KeystoneCompanionCloseButtonTexture', 'ARTWORK');
+UI.CloseButton.Texture:SetAllPoints(UI.CloseButton);
+UI.CloseButton.Texture:SetTexture('Interface/AddOns/Keystone-Companion/textures/ui-close-button');
+UI.CloseButton.Texture:AddMaskTexture(UI.CloseButton.Mask);
+UI.CloseButton:SetScript("OnEnter", function()
+  UI.CloseButton.Texture:SetTexture('Interface/AddOns/Keystone-Companion/textures/ui-close-button-highlight');
+end)
+UI.CloseButton:SetScript("OnLeave", function()
+  UI.CloseButton.Texture:SetTexture('Interface/AddOns/Keystone-Companion/textures/ui-close-button');
+end)
+UI.CloseButton:SetScript("OnMouseDown", function()
+  UI:Hide();
+end)
 
 --UI.TopBorder:SetHeight(28.5);
 --UI.TitleBg = UI:CreateTexture('titleBg', 'BACKGROUND', '_UI-Frame-TitleTileBg', 1);
