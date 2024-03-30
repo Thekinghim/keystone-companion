@@ -81,4 +81,9 @@ function SlashCmdList.KEYSTONECOMPANION(msg, editBox)
   end
 end
 
+if(KeystoneCompanion.buildType == 'alpha') then
+  print('You\'re running an ' .. colorise('ff0000', 'Alpha') .. ' build of the addon. Features may be broken or only half finished in alpha versions!')
+end
+
 print('type ' .. colorise('00ffff', '/kc') .. ' to open the KeystoneCompanion UI.')
+KeystoneCompanion.UI.Frame:Show();
