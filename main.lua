@@ -11,6 +11,12 @@ KeystoneCompanion.EventFrame:RegisterEvent('BAG_UPDATE')
 KeystoneCompanion.EventFrame:SetScript('OnEvent', function(self, event, ...)
   devPrint('event - ' .. event);
   if event == 'PLAYER_ENTERING_WORLD' then
+      if (KeystoneCompanionDB.UI ~= nil) then
+        KeystoneCompanion.UI.Frame:SetPoint(KeystoneCompanionDB.UI.point, KeystoneCompanionDB.UI.relativeTo, KeystoneCompanionDB.UI.relativePoint, KeystoneCompanionDB.UI.offsetX, KeystoneCompanionDB.UI.offsetY)
+      else
+        KeystoneCompanion.UI.Frame:SetPoint('CENTER', UIParent, 'CENTER')
+      end
+
       if(UnitInParty("player") or KeystoneCompanion.isDev()) then
         devPrint('world loaded and player in party - Sending LOGON and UPDATE messages')
         KeystoneCompanion.communication.SendPartyMessage(KeystoneCompanion.communication.messageTypes.LOGON)

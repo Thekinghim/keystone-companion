@@ -4,15 +4,19 @@ KeystoneCompanion.UI = { Frame = UI }
 UI:Hide();
 UI:SetMovable(true);
 UI:EnableMouse(true);
+UI:SetSize(438, 485)
 UI:RegisterForDrag('LeftButton');
 UI:SetScript('OnDragStart', UI.StartMoving)
-UI:SetScript('OnDragStop', UI.StopMovingOrSizing)
-UI:SetPoint('CENTER', UIParent, 'CENTER')
-UI:SetSize(438, 485)
+UI:SetScript('OnDragStop', function(self) 
+  self:StopMovingOrSizing();
+  local point, relativeTo, relativePoint, offsetX, offsetY = self:GetPoint();
+  KeystoneCompanionDB.UI = KeystoneCompanionDB.UI or {};
+  KeystoneCompanionDB.UI = {point = point, relativeTo = relativeTo, relativePoint = relativePoint, offsetX = offsetX, offsetY = offsetY}
+end)
 
-UI.Bg = UI:CreateTexture("Background", 'BACKGROUND');
+UI.Bg = UI:CreateTexture('Background', 'BACKGROUND');
 UI.Bg:SetAllPoints(UI);
-UI.Bg:SetTexture("Interface/AddOns/Keystone-Companion/assets/textures/ui-backdrop")
+UI.Bg:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/ui-backdrop')
 UI.Bg.Mask = UI:CreateMaskTexture()
 UI.Bg.Mask:SetAllPoints(UI.Bg)
 UI.Bg.Mask:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/ui-backdrop', 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE');
@@ -20,22 +24,22 @@ UI.Bg:AddMaskTexture(UI.Bg.Mask)
 
 UI.Top = CreateFrame('Frame', 'KeystoneCompanionTop', UI);
 UI.Top:SetSize(384, 56)
-UI.Top:SetPoint("TOPRIGHT", UI, "TOPRIGHT", -20, -13)
+UI.Top:SetPoint('TOPRIGHT', UI, 'TOPRIGHT', -20, -13)
 
 UI.Title = CreateFrame('Frame', 'KeystoneCompanionTitle', UI);
 UI.Title:SetSize(345, 56);
-UI.Title:SetPoint("LEFT", UI.Top, "LEFT");
+UI.Title:SetPoint('LEFT', UI.Top, 'LEFT');
 UI.Title.Mask = UI.Title:CreateMaskTexture();
 UI.Title.Mask:SetAllPoints(UI.Title);
-UI.Title.Mask:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/ui-title-mask', "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE");
-UI.Title.Texture = UI.Title:CreateTexture('KeystoneCompanionTitleBg', "ARTWORK");
+UI.Title.Mask:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/ui-title-mask', 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE');
+UI.Title.Texture = UI.Title:CreateTexture('KeystoneCompanionTitleBg', 'ARTWORK');
 UI.Title.Texture:SetAllPoints(UI.Title);
 UI.Title.Texture:SetColorTexture(28 / 255, 29 / 255, 32 / 255, 1);
 UI.Title.Texture:AddMaskTexture(UI.Title.Mask);
 
 UI.CloseButton = CreateFrame('Frame', 'KeystoneCompanionCloseButton', UI);
 UI.CloseButton:SetSize(25, 25);
-UI.CloseButton:SetPoint("TOPRIGHT", UI.Top, "TOPRIGHT");
+UI.CloseButton:SetPoint('TOPRIGHT', UI.Top, 'TOPRIGHT');
 UI.CloseButton.Mask = UI.CloseButton:CreateMaskTexture();
 UI.CloseButton.Mask:SetAllPoints(UI.CloseButton);
 UI.CloseButton.Mask:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/ui-close-button', 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE');
@@ -43,95 +47,188 @@ UI.CloseButton.Texture = UI.CloseButton:CreateTexture('KeystoneCompanionCloseBut
 UI.CloseButton.Texture:SetAllPoints(UI.CloseButton);
 UI.CloseButton.Texture:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/ui-close-button');
 UI.CloseButton.Texture:AddMaskTexture(UI.CloseButton.Mask);
-UI.CloseButton:SetScript("OnEnter", function()
+UI.CloseButton:SetScript('OnEnter', function()
   UI.CloseButton.Texture:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/ui-close-button-highlight');
 end)
-UI.CloseButton:SetScript("OnLeave", function()
+UI.CloseButton:SetScript('OnLeave', function()
   UI.CloseButton.Texture:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/ui-close-button');
 end)
-UI.CloseButton:SetScript("OnMouseDown", function()
+UI.CloseButton:SetScript('OnMouseDown', function()
   UI:Hide();
 end)
 
 UI.Icon = CreateFrame('Frame', 'KeystoneCompanionIcon', UI);
 UI.Icon:SetSize(36, 36);
-UI.Icon:SetPoint("TOPLEFT", UI.Title, "TOPLEFT", 8, -10);
+UI.Icon:SetPoint('TOPLEFT', UI.Title, 'TOPLEFT', 8, -10);
 UI.Icon.Mask = UI.Icon:CreateMaskTexture();
 UI.Icon.Mask:SetAllPoints(UI.Icon);
-UI.Icon.Mask:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/icon-mask', "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE");
-UI.Icon.Texture = UI.Icon:CreateTexture("KeystoneCompanionIconTexture", "OVERLAY");
+UI.Icon.Mask:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/icon-mask', 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE');
+UI.Icon.Texture = UI.Icon:CreateTexture('KeystoneCompanionIconTexture', 'OVERLAY');
 UI.Icon.Texture:SetAllPoints(UI.Icon);
 UI.Icon.Texture:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/addon-icon');
 UI.Icon.Texture:AddMaskTexture(UI.Icon.Mask);
 
-UI.Title.AddonName = UI.Title:CreateFontString("AddonName", "OVERLAY")
+UI.Title.AddonName = UI.Title:CreateFontString('AddonName', 'OVERLAY')
 UI.Title.AddonName:SetSize(220, 24);
 UI.Title.AddonName:SetFontObject('GameFontHighlightCenter')
 UI.Title.AddonName:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/RobotoSlab-Bold.ttf', 18, '');
 UI.Title.AddonName:SetTextColor(255 / 255, 124 / 255, 10 / 255, 1);
 UI.Title.AddonName:SetPoint('TOPLEFT', UI.Title, 'TOPLEFT', 50, -16);
-UI.Title.AddonName:SetText("Keystone Companion")
+UI.Title.AddonName:SetText('Keystone Companion')
 
-UI.Party = CreateFrame('Frame', "KeystoneCompanionParty", UI);
+UI.Party = CreateFrame('Frame', 'KeystoneCompanionParty', UI);
 UI.Party:SetSize(411, 378);
-UI.Party:SetPoint("TOPLEFT", UI, "TOPLEFT", 13, -93);
+UI.Party:SetPoint('TOPLEFT', UI, 'TOPLEFT', 13, -93);
 
-UI.Party.Header = CreateFrame('Frame', "KeystoneCompanionPartyHeader", UI.Party);
+UI.Party.Header = CreateFrame('Frame', 'KeystoneCompanionPartyHeader', UI.Party);
 UI.Party.Header:SetSize(411, 17);
-UI.Party.Header:SetPoint("TOPLEFT", UI.Party, "TOPLEFT")
+UI.Party.Header:SetPoint('TOPLEFT', UI.Party, 'TOPLEFT')
 
-UI.Party.HeaderBar = CreateFrame('Frame', "KeystoneCompanionHeaderBar", UI.Header);
+UI.Party.HeaderBar = CreateFrame('Frame', 'KeystoneCompanionHeaderBar', UI.Header);
 UI.Party.HeaderBar:SetSize(411, 1);
-UI.Party.HeaderBar:SetPoint("BOTTOMLEFT", UI.Party.Header, "BOTTOMLEFT");
-UI.Party.HeaderBar:SetPoint("BOTTOMRIGHT", UI.Party.Header, "BOTTOMRIGHT");
+UI.Party.HeaderBar:SetPoint('BOTTOMLEFT', UI.Party.Header, 'BOTTOMLEFT');
+UI.Party.HeaderBar:SetPoint('BOTTOMRIGHT', UI.Party.Header, 'BOTTOMRIGHT');
 UI.Party.HeaderBar.Texture = UI.Party.Header:CreateTexture('KeystoneCompanionHeaderBarTexture', 'OVERLAY')
 UI.Party.HeaderBar.Texture:SetAllPoints(UI.Party.HeaderBar)
 UI.Party.HeaderBar.Texture:SetColorTexture(89 / 255, 89 / 255, 91 / 255, 1);
 
-UI.Party.Header.PlayerName = UI.Party.Header:CreateFontString("KeystoneCompanionHeaderPlayername", "OVERLAY")
+UI.Party.Header.PlayerName = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderPlayername', 'OVERLAY')
 UI.Party.Header.PlayerName:SetSize(80, 12)
-UI.Party.Header.PlayerName:SetPoint("TOPLEFT", UI.Party.Header, "TOPLEFT", 10, 0);
+UI.Party.Header.PlayerName:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 10, 0);
 UI.Party.Header.PlayerName:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 12, '');
-UI.Party.Header.PlayerName:SetText("Player Name")
+UI.Party.Header.PlayerName:SetText('Player Name')
 
-UI.Party.Header.Food = UI.Party.Header:CreateFontString("KeystoneCompanionHeaderFood", "OVERLAY")
+UI.Party.Header.Food = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderFood', 'OVERLAY')
 UI.Party.Header.Food:SetSize(50, 12)
-UI.Party.Header.Food:SetPoint("TOPLEFT", UI.Party.Header, "TOPLEFT", 172 , 0);
+UI.Party.Header.Food:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 172 , 0);
 UI.Party.Header.Food:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 12, '');
-UI.Party.Header.Food:SetText("Food")
+UI.Party.Header.Food:SetText('Food')
 
-UI.Party.Header.Invis = UI.Party.Header:CreateFontString("KeystoneCompanionHeaderInvis", "OVERLAY")
+UI.Party.Header.Invis = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderInvis', 'OVERLAY')
 UI.Party.Header.Invis:SetSize(50, 12)
-UI.Party.Header.Invis:SetPoint("TOPLEFT", UI.Party.Header, "TOPLEFT", 232 , 0);
+UI.Party.Header.Invis:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 232 , 0);
 UI.Party.Header.Invis:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 12, '');
-UI.Party.Header.Invis:SetText("Invis")
+UI.Party.Header.Invis:SetText('Invis')
 
-UI.Party.Header.Potions = UI.Party.Header:CreateFontString("KeystoneCompanionHeaderPotions", "OVERLAY")
+UI.Party.Header.Potions = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderPotions', 'OVERLAY')
 UI.Party.Header.Potions:SetSize(50, 12)
-UI.Party.Header.Potions:SetPoint("TOPLEFT", UI.Party.Header, "TOPLEFT", 292 , 0);
+UI.Party.Header.Potions:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 292 , 0);
 UI.Party.Header.Potions:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 12, '');
-UI.Party.Header.Potions:SetText("Potions")
+UI.Party.Header.Potions:SetText('Potions')
 
-UI.Party.Header.Flasks = UI.Party.Header:CreateFontString("KeystoneCompanionHeaderFlasks", "OVERLAY")
+UI.Party.Header.Flasks = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderFlasks', 'OVERLAY')
 UI.Party.Header.Flasks:SetSize(50, 12)
-UI.Party.Header.Flasks:SetPoint("TOPLEFT", UI.Party.Header, "TOPLEFT", 352 , 0);
+UI.Party.Header.Flasks:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 352 , 0);
 UI.Party.Header.Flasks:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 12, '');
-UI.Party.Header.Flasks:SetText("Flasks")
+UI.Party.Header.Flasks:SetText('Flasks')
 
---UI.TopBorder:SetHeight(28.5);
---UI.TitleBg = UI:CreateTexture('titleBg', 'BACKGROUND', '_UI-Frame-TitleTileBg', 1);
---UI.TitleBg:SetPoint('TOPLEFT', 2, -2);
---UI.TitleBg:SetPoint('TOPRIGHT', -25, -2);
---UI.TitleBg:Show();
---UI.TitleBg:SetPoint('BOTTOMLEFT', UI.TopBorder, 'BOTTOMLEFT', 0, 7)
+UI.Footer = CreateFrame('Frame', 'KeystoneCompanionFooter', UI.Party);
+UI.Footer:SetSize(411, 15);
+UI.Footer:SetPoint('BOTTOMLEFT', UI.Party, 'BOTTOMLEFT');
+UI.Footer:SetPoint('BOTTOMRIGHT', UI.Party, 'BOTTOMRIGHT');
 
---UI.TitleText:SetHeight(15);
---UI.TitleText:SetText('Keystone Companion');
+UI.AddonVersion = UI.Footer:CreateFontString('KeystoneCompanionAddonVersion', 'OVERLAY');
+UI.AddonVersion:SetSize(80, 10);
+UI.AddonVersion:SetPoint('LEFT', UI.Footer, 'LEFT', 8, 0)
+UI.AddonVersion:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 10, '');
+UI.AddonVersion:SetTextColor(89 / 255, 89 / 255, 91 / 255, 1);
+UI.AddonVersion:SetText('V' .. KeystoneCompanion.version)
 
---UI.Tooltip = CreateFrame('GameTooltip', 'KeystoneCompanionTooltip', UIParent, 'GameTooltipTemplate'); 
+UI.GitHub = CreateFrame('Frame', 'KeystoneCompanionFooterGitHub', UI.Footer);
+UI.GitHub:SetSize(48, 15);
+UI.GitHub:SetPoint('RIGHT', UI.Footer, 'RIGHT', -8, 0);
+UI.GitHub.Label = UI.GitHub:CreateFontString('KeystoneCompanionFooterGitHubLabel', 'OVERLAY')
+UI.GitHub.Label:SetSize(32, 13)
+UI.GitHub.Label:SetPoint('LEFT', UI.GitHub, 'LEFT');
+UI.GitHub.Label:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 10, '')
+UI.GitHub.Label:SetTextColor(161 / 255, 161 / 255, 161 / 255, 1)
+UI.GitHub.Label:SetText('GitHub');
+UI.GitHub.Icon = CreateFrame('Frame', "KeystoneCompanionGitHubIcon", UI.GitHub);
+UI.GitHub.Icon:SetSize(13, 13);
+UI.GitHub.Icon:SetPoint("RIGHT", UI.GitHub, "RIGHT");
+UI.GitHub.Icon.Mask = UI.GitHub.Icon:CreateMaskTexture();
+UI.GitHub.Icon.Mask:SetAllPoints(UI.GitHub.Icon);
+UI.GitHub.Icon.Mask:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/github-icon', 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE');
+UI.GitHub.Icon.Texture = UI.GitHub.Icon:CreateTexture("KeystoneCompanionGitHubIconTexture", "OVERLAY");
+UI.GitHub.Icon.Texture:SetAllPoints(UI.GitHub.Icon);
+UI.GitHub.Icon.Texture:SetColorTexture(1, 1, 1, 1);
+UI.GitHub.Icon.Texture:AddMaskTexture(UI.GitHub.Icon.Mask);
+UI.GitHub:SetScript("OnEnter", function()
+  UI.GitHub.Label:SetTextColor(204 / 255, 204 / 255, 204 / 255, 1);
+  UI.GitHub.Icon.Texture:SetColorTexture(204 / 255, 204 / 255, 204 / 255, 1)
+end)
+UI.GitHub:SetScript("OnLeave", function()
+  UI.GitHub.Label:SetTextColor(161 / 255, 161 / 255, 161 / 255, 1);
+  UI.GitHub.Icon.Texture:SetColorTexture(1, 1, 1, 1);
+end)
+
+UI.Discord = CreateFrame('Frame', 'KeystoneCompanionFooterDiscord', UI.Footer);
+UI.Discord:SetSize(102, 15);
+UI.Discord:SetPoint('RIGHT', UI.Footer, 'RIGHT', -70, 0);
+UI.Discord.Label = UI.Discord:CreateFontString('KeystoneCompanionFooterDiscordLabel', 'OVERLAY')
+UI.Discord.Label:SetSize(84, 13)
+UI.Discord.Label:SetPoint('LEFT', UI.Discord, 'LEFT');
+UI.Discord.Label:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 10, '')
+UI.Discord.Label:SetTextColor(161 / 255, 161 / 255, 161 / 255, 1)
+UI.Discord.Label:SetText('Join us on Discord');
+UI.Discord.Icon = CreateFrame('Frame', "KeystoneCompanionDiscordIcon", UI.Discord);
+UI.Discord.Icon:SetSize(13, 13);
+UI.Discord.Icon:SetPoint("RIGHT", UI.Discord, "RIGHT");
+UI.Discord.Icon.Mask = UI.Discord.Icon:CreateMaskTexture();
+UI.Discord.Icon.Mask:SetAllPoints(UI.Discord.Icon);
+UI.Discord.Icon.Mask:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/discord-icon', 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE');
+UI.Discord.Icon.Texture = UI.Discord.Icon:CreateTexture("KeystoneCompanionDiscordIconTexture", "OVERLAY");
+UI.Discord.Icon.Texture:SetAllPoints(UI.Discord.Icon);
+UI.Discord.Icon.Texture:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/discord-icon');
+UI.Discord.Icon.Texture:AddMaskTexture(UI.Discord.Icon.Mask);
+UI.Discord:SetScript("OnEnter", function()
+  UI.Discord.Label:SetTextColor(204 / 255, 204 / 255, 204 / 255, 1);
+  UI.Discord.Icon.Texture:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/discord-icon-highlight')
+end)
+UI.Discord:SetScript("OnLeave", function()
+  UI.Discord.Label:SetTextColor(161 / 255, 161 / 255, 161 / 255, 1);
+  UI.Discord.Icon.Texture:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/discord-icon')
+end)
+
+UI.Tooltip = CreateFrame('GameTooltip', 'KeystoneCompanionTooltip', UIParent, 'GameTooltipTemplate');
+UI.EditBox = CreateFrame("EditBox", 'KeystoneCompanionCopyFrame', UI, 'InputBoxTemplate');
+UI.EditBox:SetFontObject("GameFontNormal")
+UI.EditBox:SetHeight(24);
+UI.EditBox:SetJustifyH("CENTER");
+UI.EditBox:SetPoint("CENTER", 0, 10);
+UI.EditBox:SetPoint("LEFT", UI, "LEFT", 20, 0)
+UI.EditBox:SetPoint("RIGHT", UI, "RIGHT", -20, 0)
+UI.EditBox:SetMultiLine(false);
+UI.EditBox:SetScript("OnEscapePressed", function(self)
+  self:ClearFocus()
+  self:Hide();
+end)
+UI.EditBox:Hide();
+UI.EditBox.Bg = UI.EditBox:CreateTexture('KeystoneCompanionCopyFrameBackground')
+
+UI.GitHub:SetScript("OnMouseDown", function()
+  if(UI.EditBox:IsShown() and UI.EditBox:GetText() == 'https://github.com/kaelonR/keystone-companion') then
+    UI.EditBox:Hide();
+    return;
+  end
+
+  UI.EditBox:SetText('https://github.com/kaelonR/keystone-companion');
+  UI.EditBox:Show();
+end)
+
+UI.Discord:SetScript("OnMouseDown", function()
+  if(UI.EditBox:IsShown() and UI.EditBox:GetText() == 'https://discord.gg/KhFhC6kZ78') then
+    UI.EditBox:Hide();
+    return;
+  end
+
+  UI.EditBox:SetText('https://discord.gg/KhFhC6kZ78');
+  UI.EditBox:Show();
+end)
+
 
 local createDungeonTooltip = function(self)
-  local playerName = self:GetAttribute("player");
+  local playerName = self:GetAttribute('player');
   if(playerName == nil) then return end
   
   local playerData = KeystoneCompanion.inventory[playerName];
@@ -145,17 +242,17 @@ local createDungeonTooltip = function(self)
 
   UI.Tooltip:ClearLines();
 
-  UI.Tooltip:SetOwner(self, "ANCHOR_NONE");
-  UI.Tooltip:SetPoint("BOTTOMRIGHT", self, "TOPLEFT");
+  UI.Tooltip:SetOwner(self, 'ANCHOR_NONE');
+  UI.Tooltip:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT');
   UI.Tooltip:SetText(dungeonInfo.name, 0.64, 0.21, 0.93, 1, true);
   UI.Tooltip:AddLine('Keystone level ' .. (playerData.keystone.level or 12))
   UI.Tooltip:AddLine(' ')
   if(not spellKnown) then
-    UI.Tooltip:AddLine("You do not have this teleport", 1, 0, 0, true);
+    UI.Tooltip:AddLine('You do not have this teleport', 1, 0, 0, true);
   elseif(not spellUsable) then
-    UI.Tooltip:AddLine("Teleport not usable", 0.62, 0.62, 0.62, true);
+    UI.Tooltip:AddLine('Teleport not usable', 0.62, 0.62, 0.62, true);
   else
-    UI.Tooltip:AddLine("Click to teleport");
+    UI.Tooltip:AddLine('Click to teleport');
   end
   UI.Tooltip:Show();
 end
@@ -195,8 +292,8 @@ local createColumn = function(playerRow, playerIndex, columnName, label, width, 
     column.button = CreateFrame('Button', 'TeleportButton' .. playerIndex, column, 'SecureActionButtonTemplate')
     column.button:SetSize(40, 40);
     column.button:SetPoint('CENTER', column, 'CENTER', 0, -10);
-    column.button:RegisterForClicks("AnyDown", "AnyUp")
-    column.button:SetAttribute("type", "spell")
+    column.button:RegisterForClicks('AnyDown', 'AnyUp')
+    column.button:SetAttribute('type', 'spell')
     column.button:SetScript('OnEnter', createDungeonTooltip)
     column.button:SetScript('OnLeave', function()
       if(UI.Tooltip:IsShown()) then UI.Tooltip:Hide() end
@@ -206,23 +303,24 @@ local createColumn = function(playerRow, playerIndex, columnName, label, width, 
   return column;
 end
 
--- for i = 1, 5 do
---   UI['player' .. i] = CreateFrame('Frame', 'Player' .. i .. 'Row', UI);
---   local playerRow = UI['player' .. i];
+for i = 1, 4 do
+  -- UI['player' .. i] = CreateFrame('Frame', 'Player' .. i .. 'Row', UI);
+  -- local playerRow = UI['player' .. i];
 
---   playerRow:SetHeight(80);
---   playerRow:SetPoint('TOPLEFT', UI, 'TOPLEFT', 0, -25 - (80 * (i-1)))
---   playerRow:SetPoint('TOPRIGHT', UI, 'TOPRIGHT', 0, -25 - (80 * (i-1)))
+  -- playerRow:SetSize(411, 83);
+  -- playerRow:SetPoint('TOPLEFT', UI.Party.HeaderBar, 'TOPLEFT', 0, -1 - (83 * (i-1)))
+  -- playerRow:SetPoint('TOPRIGHT', UI.Party.HeaderBar, 'TOPRIGHT', 0, -1 - (83 * (i-1)))
+  -- playerRow.bg = playerRow:CreateTexture('bg' .. i, 'OVERLAY');
+  -- playerRow.bg:SetAllPoints(playerRow);
+  -- playerRow.bg:SetColorTexture((10 * i) / 255, (10 * i) / 255, (10 * i) / 255, 1);
 
---   playerRow.character = createColumn(playerRow,  i, 'character', 'Player ' .. i, 100, 0)
---   playerRow.food = createColumn(playerRow, i, 'food', 'Food', 80, 100, 'itemButton')
---   playerRow.flask = createColumn(playerRow, i, 'flask', 'Flask', 80, 180, 'itemButton')
---   playerRow.potion = createColumn(playerRow, i, 'potion', 'Potion', 80, 260, 'itemButton')
---   playerRow.consumable = createColumn(playerRow, i, 'consumable', 'Consumable', 80, 340, 'itemButton')
---   playerRow.weaponEnchant = createColumn(playerRow, i, 'weaponEnchant', 'Enchant', 80, 420, 'itemButton')
---   playerRow.dungeon = createColumn(playerRow, i, 'dungeon', 'Dungeon', 100, 500, 'teleportButton')
+  --playerRow.food = createColumn(playerRow, i, 'food', 'Food', 80, 100, 'itemButton')
+  --playerRow.flask = createColumn(playerRow, i, 'flask', 'Flask', 80, 180, 'itemButton')
+  --playerRow.potion = createColumn(playerRow, i, 'potion', 'Potion', 80, 260, 'itemButton')
+  --playerRow.consumable = createColumn(playerRow, i, 'consumable', 'Consumable', 80, 340, 'itemButton')
+  --playerRow.weaponEnchant = createColumn(playerRow, i, 'weaponEnchant', 'Enchant', 80, 420, 'itemButton')
 
--- end
+end
 
 local updateItemButton = function(itemButton, itemData)
   if(#itemData == 0) then
@@ -245,8 +343,8 @@ local updatePortalButton = function(teleportButton, playerName, mapID)
 
   local spellID = KeystoneCompanion.constants.dungeonTeleports[mapID].spell.id
 
-  teleportButton:SetAttribute("spell", spellID)
-  teleportButton:SetAttribute("player", playerName)
+  teleportButton:SetAttribute('spell', spellID)
+  teleportButton:SetAttribute('player', playerName)
   teleportButton:SetNormalTexture(GetSpellTexture(spellID))
 
   local known = IsSpellKnown(spellID, false)
