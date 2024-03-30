@@ -53,6 +53,25 @@ UI.CloseButton:SetScript("OnMouseDown", function()
   UI:Hide();
 end)
 
+UI.Icon = CreateFrame('Frame', 'KeystoneCompanionIcon', UI);
+UI.Icon:SetSize(36, 36);
+UI.Icon:SetPoint("TOPLEFT", UI.Title, "TOPLEFT", 8, -10);
+UI.Icon.Mask = UI.Icon:CreateMaskTexture();
+UI.Icon.Mask:SetAllPoints(UI.Icon);
+UI.Icon.Mask:SetTexture('Interface/AddOns/Keystone-Companion/textures/icon-mask', "CLAMPTOBLACKADDITIVE", "CLAMPTOBLACKADDITIVE");
+UI.Icon.Texture = UI.Icon:CreateTexture("KeystoneCompanionIconTexture", "OVERLAY");
+UI.Icon.Texture:SetAllPoints(UI.Icon);
+UI.Icon.Texture:SetTexture('Interface/AddOns/Keystone-Companion/textures/addon-icon');
+UI.Icon.Texture:AddMaskTexture(UI.Icon.Mask);
+
+UI.Title.AddonName = UI.Title:CreateFontString("AddonName", "OVERLAY")
+UI.Title.AddonName:SetSize(200, 24);
+UI.Title.AddonName:SetFontObject('GameFontHighlightCenter')
+UI.Title.AddonName:SetFont('Fonts\\FRIZQT__.TTF', 18, '');
+UI.Title.AddonName:SetTextColor(255 / 255, 124 / 255, 10 / 255, 1);
+UI.Title.AddonName:SetPoint('TOPLEFT', UI.Title, 'TOPLEFT', 52, -16);
+UI.Title.AddonName:SetText("Keystone Companion")
+
 --UI.TopBorder:SetHeight(28.5);
 --UI.TitleBg = UI:CreateTexture('titleBg', 'BACKGROUND', '_UI-Frame-TitleTileBg', 1);
 --UI.TitleBg:SetPoint('TOPLEFT', 2, -2);
