@@ -4,7 +4,7 @@ KeystoneCompanion.UI = { Frame = UI }
 UI:Hide();
 UI:SetMovable(true);
 UI:EnableMouse(true);
-UI:SetSize(438, 485)
+UI:SetSize(438, 566);
 UI:RegisterForDrag('LeftButton');
 UI:SetScript('OnDragStart', UI.StartMoving)
 UI:SetScript('OnDragStop', function(self) 
@@ -77,7 +77,7 @@ UI.Title.AddonName:SetPoint('TOPLEFT', UI.Title, 'TOPLEFT', 50, -16);
 UI.Title.AddonName:SetText('Keystone Companion')
 
 UI.Party = CreateFrame('Frame', 'KeystoneCompanionParty', UI);
-UI.Party:SetSize(411, 378);
+UI.Party:SetSize(411, 461);
 UI.Party:SetPoint('TOPLEFT', UI, 'TOPLEFT', 13, -93);
 
 UI.Party.Header = CreateFrame('Frame', 'KeystoneCompanionPartyHeader', UI.Party);
@@ -93,7 +93,8 @@ UI.Party.HeaderBar.Texture:SetAllPoints(UI.Party.HeaderBar)
 UI.Party.HeaderBar.Texture:SetColorTexture(89 / 255, 89 / 255, 91 / 255, 1);
 
 UI.Party.Header.PlayerName = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderPlayername', 'OVERLAY')
-UI.Party.Header.PlayerName:SetSize(80, 12)
+UI.Party.Header.PlayerName:SetSize(80, 12);
+UI.Party.Header.PlayerName:SetJustifyH('LEFT');
 UI.Party.Header.PlayerName:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 10, 0);
 UI.Party.Header.PlayerName:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 12, '');
 UI.Party.Header.PlayerName:SetText('Player Name')
@@ -135,10 +136,10 @@ UI.AddonVersion:SetTextColor(89 / 255, 89 / 255, 91 / 255, 1);
 UI.AddonVersion:SetText('V' .. KeystoneCompanion.version)
 
 UI.GitHub = CreateFrame('Frame', 'KeystoneCompanionFooterGitHub', UI.Footer);
-UI.GitHub:SetSize(48, 15);
+UI.GitHub:SetSize(58, 15);
 UI.GitHub:SetPoint('RIGHT', UI.Footer, 'RIGHT', -8, 0);
 UI.GitHub.Label = UI.GitHub:CreateFontString('KeystoneCompanionFooterGitHubLabel', 'OVERLAY')
-UI.GitHub.Label:SetSize(32, 13)
+UI.GitHub.Label:SetSize(48, 13)
 UI.GitHub.Label:SetPoint('LEFT', UI.GitHub, 'LEFT');
 UI.GitHub.Label:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 10, '')
 UI.GitHub.Label:SetTextColor(161 / 255, 161 / 255, 161 / 255, 1)
@@ -163,10 +164,10 @@ UI.GitHub:SetScript("OnLeave", function()
 end)
 
 UI.Discord = CreateFrame('Frame', 'KeystoneCompanionFooterDiscord', UI.Footer);
-UI.Discord:SetSize(102, 15);
+UI.Discord:SetSize(112, 15);
 UI.Discord:SetPoint('RIGHT', UI.Footer, 'RIGHT', -70, 0);
 UI.Discord.Label = UI.Discord:CreateFontString('KeystoneCompanionFooterDiscordLabel', 'OVERLAY')
-UI.Discord.Label:SetSize(84, 13)
+UI.Discord.Label:SetSize(100, 13)
 UI.Discord.Label:SetPoint('LEFT', UI.Discord, 'LEFT');
 UI.Discord.Label:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 10, '')
 UI.Discord.Label:SetTextColor(161 / 255, 161 / 255, 161 / 255, 1)
@@ -191,39 +192,58 @@ UI.Discord:SetScript("OnLeave", function()
 end)
 
 UI.Tooltip = CreateFrame('GameTooltip', 'KeystoneCompanionTooltip', UIParent, 'GameTooltipTemplate');
-UI.EditBox = CreateFrame("EditBox", 'KeystoneCompanionCopyFrame', UI, 'InputBoxTemplate');
+UI.CopyFrame = CreateFrame('Frame', 'KeystoneCompanionCopyFrame', UI);
+UI.CopyFrame:SetHeight(64);
+UI.CopyFrame:SetPoint("LEFT", UI, "LEFT", 20, 0)
+UI.CopyFrame:SetPoint("RIGHT", UI, "RIGHT", -20, 0)
+UI.CopyFrame:SetPoint("CENTER", 0, 10);
+UI.CopyFrame:SetFrameStrata("DIALOG");
+UI.CopyFrame.Bg = UI.CopyFrame:CreateTexture("KeystoneCompanionCopyFrameBg", "OVERLAY");
+UI.CopyFrame.Bg:SetAllPoints(UI.CopyFrame);
+UI.CopyFrame.Bg:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/copy-frame');
+UI.CopyFrame.Mask = UI.CopyFrame:CreateMaskTexture();
+UI.CopyFrame.Mask:SetAllPoints(UI.CopyFrame)
+UI.CopyFrame.Mask:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/copy-frame')
+UI.CopyFrame.Bg:AddMaskTexture(UI.CopyFrame.Mask)
+UI.CopyFrame.Label = UI.CopyFrame:CreateFontString("KeystoneCompanionCopyFrameLabel", "OVERLAY");
+UI.CopyFrame.Label:SetPoint("TOPLEFT", UI.CopyFrame, "TOPLEFT", 5, -5);
+UI.CopyFrame.Label:SetPoint("BOTTOMRIGHT", UI.CopyFrame, "BOTTOMRIGHT", -5, 35);
+UI.CopyFrame.Label:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 12);
+UI.CopyFrame.Label:SetText('Copy below URL into your browser.')
+UI.CopyFrame:Hide();
+
+UI.EditBox = CreateFrame("EditBox", 'KeystoneCompanionCopyFrameEditBox', UI.CopyFrame, 'InputBoxTemplate');
 UI.EditBox:SetFontObject("GameFontNormal")
+UI.EditBox:SetFrameStrata("DIALOG")
 UI.EditBox:SetHeight(24);
 UI.EditBox:SetJustifyH("CENTER");
-UI.EditBox:SetPoint("CENTER", 0, 10);
-UI.EditBox:SetPoint("LEFT", UI, "LEFT", 20, 0)
-UI.EditBox:SetPoint("RIGHT", UI, "RIGHT", -20, 0)
+UI.EditBox:SetPoint("LEFT", UI.CopyFrame, "LEFT", 25, 0)
+UI.EditBox:SetPoint("RIGHT", UI.CopyFrame, "RIGHT", -20, 0)
+UI.EditBox:SetPoint("BOTTOM", UI.CopyFrame, "BOTTOM", 0, 10)
 UI.EditBox:SetMultiLine(false);
 UI.EditBox:SetScript("OnEscapePressed", function(self)
   self:ClearFocus()
-  self:Hide();
+  self:GetParent():Hide();
 end)
-UI.EditBox:Hide();
-UI.EditBox.Bg = UI.EditBox:CreateTexture('KeystoneCompanionCopyFrameBackground')
 
 UI.GitHub:SetScript("OnMouseDown", function()
-  if(UI.EditBox:IsShown() and UI.EditBox:GetText() == 'https://github.com/kaelonR/keystone-companion') then
-    UI.EditBox:Hide();
+  if(UI.CopyFrame:IsShown() and UI.EditBox:GetText() == 'https://github.com/kaelonR/keystone-companion') then
+    UI.CopyFrame:Hide();
     return;
   end
 
   UI.EditBox:SetText('https://github.com/kaelonR/keystone-companion');
-  UI.EditBox:Show();
+  UI.CopyFrame:Show();
 end)
 
 UI.Discord:SetScript("OnMouseDown", function()
-  if(UI.EditBox:IsShown() and UI.EditBox:GetText() == 'https://discord.gg/KhFhC6kZ78') then
-    UI.EditBox:Hide();
+  if(UI.CopyFrame:IsShown() and UI.EditBox:GetText() == 'https://discord.gg/KhFhC6kZ78') then
+    UI.CopyFrame:Hide();
     return;
   end
 
   UI.EditBox:SetText('https://discord.gg/KhFhC6kZ78');
-  UI.EditBox:Show();
+  UI.CopyFrame:Show();
 end)
 
 
@@ -303,16 +323,56 @@ local createColumn = function(playerRow, playerIndex, columnName, label, width, 
   return column;
 end
 
-for i = 1, 4 do
-  -- UI['player' .. i] = CreateFrame('Frame', 'Player' .. i .. 'Row', UI);
-  -- local playerRow = UI['player' .. i];
+for i = 1, 5 do
+  UI['player' .. i] = CreateFrame('Frame', 'Player' .. i .. 'Row', UI);
+  local playerRow = UI['player' .. i];
 
-  -- playerRow:SetSize(411, 83);
-  -- playerRow:SetPoint('TOPLEFT', UI.Party.HeaderBar, 'TOPLEFT', 0, -1 - (83 * (i-1)))
-  -- playerRow:SetPoint('TOPRIGHT', UI.Party.HeaderBar, 'TOPRIGHT', 0, -1 - (83 * (i-1)))
-  -- playerRow.bg = playerRow:CreateTexture('bg' .. i, 'OVERLAY');
-  -- playerRow.bg:SetAllPoints(playerRow);
-  -- playerRow.bg:SetColorTexture((10 * i) / 255, (10 * i) / 255, (10 * i) / 255, 1);
+  playerRow:SetSize(411, 83);
+  playerRow:SetPoint('TOPLEFT', UI.Party.HeaderBar, 'TOPLEFT', 0, -1 - (83 * (i-1)))
+  playerRow:SetPoint('TOPRIGHT', UI.Party.HeaderBar, 'TOPRIGHT', 0, -1 - (83 * (i-1)))
+  playerRow.Content = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. i .. 'Content', playerRow);
+  playerRow.Content:SetSize(391, 63);
+  playerRow.Content:SetPoint("TOPLEFT", playerRow, "TOPLEFT", 10, -10);
+  playerRow.Content:SetPoint("BOTTOMRIGHT", playerRow, "BOTTOMRIGHT", -10, 10);
+
+  playerRow.PlayerName = playerRow.Content:CreateFontString();
+  playerRow.PlayerName:SetHeight(14)
+  playerRow.PlayerName:SetPoint("TOPLEFT", playerRow.Content, "TOPLEFT", 0, 0);
+  playerRow.PlayerName:SetPoint("TOPRIGHT", playerRow.Content, "TOPRIGHT");
+  playerRow.PlayerName:SetFont('Interface/Addons/Keystone-Companion/assets/fonts/SF-Pro.ttf', 12)
+  playerRow.PlayerName:SetTextColor(161 / 255, 161 / 255, 161 / 255, 1);
+  playerRow.PlayerName:SetText("Player " .. i);
+  playerRow.PlayerName:SetJustifyH('LEFT');
+
+  playerRow.ClassIcon = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. i .. 'ClassIcon', playerRow.Content);
+  playerRow.ClassIcon:SetSize(35, 35);
+  playerRow.ClassIcon:SetPoint("TOPLEFT", playerRow.Content, "TOPLEFT", 0, -25);
+  playerRow.ClassIcon.Mask = playerRow.ClassIcon:CreateMaskTexture();
+  playerRow.ClassIcon.Mask:SetAllPoints(playerRow.ClassIcon);
+  playerRow.ClassIcon.Mask:SetTexture('Interface/Addons/Keystone-Companion/assets/textures/rounded-button');
+  playerRow.ClassIcon.Texture = playerRow.ClassIcon:CreateTexture("KeystoneCompanionPlayerRow" .. i .. 'ClassIconTexture', 'ARTWORK');
+  playerRow.ClassIcon.Texture:SetAllPoints(playerRow.ClassIcon);
+  playerRow.ClassIcon.Texture:AddMaskTexture(playerRow.ClassIcon.Mask);
+  playerRow.ClassIcon.Texture:SetTexture('Interface/GLUES/CHARACTERCREATE/UI-CHARACTERCREATE-CLASSES')
+  playerRow.ClassIcon.Texture:SetTexCoord(unpack(CLASS_ICON_TCOORDS['MAGE']));
+
+  playerRow.RoleIcon = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. i .. 'RoleIcon', playerRow.Content);
+  playerRow.RoleIcon:SetFrameStrata("HIGH");
+  playerRow.RoleIcon:SetSize(20, 20);
+  playerRow.RoleIcon:SetPoint('CENTER', playerRow.ClassIcon, 'BOTTOMRIGHT', 0, 0);
+  playerRow.RoleIcon.Texture = playerRow.RoleIcon:CreateTexture('KeystoneCompanionPlayerRow' .. i .. 'RoleIconTexture', 'ARTWORK');
+  playerRow.RoleIcon.Texture:SetAllPoints(playerRow.RoleIcon);
+  playerRow.RoleIcon.Texture:SetTexture('Interface/LFGFRAME/UI-LFG-ICON-PORTRAITROLES');
+  playerRow.RoleIcon.Texture:SetTexCoord(unpack(KeystoneCompanion.constants.roleIconCoords['DAMAGER']));
+
+  playerRow.LeaderIcon = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. i .. 'LeaderIcon', playerRow.Content);
+  playerRow.LeaderIcon:SetFrameStrata("HIGH");
+  playerRow.LeaderIcon:SetSize(20, 20);
+  playerRow.LeaderIcon:SetPoint('CENTER', playerRow.ClassIcon, 'TOPRIGHT');
+  playerRow.LeaderIcon.Texture = playerRow.LeaderIcon:CreateTexture('KeystoneCompanionPlayerRow' .. i .. 'LeaderIconTexture', 'ARTWORK');
+  playerRow.LeaderIcon.Texture:SetAllPoints(playerRow.LeaderIcon);
+  playerRow.LeaderIcon.Texture:SetTexture('Interface/GROUPFRAME/UI-Group-LeaderIcon');
+  if( i ~= 3) then playerRow.LeaderIcon:Hide() end
 
   --playerRow.food = createColumn(playerRow, i, 'food', 'Food', 80, 100, 'itemButton')
   --playerRow.flask = createColumn(playerRow, i, 'flask', 'Flask', 80, 180, 'itemButton')

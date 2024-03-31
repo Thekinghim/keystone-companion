@@ -3,4 +3,5 @@
 ..\FrameXML\UI.xsd">
     <Script file="constants/dungeonTeleports.lua" />
     <Script file="constants/items.lua" />
+    <Script file="constants/roleIcons.lua" />
 </Ui>

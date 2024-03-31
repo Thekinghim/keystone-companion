@@ -3,7 +3,7 @@ local LibDeflate = LibStub:GetLibrary("LibDeflate");
 local print, devPrint = KeystoneCompanion.print, KeystoneCompanion.dev.print
 
 KeystoneCompanion.inventory = {
-  self = { items = {}, keystone = { mapID = nil, level = nil }, knownTeleports = { } };
+  self = { class = '', items = {}, keystone = { mapID = nil, level = nil }, knownTeleports = { } };
 }
 
 function KeystoneCompanion.inventory:GetInventoryString()

@@ -92,4 +92,5 @@ if(KeystoneCompanion.buildType == 'alpha') then
 end
 
 print('type ' .. colorise('00ffff', '/kc') .. ' to open the KeystoneCompanion UI.')
+KeystoneCompanion.inventory.self.class = select(2, UnitClass('player'))
 KeystoneCompanion.UI.Frame:Show();
