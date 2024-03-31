@@ -7,7 +7,6 @@
 ## SavedVariables: KeystoneCompanionDB
 ## DefaultState: enabled
 ## X-Curse-Project-ID: 984971
-## X-WoWI-ID: 26706
-## X-Wago-ID: ZKxqwEGk
+
 
 embeds.xml

@@ -250,8 +250,10 @@ end)
 local createDungeonTooltip = function(self)
   local playerName = self:GetAttribute('player');
   if(playerName == nil) then return end
+  if(playerName == UnitName('player')) then playerName = 'self' end
   
   local playerData = KeystoneCompanion.inventory[playerName];
+  playerData = {keystone = { mapID = 643, level = 7 }};
   if(playerData.keystone.mapID == nil) then return end;
 
   local dungeonInfo = KeystoneCompanion.constants.dungeonTeleports[playerData.keystone.mapID];
@@ -339,9 +341,9 @@ for i = 1, 5 do
   playerRow.PlayerName:SetHeight(14)
   playerRow.PlayerName:SetPoint("TOPLEFT", playerRow.Content, "TOPLEFT", 0, 0);
   playerRow.PlayerName:SetPoint("TOPRIGHT", playerRow.Content, "TOPRIGHT");
-  playerRow.PlayerName:SetFont('Interface/Addons/Keystone-Companion/assets/fonts/SF-Pro.ttf', 12)
+  playerRow.PlayerName:SetFont('Interface/Addons/Keystone-Companion/assets/fonts/SF-Pro-Display-Semibold.otf', 12)
   playerRow.PlayerName:SetTextColor(161 / 255, 161 / 255, 161 / 255, 1);
-  playerRow.PlayerName:SetText("Player " .. i);
+  playerRow.PlayerName:SetText("somelongname");
   playerRow.PlayerName:SetJustifyH('LEFT');
 
   playerRow.ClassIcon = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. i .. 'ClassIcon', playerRow.Content);
@@ -374,12 +376,45 @@ for i = 1, 5 do
   playerRow.LeaderIcon.Texture:SetTexture('Interface/GROUPFRAME/UI-Group-LeaderIcon');
   if( i ~= 3) then playerRow.LeaderIcon:Hide() end
 
-  --playerRow.food = createColumn(playerRow, i, 'food', 'Food', 80, 100, 'itemButton')
-  --playerRow.flask = createColumn(playerRow, i, 'flask', 'Flask', 80, 180, 'itemButton')
-  --playerRow.potion = createColumn(playerRow, i, 'potion', 'Potion', 80, 260, 'itemButton')
-  --playerRow.consumable = createColumn(playerRow, i, 'consumable', 'Consumable', 80, 340, 'itemButton')
-  --playerRow.weaponEnchant = createColumn(playerRow, i, 'weaponEnchant', 'Enchant', 80, 420, 'itemButton')
+  playerRow.DungeonIcon = CreateFrame('Button', 'KeystoneCompanionPlayerRow' .. i .. 'DungeonButton', playerRow.Content, 'SecureActionButtonTemplate');
+  playerRow.DungeonIcon:SetSize(35, 35);
+  playerRow.DungeonIcon:SetPoint("TOPLEFT", playerRow.Content, "TOPLEFT", 55, -25);
+  playerRow.DungeonIcon:RegisterForClicks("AnyDown", "AnyUp");
+  playerRow.DungeonIcon:SetAttribute('type', 'spell');
+  playerRow.DungeonIcon:SetAttribute('player', UnitName('player'));
+  local spellID = KeystoneCompanion.constants.dungeonTeleports[643].spell.id
+  playerRow.DungeonIcon:SetAttribute('spell', 3561);
+  playerRow.DungeonIcon:SetNormalTexture(GetSpellTexture(spellID));
+  playerRow.DungeonIcon:SetAlpha(0.4);
+  playerRow.DungeonIcon:SetScript('OnEnter', function(self)
+    createDungeonTooltip(self);
+  end)
+  playerRow.DungeonIcon:SetScript('OnLeave', function(self)
+    if(UI.Tooltip:IsShown()) then UI.Tooltip:Hide() end
+  end)
 
+  playerRow.KeystoneLevel = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. i .. 'KeystoneLevel', playerRow.Content);
+  playerRow.KeystoneLevel:SetSize(22, 22);
+  playerRow.KeystoneLevel:SetPoint('CENTER', playerRow.DungeonIcon, 'BOTTOMRIGHT');
+  playerRow.KeystoneLevel.Mask = playerRow.KeystoneLevel:CreateMaskTexture();
+  playerRow.KeystoneLevel.Mask:SetAllPoints(playerRow.KeystoneLevel);
+  playerRow.KeystoneLevel.Mask:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/portrait2');
+  playerRow.KeystoneLevel.Texture = playerRow.KeystoneLevel:CreateTexture('KeystoneCompanionPlayerRow' .. i .. 'KeystoneLevelTexture');
+  playerRow.KeystoneLevel.Texture:SetAllPoints(playerRow.KeystoneLevel)
+  playerRow.KeystoneLevel.Texture:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/portrait2');
+  playerRow.KeystoneLevel.Texture:AddMaskTexture(playerRow.KeystoneLevel.Mask);
+  playerRow.KeystoneLevel.Label = playerRow.KeystoneLevel:CreateFontString('KeystoneCompanionPlayerRow' .. i .. 'KeystoneLevelLabel');
+  playerRow.KeystoneLevel.Label:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro-Display-Semibold.otf', 10)
+  playerRow.KeystoneLevel.Label:SetTextColor(161 / 255, 161 / 255, 161 / 255, 1);
+  playerRow.KeystoneLevel.Label:SetJustifyH('CENTER');
+  playerRow.KeystoneLevel.Label:SetJustifyV('CENTER');
+  if(i % 2 == 0) then
+    playerRow.KeystoneLevel.Label:SetPoint('LEFT', playerRow.KeystoneLevel, 'LEFT', 8, 0);
+    playerRow.KeystoneLevel.Label:SetText('7');
+  else
+    playerRow.KeystoneLevel.Label:SetPoint('LEFT', playerRow.KeystoneLevel, 'LEFT', 5, 0);
+    playerRow.KeystoneLevel.Label:SetText('36');
+  end
 end
 
 local updateItemButton = function(itemButton, itemData)
