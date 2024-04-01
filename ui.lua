@@ -101,24 +101,28 @@ UI.Party.Header.PlayerName:SetText('Player Name')
 
 UI.Party.Header.Food = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderFood', 'OVERLAY')
 UI.Party.Header.Food:SetSize(50, 12)
+UI.Party.Header.Food:SetJustifyH('LEFT');
 UI.Party.Header.Food:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 172 , 0);
 UI.Party.Header.Food:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 12, '');
 UI.Party.Header.Food:SetText('Food')
 
 UI.Party.Header.Invis = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderInvis', 'OVERLAY')
 UI.Party.Header.Invis:SetSize(50, 12)
+UI.Party.Header.Invis:SetJustifyH('LEFT');
 UI.Party.Header.Invis:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 232 , 0);
 UI.Party.Header.Invis:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 12, '');
 UI.Party.Header.Invis:SetText('Invis')
 
 UI.Party.Header.Potions = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderPotions', 'OVERLAY')
 UI.Party.Header.Potions:SetSize(50, 12)
+UI.Party.Header.Potions:SetJustifyH('LEFT');
 UI.Party.Header.Potions:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 292 , 0);
 UI.Party.Header.Potions:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 12, '');
 UI.Party.Header.Potions:SetText('Potions')
 
 UI.Party.Header.Flasks = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderFlasks', 'OVERLAY')
 UI.Party.Header.Flasks:SetSize(50, 12)
+UI.Party.Header.Flasks:SetJustifyH('LEFT');
 UI.Party.Header.Flasks:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 352 , 0);
 UI.Party.Header.Flasks:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 12, '');
 UI.Party.Header.Flasks:SetText('Flasks')
@@ -279,50 +283,35 @@ local createDungeonTooltip = function(self)
   UI.Tooltip:Show();
 end
 
-local createColumn = function(playerRow, playerIndex, columnName, label, width, leftX, type)
-  local column = CreateFrame('Frame', columnName .. 'Column' .. playerIndex, playerRow);
-  column:SetSize(width, 80);
-  column:SetPoint('TOPLEFT', playerRow, 'TOPLEFT', leftX, 0)
-  column:SetPoint('TOPRIGHT', playerRow, 'TOPLEFT', leftX + width, 0)
+local createItemCell = function(parent, row, column, cellName)
+  local cell = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. row .. cellName, parent);
+  cell:SetSize(42, 42);
+  cell:SetPoint("TOPLEFT", parent, "TOPLEFT", (67 * (column - 1)), 0);
+  cell.ItemButton = CreateFrame('ItemButton', "KeystoneCompanionPlayerRow" .. row .. cellName .. "ItemButton", cell);
+  cell.ItemButton:SetSize(27, 27);
+  cell.ItemButton.NormalTexture:SetSize(27, 27);
+  cell.ItemButton.PushedTexture:SetSize(20, 20);
+  cell.ItemButton.IconBorder:SetAllPoints(cell.ItemButton);
+  cell.ItemButton:SetPoint('TOP', cell, 'TOP');
+  cell.ItemButton:SetNormalTexture('Interface/PaperDoll/UI-Backpack-EmptySlot')
+  cell.ItemButton:SetButtonState('NORMAL', true);
 
-  column.label = column:CreateFontString(columnName .. 'ColumnLabel' .. playerIndex, 'OVERLAY');
-  column.label:SetFontObject('GameFontHighlight')
-  column.label:SetPoint('TOP', column, 'TOP', 0, -10);
-  column.label:SetText(label)
+  cell.ItemButton:SetScript('OnEnter', function(self)
+    local itemId = self:GetItem();
+    if(itemId ~= nil) then
+      UI.Tooltip:SetOwner(self, 'ANCHOR_NONE');
+      UI.Tooltip:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT');
+      UI.Tooltip:SetItemByID(itemId);
+      UI.Tooltip:Show();
+    end
+  end)
+  cell.ItemButton:SetScript('OnLeave', function()
+    if(UI.Tooltip:IsShown()) then UI.Tooltip:Hide() end
+  end)
 
-  if(type == 'itemButton') then
-    column.itemButton = CreateFrame('ItemButton', columnName .. 'ColumnItemButton' .. playerIndex, column);
-    column.itemButton:SetSize(40, 40)
-    column.itemButton.NormalTexture:SetSize(40, 40)
-    column.itemButton.PushedTexture:SetSize(30, 30)
-    column.itemButton:SetPoint('CENTER', column, 'CENTER', 0, -10);
-    column.itemButton:SetNormalTexture('Interface/PaperDoll/UI-Backpack-EmptySlot')
-    column.itemButton:SetButtonState('NORMAL', true);
-    -- column.itemButton:SetScript('OnEnter', function(self)
-    --   local itemId = self:GetItem();
-    --   if(itemId ~= nil) then
-    --     UI.Tooltip:SetOwner(self, 'ANCHOR_NONE');
-    --     UI.Tooltip:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT');
-    --     UI.Tooltip:SetItemByID(itemId);
-    --     UI.Tooltip:Show();
-    --   end
-    -- end)
-    -- column.itemButton:SetScript('OnLeave', function()
-    --   if(UI.Tooltip:IsShown()) then UI.Tooltip:Hide() end
-    -- end)
-  elseif(type == 'teleportButton') then
-    column.button = CreateFrame('Button', 'TeleportButton' .. playerIndex, column, 'SecureActionButtonTemplate')
-    column.button:SetSize(40, 40);
-    column.button:SetPoint('CENTER', column, 'CENTER', 0, -10);
-    column.button:RegisterForClicks('AnyDown', 'AnyUp')
-    column.button:SetAttribute('type', 'spell')
-    column.button:SetScript('OnEnter', createDungeonTooltip)
-    column.button:SetScript('OnLeave', function()
-      if(UI.Tooltip:IsShown()) then UI.Tooltip:Hide() end
-    end)
-  end
-
-  return column;
+  cell.ItemButton:SetItem(197780);
+  cell.ItemButton:SetItemButtonCount(21);
+  cell.ItemButton.NormalTexture:Hide();
 end
 
 for i = 1, 5 do
@@ -415,6 +404,16 @@ for i = 1, 5 do
     playerRow.KeystoneLevel.Label:SetPoint('LEFT', playerRow.KeystoneLevel, 'LEFT', 5, 0);
     playerRow.KeystoneLevel.Label:SetText('36');
   end
+
+  playerRow.Inventory = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. i .. 'Inventory', playerRow.Content);
+  playerRow.Inventory:SetSize(243, 42);
+  playerRow.Inventory:SetPoint("BOTTOMRIGHT", playerRow.Content, "BOTTOMRIGHT");
+
+  playerRow.Food =    createItemCell(playerRow.Inventory, i, 1, 'Food');
+  playerRow.Invis =   createItemCell(playerRow.Inventory, i, 2, 'Invis');
+  playerRow.Potions = createItemCell(playerRow.Inventory, i, 3, 'Potions');
+  playerRow.Flasks =  createItemCell(playerRow.Inventory, i, 4, 'Flasks');
+  
 end
 
 local updateItemButton = function(itemButton, itemData)
