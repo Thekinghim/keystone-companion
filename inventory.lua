@@ -3,8 +3,12 @@ local LibDeflate = LibStub:GetLibrary("LibDeflate");
 local print, devPrint = KeystoneCompanion.print, KeystoneCompanion.dev.print
 
 KeystoneCompanion.inventory = {
-  self = { class = '', items = {}, keystone = { mapID = nil, level = nil }, knownTeleports = { } };
+  self = { items = {}, keystone = { mapID = nil, level = nil }, knownTeleports = {} };
 }
+
+function KeystoneCompanion.inventory:GetEmptyInventory()
+  return { items = nil, keystone = { mapID = nil, level = nil}, knownTeleports = {} };
+end
 
 function KeystoneCompanion.inventory:GetInventoryString()
   if(#self.self.items == 0) then
@@ -15,6 +19,12 @@ function KeystoneCompanion.inventory:GetInventoryString()
   local compressedInventory = LibDeflate:CompressDeflate(serialisedInventory);
   local inventoryString = LibDeflate:EncodeForWoWAddonChannel(compressedInventory);
   return inventoryString;
+end
+
+local ToArray = function (itemData) 
+  local array = {};
+  for k,v in pairs(itemData) do table.insert(array, { itemID = k, count = v}) end
+  return array;
 end
 
 local ScanItem = function (itemCache, bagIndex, bagSlot)
@@ -37,15 +47,23 @@ local ScanBag = function(itemCache, bagIndex)
 end
 
 function KeystoneCompanion.inventory:ScanInventory()
-  self.self.items = {
-    Consumable = {},
-    Flask = {},
+  local itemCache = {
     Food = {},
+    Rune = {},
     Potion = {},
+    Flask = {},
     WeaponEnchantment = {}
   }
 
-  for bagIndex = 0, NUM_BAG_SLOTS do ScanBag(self.self.items, bagIndex) end
+  for bagIndex = 0, NUM_BAG_SLOTS do ScanBag(itemCache, bagIndex) end
+
+  self.self.items = {
+    Food = ToArray(itemCache.Food),
+    Rune = ToArray(itemCache.Rune),
+    Potion = ToArray(itemCache.Potion),
+    Flask = ToArray(itemCache.Flask),
+    WeaponEnchantment = ToArray(itemCache.WeaponEnchantment)
+  }
 
   local keystoneMapId = C_MythicPlus.GetOwnedKeystoneMapID();
   if(keystoneMapId == nil) then
@@ -70,7 +88,7 @@ function KeystoneCompanion.inventory:LoadString(sender, inventoryString)
   if (not success) then return end;
 
   self[sender] = inventory;
-  if(#self[sender]['keystone'] == 0) then
+  if (self[sender]['keystone'] == nil) then
     self[sender]['keystone'] = { mapID = nil, level = nil }
   end
 end

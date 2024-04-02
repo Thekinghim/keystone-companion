@@ -1,17 +1,5 @@
 KeystoneCompanion.constants = KeystoneCompanion.constants or {};
 KeystoneCompanion.constants.items = {
-  Flask = {
-    [191320] = { name = 'Phial of the Eye in the Storm' },
-    [191323] = { name = 'Phial of Still Air' },
-    [191326] = { name = 'Phial of Icy Preservation' },
-    [191329] = { name = 'Iced Phial of Corrupting Rage' },
-    [191332] = { name = 'Phial of Charged Isolation' },
-    [191335] = { name = 'Phial of Glacial Fury' },
-    [191338] = { name = 'Phial of Static Empowerment' },
-    [191341] = { name = 'Phial of Tepid Versatility' },
-    [191350] = { name = 'Charged Phial of Alacrity' },
-    [191359] = { name = 'Phial of Elemental Chaos' },
-  },
   Food = {
     [197778] = { name = 'Timely Demise' },
     [197779] = { name = 'Filet of Fangs' },
@@ -25,6 +13,10 @@ KeystoneCompanion.constants.items = {
     [197787] = { name = 'Great Cerulean Sea' },
     [197794] = { name = 'Grand Banquet of the Kalu\'ak' },
     [204072] = { name = 'Deviously Deviled Eggs' },
+  },
+  Rune = {
+    [201325] = { name = 'Draconic Augment Rune' },
+    [211495] = { name = 'Dreambound Augment Rune' },
   },
   Potion = {
     [191365] = { name = 'Potion of Frozen Focus' },
@@ -41,9 +33,17 @@ KeystoneCompanion.constants.items = {
     [207023] = { name = 'Dreamwalker\'s Healing Potion' },
     [207041] = { name = 'Potion of Withering Dreams' },
   },
-  Consumable = {
-    [201325] = { name = 'Draconic Augment Rune' },
-    [211495] = { name = 'Dreambound Augment Rune' },
+  Flask = {
+    [191320] = { name = 'Phial of the Eye in the Storm' },
+    [191323] = { name = 'Phial of Still Air' },
+    [191326] = { name = 'Phial of Icy Preservation' },
+    [191329] = { name = 'Iced Phial of Corrupting Rage' },
+    [191332] = { name = 'Phial of Charged Isolation' },
+    [191335] = { name = 'Phial of Glacial Fury' },
+    [191338] = { name = 'Phial of Static Empowerment' },
+    [191341] = { name = 'Phial of Tepid Versatility' },
+    [191350] = { name = 'Charged Phial of Alacrity' },
+    [191359] = { name = 'Phial of Elemental Chaos' },
   },
   WeaponEnchantment = {
     [191940] = { name = 'Primal Whetstone' },
