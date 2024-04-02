@@ -52,7 +52,7 @@ function KeystoneCompanion.inventory:ScanInventory()
     self.self.keystone = { mapId = nil, level = nil };
   else
     local keystoneLevel = C_MythicPlus.GetOwnedKeystoneLevel();
-    self.self.keystone = { mapID = keystoneLevel, level = keystoneLevel };
+    self.self.keystone = { mapID = keystoneMapId, level = keystoneLevel };
   end
 
   self.self.knownTeleports = {};

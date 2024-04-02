@@ -312,6 +312,48 @@ local createItemCell = function(parent, row, column, cellName)
   cell.ItemButton:SetItem(197780);
   cell.ItemButton:SetItemButtonCount(21);
   cell.ItemButton.NormalTexture:Hide();
+
+  cell.Pagination = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. row .. cellName .. 'Pagination', cell);
+  cell.Pagination:SetHeight(12)
+  cell.Pagination:SetPoint("BOTTOMLEFT", cell, "BOTTOMLEFT");
+  cell.Pagination:SetPoint("BOTTOMRIGHT", cell, "BOTTOMRIGHT");
+
+  cell.Pagination.PreviousButton = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. row .. cellName .. 'PrevButton', cell.Pagination);
+  cell.Pagination.PreviousButton:SetSize(12, 12);
+  cell.Pagination.PreviousButton:SetPoint("LEFT", cell.Pagination, "LEFT")
+  cell.Pagination.PreviousButton.Texture = cell.Pagination.PreviousButton:CreateTexture('KeystoneCompanionPlayerRow' .. row .. cellName .. 'PrevButtonTexture');
+  cell.Pagination.PreviousButton.Texture:SetSize(8, 8);
+  cell.Pagination.PreviousButton.Texture:SetPoint("TOPLEFT", cell.Pagination.PreviousButton, "TOPLEFT", 3, -3);
+  cell.Pagination.PreviousButton.Texture:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/previous-button');
+  cell.Pagination.PreviousButton:SetScript("OnEnter", function()
+    cell.Pagination.PreviousButton.Texture:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/previous-button-highlight');
+  end)
+  cell.Pagination.PreviousButton:SetScript("OnLeave", function()
+    cell.Pagination.PreviousButton.Texture:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/previous-button');
+  end)
+
+  cell.Pagination.NextButton = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. row .. cellName .. 'NextButton', cell.Pagination);
+  cell.Pagination.NextButton:SetSize(12, 12);
+  cell.Pagination.NextButton:SetPoint("RIGHT", cell.Pagination, "RIGHT", -2, 0)
+  cell.Pagination.NextButton.Texture = cell.Pagination.NextButton:CreateTexture('KeystoneCompanionPlayerRow' .. row .. cellName .. 'NextButtonTexture');
+  cell.Pagination.NextButton.Texture:SetSize(8, 8);
+  cell.Pagination.NextButton.Texture:SetPoint("TOPLEFT", cell.Pagination.NextButton, "TOPLEFT", 3, -3);
+  cell.Pagination.NextButton.Texture:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/next-button');
+  cell.Pagination.NextButton:SetScript("OnEnter", function()
+    cell.Pagination.NextButton.Texture:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/next-button-highlight');
+  end)
+  cell.Pagination.NextButton:SetScript("OnLeave", function()
+    cell.Pagination.NextButton.Texture:SetTexture('Interface/AddOns/Keystone-Companion/assets/textures/next-button');
+  end)
+
+  cell.Pagination.Label = cell.Pagination:CreateFontString("KeystoneCompanionPlayerRow" .. row .. cellName .. "PaginationLabel", "OVERLAY");
+  cell.Pagination.Label:SetAllPoints(cell.Pagination, "CENTER", 1);
+  cell.Pagination.Label:SetJustifyV("CENTER");
+  cell.Pagination.Label:SetJustifyH("CENTER");
+  cell.Pagination.Label:SetFont("Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf", 10);
+  cell.Pagination.Label:SetText("3/5");
+
+  return cell;
 end
 
 for i = 1, 5 do
@@ -409,10 +451,10 @@ for i = 1, 5 do
   playerRow.Inventory:SetSize(243, 42);
   playerRow.Inventory:SetPoint("BOTTOMRIGHT", playerRow.Content, "BOTTOMRIGHT");
 
-  playerRow.Food =    createItemCell(playerRow.Inventory, i, 1, 'Food');
-  playerRow.Invis =   createItemCell(playerRow.Inventory, i, 2, 'Invis');
+  playerRow.Food =  createItemCell(playerRow.Inventory, i, 1, 'Food');
+  playerRow.Invis = createItemCell(playerRow.Inventory, i, 2, 'Invis');
   playerRow.Potions = createItemCell(playerRow.Inventory, i, 3, 'Potions');
-  playerRow.Flasks =  createItemCell(playerRow.Inventory, i, 4, 'Flasks');
+  playerRow.Flasks = createItemCell(playerRow.Inventory, i, 4, 'Flasks');
   
 end
 

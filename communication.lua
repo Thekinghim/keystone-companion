@@ -1,23 +1,16 @@
 KeystoneCompanion.communication = { prefix = "keystonecomp", messageTypes = {LOGON = "LOGON", QUERY = "QUERY", UPDATE = "UPDATE"}, handlers = {}}
 local devPrint = KeystoneCompanion.dev.print;
 
-function KeystoneCompanion.communication.SendPartyMessage(...)
-  if(UnitInParty("player") == false and KeystoneCompanion.isDev()) then
-    KeystoneCompanion.communication.SendDirectMessage(GetUnitName("player"), ...);
-    return;
-  end
-
+function KeystoneCompanion.communication.SendMessage(...)
   local messageType, data = select(1, ...)
   local message = messageType .. '::';
   if(data ~= nil and strlen(data) > 0) then message = message .. data end
-  C_ChatInfo.SendAddonMessage(KeystoneCompanion.communication.prefix, message, "PARTY")
-end
 
-function KeystoneCompanion.communication.SendDirectMessage(...)
-  local target, messageType, data = select(1, ...)
-  local message = messageType .. "::";
-  if(data ~= nil and strlen(data) > 0) then message = message .. data end
-  C_ChatInfo.SendAddonMessage(KeystoneCompanion.communication.prefix, message, "WHISPER", target)
+  if(UnitInParty('player') == false and KeystoneCompanion.isDev()) then
+    C_ChatInfo.SendAddonMessage(KeystoneCompanion.communication.prefix, message, "WHISPER", UnitName('player'))
+  else
+    C_ChatInfo.SendAddonMessage(KeystoneCompanion.communication.prefix, message, "PARTY")
+  end
 end
 
 function KeystoneCompanion.communication:RegisterMessageHandler(messageType, callbackFunc)

@@ -19,8 +19,8 @@ KeystoneCompanion.EventFrame:SetScript('OnEvent', function(self, event, ...)
 
       if(UnitInParty("player") or KeystoneCompanion.isDev()) then
         devPrint('world loaded and player in party - Sending LOGON and UPDATE messages')
-        KeystoneCompanion.communication.SendPartyMessage(KeystoneCompanion.communication.messageTypes.LOGON)
-        KeystoneCompanion.communication.SendPartyMessage(KeystoneCompanion.communication.messageTypes.UPDATE, KeystoneCompanion.inventory:GetInventoryString())
+        KeystoneCompanion.communication.SendMessage(KeystoneCompanion.communication.messageTypes.LOGON)
+        KeystoneCompanion.communication.SendMessage(KeystoneCompanion.communication.messageTypes.UPDATE, KeystoneCompanion.inventory:GetInventoryString())
       end
       KeystoneCompanion.loaded = true
   elseif event == 'GROUP_ROSTER_UPDATE' and KeystoneCompanion.loaded == true then
@@ -42,7 +42,7 @@ KeystoneCompanion.EventFrame:SetScript('OnEvent', function(self, event, ...)
     local inventoryDataAfterScan = LibSerialize:Serialize(KeystoneCompanion.inventory.self);
 
     if(currentInventoryData ~= inventoryDataAfterScan) then
-      KeystoneCompanion.communication.SendPartyMessage(KeystoneCompanion.communication.messageTypes.UPDATE, KeystoneCompanion.inventory:GetInventoryString())
+      KeystoneCompanion.communication.SendMessage(KeystoneCompanion.communication.messageTypes.UPDATE, KeystoneCompanion.inventory:GetInventoryString())
     end
   end
 end)
@@ -51,7 +51,7 @@ KeystoneCompanion.communication:RegisterMessageHandler(KeystoneCompanion.communi
   if(sender == playerName) then return end
 
   devPrint('sending inventory info to ' .. sender)
-  KeystoneCompanion.communication.SendDirectMessage(sender, KeystoneCompanion.communication.messageTypes.UPDATE, KeystoneCompanion.inventory:GetInventoryString())
+  KeystoneCompanion.communication.SendMessage(sender, KeystoneCompanion.communication.messageTypes.UPDATE, KeystoneCompanion.inventory:GetInventoryString())
 end)
 
 KeystoneCompanion.communication:RegisterMessageHandler(KeystoneCompanion.communication.messageTypes.UPDATE, function(sender, channel, data)
