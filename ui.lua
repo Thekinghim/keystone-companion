@@ -96,35 +96,35 @@ UI.Party.Header.PlayerName = UI.Party.Header:CreateFontString('KeystoneCompanion
 UI.Party.Header.PlayerName:SetSize(80, 12);
 UI.Party.Header.PlayerName:SetJustifyH('LEFT');
 UI.Party.Header.PlayerName:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 10, 0);
-UI.Party.Header.PlayerName:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 12, '');
+UI.Party.Header.PlayerName:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro-Display-Semibold.otf', 12, '');
 UI.Party.Header.PlayerName:SetText('Player Name')
 
 UI.Party.Header.Food = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderFood', 'OVERLAY')
 UI.Party.Header.Food:SetSize(67, 12)
 UI.Party.Header.Food:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 168 , 0);
 UI.Party.Header.Food:SetJustifyH('LEFT');
-UI.Party.Header.Food:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 12, '');
+UI.Party.Header.Food:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro-Display-Semibold.otf', 12, '');
 UI.Party.Header.Food:SetText('Food')
 
 UI.Party.Header.Invis = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderInvis', 'OVERLAY')
 UI.Party.Header.Invis:SetSize(67, 12)
 UI.Party.Header.Invis:SetJustifyH('LEFT');
 UI.Party.Header.Invis:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 235 , 0);
-UI.Party.Header.Invis:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 12, '');
+UI.Party.Header.Invis:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro-Display-Semibold.otf', 12, '');
 UI.Party.Header.Invis:SetText('Invis')
 
 UI.Party.Header.Potions = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderPotions', 'OVERLAY')
 UI.Party.Header.Potions:SetSize(67, 12)
 UI.Party.Header.Potions:SetJustifyH('LEFT');
 UI.Party.Header.Potions:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 302 , 0);
-UI.Party.Header.Potions:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 12, '');
+UI.Party.Header.Potions:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro-Display-Semibold.otf', 12, '');
 UI.Party.Header.Potions:SetText('Potions')
 
 UI.Party.Header.Flasks = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderFlasks', 'OVERLAY')
 UI.Party.Header.Flasks:SetSize(67, 12)
 UI.Party.Header.Flasks:SetJustifyH('LEFT');
 UI.Party.Header.Flasks:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 369 , 0);
-UI.Party.Header.Flasks:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 12, '');
+UI.Party.Header.Flasks:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro-Display-Semibold.otf', 12, '');
 UI.Party.Header.Flasks:SetText('Flasks')
 
 UI.Footer = CreateFrame('Frame', 'KeystoneCompanionFooter', UI.Party);
@@ -374,7 +374,7 @@ for i = 1, 5 do
   playerRow.PlayerName:SetPoint("TOPRIGHT", playerRow.Content, "TOPRIGHT");
   playerRow.PlayerName:SetFont('Interface/Addons/Keystone-Companion/assets/fonts/SF-Pro-Display-Semibold.otf', 12)
   playerRow.PlayerName:SetTextColor(161 / 255, 161 / 255, 161 / 255, 1);
-  playerRow.PlayerName:SetText("somelongname");
+  playerRow.PlayerName:SetText("Player " .. i);
   playerRow.PlayerName:SetJustifyH('LEFT');
 
   playerRow.ClassIcon = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. i .. 'ClassIcon', playerRow.Content);
