@@ -289,7 +289,8 @@ local nextPage = function(self)
 
   cell.ItemButton:SetAttribute('page', currentPage + 1);
 
-  KeystoneCompanion.UI.RerenderItemCell(cell, player, KeystoneCompanion.inventory[player].items[itemCategory]);
+  local playerData = player == UnitName('player') and KeystoneCompanion.inventory.self or KeystoneCompanion.inventory[player];
+  KeystoneCompanion.UI.RerenderItemCell(cell, player, playerData.items[itemCategory]);
 end
 
 local previousPage = function(self)
@@ -302,7 +303,8 @@ local previousPage = function(self)
 
   cell.ItemButton:SetAttribute('page', currentPage - 1);
 
-  KeystoneCompanion.UI.RerenderItemCell(cell, player, KeystoneCompanion.inventory[player].items[itemCategory]);
+  local playerData = player == UnitName('player') and KeystoneCompanion.inventory.self or KeystoneCompanion.inventory[player];
+  KeystoneCompanion.UI.RerenderItemCell(cell, player, playerData.items[itemCategory]);
 end
 
 local createItemCell = function(parent, row, column, cellName)
