@@ -1,6 +1,34 @@
 KeystoneCompanion.loaded = false;
 local print, colorise, devPrint = KeystoneCompanion.print, KeystoneCompanion.colorise, KeystoneCompanion.dev.print
 local LibSerialize = LibStub:GetLibrary("LibSerialize");
+local LibDataBroker = LibStub:GetLibrary("LibDataBroker-1.1");
+local LibDBIcon = LibStub:GetLibrary("LibDBIcon-1.0")
+
+local function ToggleUI()
+  if(KeystoneCompanion.UI.Frame:IsShown()) then
+    KeystoneCompanion.UI.Frame:Hide();
+  else
+    KeystoneCompanion.UI.Rerender();
+    KeystoneCompanion.UI.Frame:Show();
+  end
+end
+
+local dataBrokerObj = LibDataBroker:NewDataObject('Keystone Companion', {
+  type = 'launcher',
+  icon = 'Interface/AddOns/Keystone-Companion/assets/textures/addon-icon',
+  OnClick = function() ToggleUI() end,
+  OnTooltipShow = function(tooltip)
+    tooltip:AddLine("Keystone Companion", 1, 1, 1)
+    tooltip:AddLine("Click to open an overview of your party's keystones and dungeon items.", nil, nil, nil, true)
+  end
+});
+
+local function InitDataBrokerIcon()
+  KeystoneCompanionDB.libDBIcon = KeystoneCompanionDB.libDBIcon or {hide = false};
+  if(not LibDBIcon:GetMinimapButton('Keystone Companion')) then
+    LibDBIcon:Register('Keystone Companion', dataBrokerObj, KeystoneCompanionDB.libDBIcon);
+  end
+end
 
 KeystoneCompanion.EventFrame = CreateFrame('Frame', 'KeystoneCompanionEventFrame')
 KeystoneCompanion.EventFrame:RegisterEvent('PLAYER_ENTERING_WORLD');
@@ -30,6 +58,8 @@ KeystoneCompanion.EventFrame:SetScript('OnEvent', function(self, event, ...)
         KeystoneCompanion.UI.Frame:Show();
         KeystoneCompanion.UI.Rerender();
       end
+
+      InitDataBrokerIcon();
   elseif event == 'GROUP_ROSTER_UPDATE' and KeystoneCompanion.loaded == true then
     local playersByName = {};
     local homePartyPlayers = GetHomePartyInfo();
@@ -95,12 +125,7 @@ function SlashCmdList.KEYSTONECOMPANION(msg, editBox)
   for word in msg:gmatch('%S+') do args[#args+1] = word end
 
   if(#args == 0) then
-    if(KeystoneCompanion.UI.Frame:IsShown()) then
-      KeystoneCompanion.UI.Frame:Hide();
-    else
-      KeystoneCompanion.UI.Rerender();
-      KeystoneCompanion.UI.Frame:Show();
-    end
+    ToggleUI();
   end
 
   if(args[1] == 'dev') then
@@ -115,6 +140,7 @@ function SlashCmdList.KEYSTONECOMPANION(msg, editBox)
     end
   end
 end
+
 
 if(KeystoneCompanion.buildType == 'alpha') then
   print('You\'re running an ' .. colorise('ff0000', 'Alpha') .. ' build of the addon. Features may be broken or only half finished in alpha versions!')

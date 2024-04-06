@@ -4,4 +4,6 @@
     <Script file="LibStub.lua" />
     <Script file="LibSerialize.lua" />
     <Script file="LibDeflate.lua" />
+    <Script file="LibDataBroker-1.1.lua" />
+    <Script file="LibDBIcon-1.0.lua" />
 </Ui>
