@@ -518,8 +518,12 @@ function KeystoneCompanion.UI.RerenderPlayerRow(row, playerName, playerData)
   row.PlayerName:SetText(playerName);
 
   local unitClass = select(2, UnitClass(playerName));
-  row.ClassIcon.Texture:SetTexCoord(unpack(CLASS_ICON_TCOORDS[unitClass]));
-  row.ClassIcon:Show();
+  if(unitClass ~= nil) then
+    row.ClassIcon.Texture:SetTexCoord(unpack(CLASS_ICON_TCOORDS[unitClass]));
+    row.ClassIcon:Show();
+  else
+    row.ClassIcon:Hide();
+  end
 
   local role = UnitGroupRolesAssigned(playerName);
   if(role == 'NONE') then
@@ -572,14 +576,14 @@ function KeystoneCompanion.UI.Rerender()
   local topRow = UI['player1'];
   KeystoneCompanion.UI.RerenderPlayerRow(topRow, UnitName('player'), ownData);
 
-  local numPartyMembers = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME) - 1;
+  local numPartyMembers = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME);
   if (numPartyMembers < 2) then
     for i = 2, 5 do UI['player' .. i]:Hide(); end
   end
 
-  for i = 1, numPartyMembers do
-    local playerName = UnitName('Party' .. i);
-    local playerRow = UI['player' .. (i+1)];
+  for i = 2, math.min(5, numPartyMembers) do
+    local playerName = UnitName('Party' .. (i - 1));
+    local playerRow = UI['player' .. i];
     local playerData = KeystoneCompanion.inventory[playerName] or KeystoneCompanion.inventory:GetEmptyInventory();
     KeystoneCompanion.UI.RerenderPlayerRow(playerRow, playerName, playerData);
   end
