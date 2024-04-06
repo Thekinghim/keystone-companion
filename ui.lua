@@ -311,7 +311,7 @@ local createItemCell = function(parent, row, column, cellName)
   local cell = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. row .. cellName, parent);
   cell:SetSize(42, 42);
   cell:SetPoint("TOPLEFT", parent, "TOPLEFT", (67 * (column - 1)), 0);
-  cell.ItemButton = CreateFrame('ItemButton', "KeystoneCompanionPlayerRow" .. row .. cellName .. "ItemButton", cell);
+  cell.ItemButton = CreateFrame('ItemButton', "KeystoneCompanionPlayerRow" .. row .. cellName .. "ItemButton", cell, "SecureActionButtonTemplate");
   cell.ItemButton:SetSize(27, 27);
   cell.ItemButton.NormalTexture:SetSize(27, 27);
   cell.ItemButton.PushedTexture:SetSize(20, 20);
@@ -320,6 +320,8 @@ local createItemCell = function(parent, row, column, cellName)
   cell.ItemButton:SetNormalTexture('Interface/PaperDoll/UI-Backpack-EmptySlot')
   cell.ItemButton:SetButtonState('NORMAL', true);
   cell.ItemButton:SetAttribute('category', cellName);
+  cell.ItemButton:RegisterForClicks('AnyDown', 'AnyUp');
+  cell.ItemButton:SetAttribute('type', 'item');
 
   cell.ItemButton:SetScript('OnEnter', function(self)
     local itemId = self:GetItem();
@@ -512,6 +514,10 @@ function KeystoneCompanion.UI.RerenderItemCell(cell, playerName, itemData)
   cell.ItemButton:SetItem(currentItem.itemID);
   cell.ItemButton:SetItemButtonCount(currentItem.count);
   cell.ItemButton.NormalTexture:Hide();
+
+  if(playerName == UnitName('player')) then
+    cell.ItemButton:SetAttribute('item', select(1, C_Item.GetItemInfo(currentItem.itemID)));
+  end
 end
 
 function KeystoneCompanion.UI.RerenderPlayerRow(row, playerName, playerData)
