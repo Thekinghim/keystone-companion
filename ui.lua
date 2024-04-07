@@ -583,8 +583,8 @@ function KeystoneCompanion.UI.Rerender()
   KeystoneCompanion.UI.RerenderPlayerRow(topRow, UnitName('player'), ownData);
 
   local numPartyMembers = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME);
-  if (numPartyMembers < 2) then
-    for i = 2, 5 do UI['player' .. i]:Hide(); end
+  for i = 2, 5 do
+    UI['player' .. i]:Hide();
   end
 
   for i = 2, math.min(5, numPartyMembers) do

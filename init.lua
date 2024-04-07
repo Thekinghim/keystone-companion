@@ -5,7 +5,7 @@ KeystoneCompanionDB = {
 }
 
 KeystoneCompanion = {
-  version = '1.0.0-beta.1',
+  version = '1.0.0-beta.2',
   buildType = 'beta',
   isDev = function () return KeystoneCompanionDB.settings.DevMode end,
   print = function(msg) print("|cffddca2eKeystoneCompanion|r: " .. msg) end,

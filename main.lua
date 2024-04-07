@@ -49,6 +49,7 @@ KeystoneCompanion.EventFrame:SetScript('OnEvent', function(self, event, ...)
         devPrint('world loaded and player in party - Sending LOGON and UPDATE messages')
         KeystoneCompanion.communication.SendMessage(KeystoneCompanion.communication.messageTypes.LOGON)
         KeystoneCompanion.communication.SendMessage(KeystoneCompanion.communication.messageTypes.UPDATE, KeystoneCompanion.inventory:GetInventoryString())
+        C_Timer.NewTimer(1, function() KeystoneCompanion.communication:RequestKeystoneInfoFromLibOpenRaid() end);
       end
 
       KeystoneCompanion.inventory:ScanInventory();
@@ -80,6 +81,7 @@ KeystoneCompanion.EventFrame:SetScript('OnEvent', function(self, event, ...)
     if(numExistingPlayersInInventory == 0) then
       KeystoneCompanion.communication.SendMessage(KeystoneCompanion.communication.messageTypes.LOGON);
       KeystoneCompanion.communication.SendMessage(KeystoneCompanion.communication.messageTypes.UPDATE, KeystoneCompanion.inventory:GetInventoryString())
+      C_Timer.NewTimer(1, function() KeystoneCompanion.communication:RequestKeystoneInfoFromLibOpenRaid() end);
     end
 
     KeystoneCompanion.UI.Rerender();

@@ -92,3 +92,11 @@ function KeystoneCompanion.inventory:LoadString(sender, inventoryString)
     self[sender]['keystone'] = { mapID = nil, level = nil }
   end
 end
+
+function KeystoneCompanion.inventory:LoadFromDetailsInfo(sender, level, mapID)
+  if(self[sender] == nil) then self[sender] = self:GetEmptyInventory() end
+  self[sender].keystone = { mapID = mapID > 0 and mapID or nil, level = level > 0 and level or nil };
+  if(KeystoneCompanion.UI.Frame:IsShown()) then
+    KeystoneCompanion.UI.Rerender();
+  end
+end
