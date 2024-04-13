@@ -256,6 +256,7 @@ local createPlayerTooltip = function(self)
   if(playerName == UnitName('player')) then playerName = 'self' end
 
   local playerData = KeystoneCompanion.inventory[playerName];
+  if(playerData == nil) then return end;
 
   UI.Tooltip:ClearLines();
   UI.Tooltip:SetOwner(self, 'ANCHOR_NONE');

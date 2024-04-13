@@ -44,7 +44,7 @@ function KeystoneCompanion.communication:OnLibOpenRaidMessageReceived(text, send
 end
 
 function KeystoneCompanion.communication:OnMessageReceived(prefix, text, channel, sender)
-  sender = Ambiguate(sender, "none")
+  sender = Ambiguate(sender, 'short')
 
   if(prefix == LIB_OPEN_RAID_COMM_PREFIX) then
     self:OnLibOpenRaidMessageReceived(text, sender)
