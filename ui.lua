@@ -391,6 +391,16 @@ for i = 1, 5 do
   playerRow:SetSize(411, 83);
   playerRow:SetPoint('TOPLEFT', UI.Party.HeaderBar, 'TOPLEFT', 0, -1 - (83 * (i-1)))
   playerRow:SetPoint('TOPRIGHT', UI.Party.HeaderBar, 'TOPRIGHT', 0, -1 - (83 * (i-1)))
+  if(i % 2 == 0) then
+    playerRow.Mask = playerRow:CreateMaskTexture();
+    playerRow.Mask:SetAllPoints(playerRow);
+    playerRow.Mask:SetTexture('Interface/Addons/Keystone-Companion/assets/textures/player-row-light');
+    playerRow.Texture = playerRow:CreateTexture('Player' .. i .. 'RowBackground');
+    playerRow.Texture:SetAllPoints(playerRow);
+    playerRow.Texture:SetTexture('Interface/Addons/Keystone-Companion/assets/textures/player-row-light');
+    playerRow.Texture:AddMaskTexture(playerRow.Mask);
+  end
+
   playerRow.Content = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. i .. 'Content', playerRow);
   playerRow.Content:SetSize(391, 63);
   playerRow.Content:SetPoint("TOPLEFT", playerRow, "TOPLEFT", 10, -10);
