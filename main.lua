@@ -150,4 +150,4 @@ elseif(KeystoneCompanion.buildType == 'beta') then
   print('You\'re running a ' .. colorise('ddca2e', 'Beta') .. ' version of the addon. Thank you for helping test, and please report any issues on the Github so they can be fixed before release. :)')
 end
 
-print('type ' .. colorise('00ffff', '/kc') .. ' to open the KeystoneCompanion UI.')
+print('type ' .. colorise('ddca2e', '/kc') .. ' to open the KeystoneCompanion UI, or click the minimap button.')

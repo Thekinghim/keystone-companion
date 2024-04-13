@@ -137,6 +137,8 @@ UI.AddonVersion:SetSize(80, 10);
 UI.AddonVersion:SetPoint('LEFT', UI.Footer, 'LEFT', 8, 0)
 UI.AddonVersion:SetFont('Interface/AddOns/Keystone-Companion/assets/fonts/SF-Pro.ttf', 10, '');
 UI.AddonVersion:SetTextColor(89 / 255, 89 / 255, 91 / 255, 1);
+UI.AddonVersion:SetJustifyH('LEFT');
+UI.AddonVersion:SetJustifyV('CENTER')
 UI.AddonVersion:SetText('V' .. KeystoneCompanion.version)
 
 UI.GitHub = CreateFrame('Frame', 'KeystoneCompanionFooterGitHub', UI.Footer);
