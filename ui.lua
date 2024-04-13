@@ -250,6 +250,38 @@ UI.Discord:SetScript("OnMouseDown", function()
   UI.CopyFrame:Show();
 end)
 
+local createPlayerTooltip = function(self)
+  local playerName = self:GetAttribute('player')
+  if(playerName == nil) then return end
+  if(playerName == UnitName('player')) then playerName = 'self' end
+
+  local playerData = KeystoneCompanion.inventory[playerName];
+
+  UI.Tooltip:ClearLines();
+  UI.Tooltip:SetOwner(self, 'ANCHOR_NONE');
+  UI.Tooltip:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT');
+  UI.Tooltip:SetText(self:GetAttribute('player'));
+  UI.Tooltip:AddLine('');
+
+  if(playerData.mythicPlusScore > 0) then
+    local scoreColor = C_ChallengeMode.GetDungeonScoreRarityColor(playerData.mythicPlusScore)
+    UI.Tooltip:AddDoubleLine('Mythic+ score', playerData.mythicPlusScore, nil , nil, nil, scoreColor:GetRGB())
+  end
+
+  if(playerData.itemLevel ~= nil) then
+    UI.Tooltip:AddDoubleLine('Item level', math.floor(playerData.itemLevel.equipped), nil , nil, nil, 1, 1, 1)
+    if(playerData.itemLevel.equipped ~= playerData.itemLevel.overall) then
+      UI.Tooltip:AddDoubleLine('Item level in bags', math.floor(playerData.itemLevel.overall), nil , nil, nil, 1, 1, 1)
+    end
+  end
+
+  UI.Tooltip:Show();
+
+  local mythicPlusScore = playerData.mythicPlusScore > 0 and C_ChallengeMode.GetDungeonScoreRarityColor(playerData.mythicPlusScore) or '';
+  local scoreColor = mythicPlusScore 
+  local itemLevel = playerData.itemLevel;
+end
+
 local createDungeonTooltip = function(self)
   local playerName = self:GetAttribute('player');
   if(playerName == nil) then return end
@@ -425,6 +457,12 @@ for i = 1, 5 do
   playerRow.ClassIcon.Texture:SetAllPoints(playerRow.ClassIcon);
   playerRow.ClassIcon.Texture:AddMaskTexture(playerRow.ClassIcon.Mask);
   playerRow.ClassIcon.Texture:SetTexture('Interface/GLUES/CHARACTERCREATE/UI-CHARACTERCREATE-CLASSES');
+  playerRow.ClassIcon:SetScript('OnEnter', function(self)
+    createPlayerTooltip(self);
+  end)
+  playerRow.ClassIcon:SetScript('OnLeave', function(self)
+    if(UI.Tooltip:IsShown()) then UI.Tooltip:Hide() end
+  end)
   playerRow.ClassIcon:Hide();
 
   playerRow.RoleIcon = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. i .. 'RoleIcon', playerRow.ClassIcon);
@@ -536,6 +574,7 @@ function KeystoneCompanion.UI.RerenderPlayerRow(row, playerName, playerData)
   local unitClass = select(2, UnitClass(playerName));
   if(unitClass ~= nil) then
     row.ClassIcon.Texture:SetTexCoord(unpack(CLASS_ICON_TCOORDS[unitClass]));
+    row.ClassIcon:SetAttribute('player', playerName);
     row.ClassIcon:Show();
   else
     row.ClassIcon:Hide();

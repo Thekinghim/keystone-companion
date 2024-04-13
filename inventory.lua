@@ -2,13 +2,13 @@ local LibSerialize = LibStub:GetLibrary("LibSerialize");
 local LibDeflate = LibStub:GetLibrary("LibDeflate");
 local print, devPrint = KeystoneCompanion.print, KeystoneCompanion.dev.print
 
-KeystoneCompanion.inventory = {
-  self = { items = {}, keystone = { mapID = nil, level = nil }, knownTeleports = {} };
-}
+KeystoneCompanion.inventory = {};
 
-function KeystoneCompanion.inventory:GetEmptyInventory()
-  return { items = nil, keystone = { mapID = nil, level = nil}, knownTeleports = {} };
+function KeystoneCompanion.inventory:NewEmptyInventory()
+  return { items = {}, keystone = { mapID = nil, level = nil }, itemLevel = { overall = nil, equipped = nil }, mythicPlusScore = nil, knownTeleports = {} };
 end
+
+KeystoneCompanion.inventory.self = KeystoneCompanion.inventory:NewEmptyInventory();
 
 function KeystoneCompanion.inventory:GetInventoryString()
   if(#self.self.items == 0) then
@@ -79,6 +79,10 @@ function KeystoneCompanion.inventory:ScanInventory()
       table.insert(self.self.knownTeleports, instanceId)
     end
   end
+
+  self.self.mythicPlusScore = C_ChallengeMode.GetOverallDungeonScore();
+  local overall, equipped = GetAverageItemLevel();
+  self.self.itemLevel = { overall = overall, equipped = equipped };
 end
 
 function KeystoneCompanion.inventory:LoadString(sender, inventoryString)
@@ -91,10 +95,13 @@ function KeystoneCompanion.inventory:LoadString(sender, inventoryString)
   if (self[sender]['keystone'] == nil) then
     self[sender]['keystone'] = { mapID = nil, level = nil }
   end
+  if (self[sender]['itemLevel'] == nil) then
+    self[sender]['itemLevel'] = { overall = nil, equipped = nil }
+  end
 end
 
 function KeystoneCompanion.inventory:LoadFromDetailsInfo(sender, level, mapID)
-  if(self[sender] == nil) then self[sender] = self:GetEmptyInventory() end
+  if(self[sender] == nil) then self[sender] = self:NewEmptyInventory() end
   self[sender].keystone = { mapID = mapID > 0 and mapID or nil, level = level > 0 and level or nil };
   if(KeystoneCompanion.UI.Frame:IsShown()) then
     KeystoneCompanion.UI.Rerender();
