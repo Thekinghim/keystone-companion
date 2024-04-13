@@ -648,7 +648,7 @@ function KeystoneCompanion.UI.Rerender()
   for i = 2, math.min(5, numPartyMembers) do
     local playerName = UnitName('Party' .. (i - 1));
     local playerRow = UI['player' .. i];
-    local playerData = KeystoneCompanion.inventory[playerName] or KeystoneCompanion.inventory:GetEmptyInventory();
+    local playerData = KeystoneCompanion.inventory[playerName] or KeystoneCompanion.inventory:NewEmptyInventory();
     KeystoneCompanion.UI.RerenderPlayerRow(playerRow, playerName, playerData);
   end
 end
