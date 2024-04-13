@@ -555,6 +555,15 @@ function KeystoneCompanion.UI.RerenderPlayerRow(row, playerName, playerData)
     row.DungeonIcon:SetNormalTexture(GetSpellTexture(dungeonInfo.spell.id));
     row.DungeonIcon:Show();
 
+    local spellKnown = IsSpellKnown(dungeonInfo.spell.id, false);
+    local spellUsable = IsUsableSpell(dungeonInfo.spell.id);
+
+    if(spellKnown and spellUsable) then
+      row.DungeonIcon:SetAlpha(1);
+    else
+      row.DungeonIcon:SetAlpha(0.6);
+    end
+
     row.KeystoneLevel.Label:SetText(playerData.keystone.level);
     if(playerData.keystone.level >= 10) then
       row.KeystoneLevel.Label:SetPoint('LEFT', row.KeystoneLevel, 'LEFT', 5, 0);
