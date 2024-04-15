@@ -346,7 +346,7 @@ local createItemCell = function(parent, row, column, cellName)
   local cell = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. row .. cellName, parent);
   cell:SetSize(42, 42);
   cell:SetPoint("TOPLEFT", parent, "TOPLEFT", (67 * (column - 1)), 0);
-  cell.ItemButton = CreateFrame('ItemButton', "KeystoneCompanionPlayerRow" .. row .. cellName .. "ItemButton", cell, "SecureActionButtonTemplate");
+  cell.ItemButton = CreateFrame('ItemButton', "KeystoneCompanionPlayerRow" .. row .. cellName .. "ItemButton", cell, "InsecureActionButtonTemplate");
   cell.ItemButton:SetSize(27, 27);
   cell.ItemButton.NormalTexture:SetSize(27, 27);
   cell.ItemButton.PushedTexture:SetSize(20, 20);
@@ -484,7 +484,7 @@ for i = 1, 5 do
   playerRow.LeaderIcon.Texture:SetTexture('Interface/GROUPFRAME/UI-Group-LeaderIcon');
   playerRow.LeaderIcon:Hide();
 
-  playerRow.DungeonIcon = CreateFrame('Button', 'KeystoneCompanionPlayerRow' .. i .. 'DungeonButton', playerRow.Content, 'SecureActionButtonTemplate');
+  playerRow.DungeonIcon = CreateFrame('Button', 'KeystoneCompanionPlayerRow' .. i .. 'DungeonButton', playerRow.Content, 'InsecureActionButtonTemplate');
   playerRow.DungeonIcon:SetSize(35, 35);
   playerRow.DungeonIcon:SetPoint("TOPLEFT", playerRow.Content, "TOPLEFT", 55, -25);
   playerRow.DungeonIcon:RegisterForClicks("AnyDown", "AnyUp");
