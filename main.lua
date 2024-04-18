@@ -28,6 +28,11 @@ local function InitDataBrokerIcon()
   if(not LibDBIcon:GetMinimapButton('Keystone Companion')) then
     LibDBIcon:Register('Keystone Companion', dataBrokerObj, KeystoneCompanionDB.libDBIcon);
   end
+  if(KeystoneCompanionDB.settings.MinimapButton) then
+    LibDBIcon:Show('Keystone Companion')
+  else
+    LibDBIcon:Hide('Keystone Companion')
+  end
 end
 
 KeystoneCompanion.EventFrame = CreateFrame('Frame', 'KeystoneCompanionEventFrame')
@@ -139,6 +144,18 @@ function SlashCmdList.KEYSTONECOMPANION(msg, editBox)
       print('Developer mode ' .. colorise('00ffff', 'disabled'));
     else
       print('/kc dev [enable|on|disable|off]')
+    end
+  elseif(args[1] == 'minimap') then
+    if(args[2] == 'on' or args[2] == 'enable') then
+      KeystoneCompanionDB.settings.MinimapButton = true;
+      print('Minimap button ' .. colorise('38ee45', 'enabled'));
+      LibDBIcon:Show('Keystone Companion')
+    elseif(args[2] == 'off' or args[2] == 'disable') then
+      KeystoneCompanionDB.settings.MinimapButton = false;
+      print('Minimap button ' .. colorise('00ffff', 'disabled'));
+      LibDBIcon:Hide('Keystone Companion')
+    else
+      print('/kc minimap [enable|on|disable|off]')
     end
   end
 end
