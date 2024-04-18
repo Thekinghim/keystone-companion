@@ -11,4 +11,7 @@
     <Script file="communication.lua"/>
     <Script file="ui.lua"/>
     <Script file="main.lua"/>
+
+    <Script file="roundedFrame.lua"/>
+    <Script file="dungeonTimer.lua"/>
 </Ui>

@@ -83,6 +83,13 @@
     "GRAY_FONT_COLOR",
     "CALENDAR_STATUS_TENTATIVE",
     "class",
-    "AddonCompartmentFrame"
+    "AddonCompartmentFrame",
+    "CreateDataProvider",
+    "CommunitiesUtil",
+    "ScrollUtil",
+    "CreateScrollBoxListLinearView",
+    "CreateScrollBoxListGridView",
+    "BOOKTYPE_SPELL",
+    "BACKGROUND"
   ]
 }
