@@ -1,3 +1,5 @@
+local _, KeystoneCompanion = ...;
+
 KeystoneCompanion.loaded = false;
 local print, colorise, devPrint = KeystoneCompanion.print, KeystoneCompanion.colorise, KeystoneCompanion.dev.print
 local LibSerialize = LibStub:GetLibrary("LibSerialize");
@@ -39,11 +41,11 @@ KeystoneCompanion.EventFrame:RegisterEvent('ROLE_CHANGED_INFORM');
 KeystoneCompanion.EventFrame:SetScript('OnEvent', function(self, event, ...)
   devPrint('event - ' .. event);
   if event == 'PLAYER_ENTERING_WORLD' then
-      if (KeystoneCompanionDB.UI ~= nil) then
-        KeystoneCompanion.UI.Frame:SetPoint(KeystoneCompanionDB.UI.point, KeystoneCompanionDB.UI.relativeTo, KeystoneCompanionDB.UI.relativePoint, KeystoneCompanionDB.UI.offsetX, KeystoneCompanionDB.UI.offsetY)
-      else
+      --if (KeystoneCompanionDB.UI ~= nil) then
+        --KeystoneCompanion.UI.Frame:SetPoint(KeystoneCompanionDB.UI.point, KeystoneCompanionDB.UI.relativeTo, KeystoneCompanionDB.UI.relativePoint, KeystoneCompanionDB.UI.offsetX, KeystoneCompanionDB.UI.offsetY)
+      --else
         KeystoneCompanion.UI.Frame:SetPoint('CENTER', UIParent, 'CENTER')
-      end
+      --end
 
       if(UnitInParty("player") or KeystoneCompanion.isDev()) then
         devPrint('world loaded and player in party - Sending LOGON and UPDATE messages')

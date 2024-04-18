@@ -5,6 +5,8 @@
 
     <Script file="init.lua"/>
     <Include file="constants/embeds.xml" />
+    <Include file="utils/embeds.xml" />
+    <Include file="widgets/embeds.xml" />
     
     <Script file="dev.lua"/>
     <Script file="inventory.lua"/>
