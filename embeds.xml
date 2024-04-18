@@ -12,6 +12,7 @@
     <Script file="ui.lua"/>
     <Script file="main.lua"/>
 
-    <Script file="roundedFrame.lua"/>
+    <Include file="widgets/embeds.xml" />
+
     <Script file="dungeonTimer.lua"/>
 </Ui>

@@ -1,24 +1,13 @@
 local _, Private = ...
 
-local constants = {}
-constants.ASSETS_PATH = "interface/addons/keystone-companion/assets"
-
-constants.COLORS = {
-    BACKGROUND = CreateColorFromHexString("99131315"),
-    BORDER = CreateColorFromHexString("FFFF8000"),
-}
-constants.TEXTURES = {
-    ROUNDED_BORDER = constants.ASSETS_PATH .. "/textures/rounded-square-border-2px.tga", -- added files for different border sizes use rounded-square-border-[size]px.tga (available 2, 4, 6, 8, 10)
-    ROUNDED_SQUARE = constants.ASSETS_PATH .. "/textures/rounded-square.tga",
-}
-constants.VALID_BORDER_SIZES = {
-    [2] = true, [4] = true, [6] = true, [8] = true, [10] = true
-}
+local const = Private.constants.misc
 
 ---@param size number
 local function getBorderForSize(size)
-    if not constants.VALID_BORDER_SIZES[size] then size = 2 end
-    return constants.ASSETS_PATH .. "/textures/rounded-square-border-" .. size .. "px.tga"
+    print(const.VALID_BORDER_SIZES[size], size)
+    if not const.VALID_BORDER_SIZES[size] then size = 2 end
+    print(const.ASSETS_PATH .. "/textures/rounded-square-border-" .. size .. "px.tga")
+    return const.ASSETS_PATH .. "/textures/rounded-square-border-" .. size .. "px.tga"
 end
 
 ---@param frame Texture
@@ -55,13 +44,12 @@ end
 local defaultOptions = {
     height = 200,
     width = 200,
-    parent = UIParent,
     points = { { "CENTER" } },
-    background_color = constants.COLORS.BACKGROUND,
-    background_texture = constants.TEXTURES.ROUNDED_SQUARE,
+    background_color = const.COLORS.BACKGROUND,
+    background_texture = const.TEXTURES.ROUNDED_SQUARE,
     use_border = true,
-    border_color = constants.COLORS.BORDER,
-    border_texture = constants.TEXTURES.ROUNDED_BORDER,
+    border_color = const.COLORS.BORDER,
+    border_texture = const.TEXTURES.ROUNDED_BORDER,
     border_size = 2, -- Default Texture has a 2px border
 }
 
@@ -69,6 +57,7 @@ local defaultOptions = {
 ---@param options RoundedFrameOptions
 ---@return RoundedFrame
 local function createRoundedFrame(parent, options)
+    parent = parent or UIParent
     options = mixTables(defaultOptions, options)
     ---@class RoundedFrame:Frame
     local frame = CreateFrame("Frame", nil, parent)
@@ -93,14 +82,6 @@ local function createRoundedFrame(parent, options)
     return frame
 end
 
----@class RoundedFrameAPI
----@field CreateFrame fun(parent:Frame, options:RoundedFrameOptions)
----@field GetBorderForSize fun(size:number)
-Private.RoundedFrame = {
-    CreateFrame = createRoundedFrame,
-    GetBorderForSize = getBorderForSize,
-}
-
 --[[
     Example Usage:
     local rf = Private.RoundedFrame
@@ -113,3 +94,11 @@ Private.RoundedFrame = {
     }
     local frame = rf.CreateFrame(UIParent, options)
 ]]
+
+---@class RoundedFrameAPI
+---@field CreateFrame fun(parent:Frame, options:RoundedFrameOptions)
+---@field GetBorderForSize fun(size:number)
+Private.RoundedFrame = {
+    CreateFrame = createRoundedFrame,
+    GetBorderForSize = getBorderForSize,
+}

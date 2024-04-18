@@ -90,6 +90,8 @@
     "CreateScrollBoxListLinearView",
     "CreateScrollBoxListGridView",
     "BOOKTYPE_SPELL",
-    "BACKGROUND"
+    "BACKGROUND",
+    "DEFAULT",
+    "ICON_LIST"
   ]
 }
