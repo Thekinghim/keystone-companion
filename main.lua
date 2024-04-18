@@ -134,7 +134,7 @@ function SlashCmdList.KEYSTONECOMPANION(msg, editBox)
     if(args[2] == 'on' or args[2] == 'enable') then
       KeystoneCompanionDB.settings.DevMode = true;
       print('Developer mode ' .. colorise('38ee45', 'enabled'));
-    elseif(args[2] == 'off' or args[2] == 'disables') then
+    elseif(args[2] == 'off' or args[2] == 'disable') then
       KeystoneCompanionDB.settings.DevMode = false;
       print('Developer mode ' .. colorise('00ffff', 'disabled'));
     else
