@@ -92,6 +92,10 @@
     "BOOKTYPE_SPELL",
     "BACKGROUND",
     "DEFAULT",
-    "ICON_LIST"
+    "ICON_LIST",
+    "Background"
+  ],
+  "Lua.diagnostics.disable": [
+    "deprecated"
   ]
 }

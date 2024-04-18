@@ -17,6 +17,9 @@ end
 
 ---@class ProgressBarOptions
 ---@field foreground_color colorRGB?
+---@field fill_direction FillDirections?
+---@field progress_value number?
+---@field progress_total number?
 local defaultOptions = {
     height = 200,
     width = 200,
@@ -28,8 +31,15 @@ local defaultOptions = {
     border_texture = const.TEXTURES.ROUNDED_BORDER,
     border_size = 2, -- Default Texture has a 2px border
     foreground_color = const.COLORS.FOREGROUND,
-    fill_direction = "LEFT>RIGHT",
+    fill_direction = "RIGHT",
+    progress_value = 50,
+    progress_total = 100
 }
+---@alias FillDirections
+---| '"RIGHT"' # From Left to Right
+---| '"LEFT"' # From Right to Left
+---| '"TOP"' # From Bottom to Top
+---| '"BOTTOM"' # From Top to Bottom
 
 ---@param parent Frame
 ---@param options ProgressBarOptions
@@ -38,6 +48,11 @@ local function createBar(parent, options)
     parent = parent or UIParent
     options = mixTables(defaultOptions, options)
     ---@class ProgressBar:Frame
+    ---@field value number?
+    ---@field total number?
+    ---@field fillDirection FillDirections?
+    ---@field SetProgress fun(self:ProgressBar, value:number, total:number))
+    ---@field SetFill fun(self:ProgressBar, direction:FillDirections)
     local frame = CreateFrame("Frame", nil, parent)
     for _, point in ipairs(options.points) do
         frame:SetPoint(unpack(point))
@@ -45,104 +60,83 @@ local function createBar(parent, options)
     frame:SetSize(options.width, options.height)
     frame.Background = rf.CreateFrame(frame, options)
     frame.Background:ClearAllPoints()
+    frame.Background:SetAllPoints()
+    frame.Background.Background:SetDrawLayer("BACKGROUND", -1)
     options.use_border = false
+    options.background_color = options.foreground_color
     frame.Foreground = rf.CreateFrame(frame, options)
+    frame.Foreground.Background:SetDrawLayer("BACKGROUND", 0)
     frame.Foreground:ClearAllPoints()
+    frame.Foreground:SetPoint("TOPLEFT")
+    frame.Foreground:SetPoint("BOTTOMLEFT")
+    frame.Foreground:SetPoint("RIGHT", frame.Background, "LEFT", 0, 0)
+    function frame:SetProgress(value, total)
+        if not self.fillDirection then self:SetFill("RIGHT") end
+        self.value = tonumber(value)
+        self.total = tonumber(total)
+        local p = self.value / self.total
+        if p > 1 then
+            p = 1
+        end
+        if self.fillDirection == "RIGHT" then
+            self.Foreground:SetPoint("RIGHT", self.Background, "LEFT", p * self.Background:GetWidth(), 0)
+        elseif self.fillDirection == "LEFT" then
+            self.Foreground:SetPoint("LEFT", self.Background, "RIGHT", (p * self.Background:GetWidth()) * -1, 0)
+        elseif self.fillDirection == "TOP" then
+            self.Foreground:SetPoint("TOP", self.Background, "BOTTOM", 0, p * self.Background:GetHeight())
+        elseif self.fillDirection == "BOTTOM" then
+            self.Foreground:SetPoint("BOTTOM", self.Background, "TOP", 0, (p * self.Background:GetHeight()) * -1)
+        end
+    end
 
-    -- Make the Grow stuff and shit
+    function frame:SetFill(direction)
+        self.Foreground:ClearAllPoints()
+        if not direction then direction = "RIGHT" end
+        self.fillDirection = direction
+        if direction == "RIGHT" then
+            -- Fill from Left -> Right
+            self.Foreground:SetPoint("TOPLEFT")
+            self.Foreground:SetPoint("BOTTOMLEFT")
+            self.Foreground:SetPoint("RIGHT", self.Background, "LEFT", 0, 0)
+        elseif direction == "LEFT" then
+            -- Fill from Right -> Left
+            self.Foreground:SetPoint("TOPRIGHT")
+            self.Foreground:SetPoint("BOTTOMRIGHT")
+            self.Foreground:SetPoint("LEFT", self.Background, "RIGHT", 0, 0)
+        elseif direction == "TOP" then
+            -- Fill from Bottom -> Top
+            self.Foreground:SetPoint("BOTTOMLEFT")
+            self.Foreground:SetPoint("BOTTOMRIGHT")
+            self.Foreground:SetPoint("TOP", self.Background, "BOTTOM", 0, 0)
+        elseif direction == "BOTTOM" then
+            -- Fill from Top -> Bottom
+            self.Foreground:SetPoint("TOPLEFT")
+            self.Foreground:SetPoint("TOPRIGHT")
+            self.Foreground:SetPoint("BOTTOM", self.Background, "TOP", 0, 0)
+        else
+            self:SetFill("RIGHT")
+        end
+    end
+
+    frame:SetFill(options.fill_direction)
+    frame:SetProgress(options.progress_value, options.progress_total)
 
     return frame
 end
-
 --[[
-    local function createBar()
-    local r1, g1, b1 = Private.DEFAULTFOREGROUND:GetRGB()
-    local r2, g2, b2 = Private.DEFAULTBACKGROUND:GetRGB()
-    local frame = CreateFrame("Frame", nil, UIParent)
-    local foreground = frame:CreateTexture(nil, "ARTWORK")
-    local background = frame:CreateTexture(nil, "ARTWORK")
-    foreground:SetVertexColor(r1, g1, b1, .8)
-    background:SetVertexColor(r2, g2, b2, .8)
-    foreground:SetDrawLayer("ARTWORK", 0)
-    background:SetDrawLayer("ARTWORK", -1)
-    background:SetAllPoints()
-
-    return {
-        frame = frame,
-        foreground = foreground,
-        background = background,
-        value = 0,
-        total = 0,
-        SetProgress = function(self, value, total)
-            if not self.grow then self:SetGrow("RIGHT") end
-            self.value = value
-            self.total = total
-            local p = value / total
-            if p > 1 then
-                p = 1
-            end
-            if self.grow == "RIGHT" then
-                self.foreground:SetPoint("RIGHT", self.background, "LEFT", p * self.background:GetWidth(), 0)
-            elseif self.grow == "LEFT" then
-                self.foreground:SetPoint("LEFT", self.background, "RIGHT", (p * self.background:GetWidth()) * -1, 0)
-            elseif self.grow == "TOP" then
-                self.foreground:SetPoint("TOP", self.background, "BOTTOM", 0, p * self.background:GetHeight())
-            elseif self.grow == "BOTTOM" then
-                self.foreground:SetPoint("BOTTOM", self.background, "TOP", 0, (p * self.background:GetHeight()) * -1)
-            end
-        end,
-        SetColor = function(self, color)
-            local r, g, b = color:GetRGB()
-            self.foreground:SetVertexColor(r, g, b, .8)
-        end,
-        SetPoint = function(self, ...)
-            self.frame:SetPoint(...)
-        end,
-        SetParent = function(self, parent)
-            self.frame:SetParent(parent)
-        end,
-        SetAllPoints = function(self, ...)
-            self.frame:SetAllPoints(...)
-        end,
-        SetSize = function(self, width, height)
-            self.frame:SetSize(width, height)
-            self:SetProgress(self.value, self.total)
-        end,
-        SetGrow = function(self, direction)
-            foreground:ClearAllPoints()
-            if not direction then direction = "RIGHT" end
-            self.grow = direction
-            if direction == "RIGHT" then
-                -- Grow Left -> Right
-                foreground:SetPoint("TOPLEFT")
-                foreground:SetPoint("BOTTOMLEFT")
-                foreground:SetPoint("RIGHT", background, "LEFT", 0, 0)
-            elseif direction == "LEFT" then
-                -- Grow Right -> Left
-                foreground:SetPoint("TOPRIGHT")
-                foreground:SetPoint("BOTTOMRIGHT")
-                foreground:SetPoint("LEFT", background, "RIGHT", 0, 0)
-            elseif direction == "TOP" then
-                -- Grow Bottom -> Top
-                foreground:SetPoint("BOTTOMLEFT")
-                foreground:SetPoint("BOTTOMRIGHT")
-                foreground:SetPoint("TOP", background, "BOTTOM", 0, 0)
-            elseif direction == "BOTTOM" then
-                -- Grow Top -> Bottom
-                foreground:SetPoint("TOPLEFT")
-                foreground:SetPoint("TOPRIGHT")
-                foreground:SetPoint("BOTTOM", background, "TOP", 0, 0)
-            else
-                self.SetGrow("RIGHT")
-            end
-        end
+    Example Usage:
+    local pb = Private.ProgressBar
+    local options = {
+        width = 220,
+        height = 22,
+        points = { { "TOP", 0, -100 } },
+        use_border = false
     }
-end
+    local frame = pb.CreateFrame(UIParent, options)
 ]]
 
 ---@class ProgressBarAPI
----@field CreateFrame fun(parent:Frame, options:ProgressBarOptions)
----@field GetBorderForSize fun(size:number)
-Private.RoundedFrame = {
+---@field CreateFrame fun(parent:Frame, options:ProgressBarOptions) : ProgressBar
+Private.ProgressBar = {
     CreateFrame = createBar,
 }

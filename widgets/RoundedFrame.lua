@@ -4,9 +4,7 @@ local const = Private.constants.misc
 
 ---@param size number
 local function getBorderForSize(size)
-    print(const.VALID_BORDER_SIZES[size], size)
     if not const.VALID_BORDER_SIZES[size] then size = 2 end
-    print(const.ASSETS_PATH .. "/textures/rounded-square-border-" .. size .. "px.tga")
     return const.ASSETS_PATH .. "/textures/rounded-square-border-" .. size .. "px.tga"
 end
 
@@ -96,7 +94,7 @@ end
 ]]
 
 ---@class RoundedFrameAPI
----@field CreateFrame fun(parent:Frame, options:RoundedFrameOptions)
+---@field CreateFrame fun(parent:Frame, options:RoundedFrameOptions) : RoundedFrame
 ---@field GetBorderForSize fun(size:number)
 Private.RoundedFrame = {
     CreateFrame = createRoundedFrame,
