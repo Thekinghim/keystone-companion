@@ -1,6 +1,7 @@
 KeystoneCompanionDB = {
   settings = {
-    DevMode = false
+    DevMode = false,
+    MinimapButton = true
   }
 }
 
