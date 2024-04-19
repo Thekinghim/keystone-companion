@@ -73,6 +73,10 @@ local function createRoundedFrame(parent, options)
         frame.Border:SetPoint("BOTTOMRIGHT", options.border_size, -options.border_size)
     end
 
+    if options.frame_strata then
+        frame:SetFrameStrata(options.frame_strata)
+    end
+
     return frame
 end
 
