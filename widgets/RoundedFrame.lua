@@ -1,6 +1,11 @@
-local _, Private = ...
+local Private = select(2, ...)
+local addon = Private.Addon
 
-local const = Private.constants.misc
+if not addon.Widgets then
+    addon.print("Widgets Missing")
+    return
+end
+local const = addon.constants.misc
 
 ---@param size number
 local function getBorderForSize(size)
@@ -96,7 +101,7 @@ end
 ---@class RoundedFrameAPI
 ---@field CreateFrame fun(parent:Frame, options:RoundedFrameOptions) : RoundedFrame
 ---@field GetBorderForSize fun(size:number)
-Private.RoundedFrame = {
+addon.Widgets.RoundedFrame = {
     CreateFrame = createRoundedFrame,
     GetBorderForSize = getBorderForSize,
 }

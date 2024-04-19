@@ -1,3 +1,5 @@
+local Private = select(2, ...)
+
 KeystoneCompanionDB = {
   settings = {
     DevMode = false
@@ -12,3 +14,5 @@ KeystoneCompanion = {
   colorise = function(color, msg) return "|cff" .. color .. msg .. "|r" end
 }
 
+Private.Addon = KeystoneCompanion
+Private.DB = KeystoneCompanionDB

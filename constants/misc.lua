@@ -1,7 +1,9 @@
 local addonName, Private = ...
+local addon = Private.Addon
 
-Private.constants = Private.constants or { misc = {} }
-local const = Private.constants.misc
+addon.constants = addon.constants or { misc = {} }
+addon.constants.misc = addon.constants.misc or {}
+local const = addon.constants.misc
 
 const.ASSETS_PATH = "interface/addons/" .. addonName .. "/assets"
 const.COLORS = {

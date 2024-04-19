@@ -1,7 +1,13 @@
-local _, Private = ...
+local Private = select(2, ...)
+local addon = Private.Addon
 
-local const = Private.constants.misc
-local rf = Private.RoundedFrame
+if not addon.Widgets then
+    addon.print("Widgets Missing")
+    return
+end
+
+local const = addon.constants.misc
+local roundedframe = addon.Widgets.RoundedFrame
 
 ---@param ... table
 ---@return table
@@ -58,13 +64,13 @@ local function createBar(parent, options)
         frame:SetPoint(unpack(point))
     end
     frame:SetSize(options.width, options.height)
-    frame.Background = rf.CreateFrame(frame, options)
+    frame.Background = roundedframe.CreateFrame(frame, options)
     frame.Background:ClearAllPoints()
     frame.Background:SetAllPoints()
     frame.Background.Background:SetDrawLayer("BACKGROUND", -1)
     options.use_border = false
     options.background_color = options.foreground_color
-    frame.Foreground = rf.CreateFrame(frame, options)
+    frame.Foreground = roundedframe.CreateFrame(frame, options)
     frame.Foreground.Background:SetDrawLayer("BACKGROUND", 0)
     frame.Foreground:ClearAllPoints()
     frame.Foreground:SetPoint("TOPLEFT")
@@ -125,7 +131,7 @@ local function createBar(parent, options)
 end
 --[[
     Example Usage:
-    local pb = Private.ProgressBar
+    local pb = KeystoneCompanion.Widgets.ProgressBar
     local options = {
         width = 220,
         height = 22,
@@ -137,6 +143,6 @@ end
 
 ---@class ProgressBarAPI
 ---@field CreateFrame fun(parent:Frame, options:ProgressBarOptions) : ProgressBar
-Private.ProgressBar = {
+addon.Widgets.ProgressBar = {
     CreateFrame = createBar,
 }

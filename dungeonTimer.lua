@@ -1,14 +1,22 @@
-local _, Private = ...
-local rf = Private.RoundedFrame
-local pb = Private.ProgressBar
-local const = Private.constants.misc
+local Private = select(2, ...)
+local addon = Private.Addon
+local widgets = addon.Widgets
+local db = Private.DB
+if not db.bestTimes then
+    db.bestTimes = {}
+end
 
-local timerFrame = rf.CreateFrame(UIParent, {
+local roundedFrame = widgets.RoundedFrame
+local progressBar = widgets.ProgressBar
+local const = addon.constants.misc
+
+local timerFrame = roundedFrame.CreateFrame(UIParent, {
     width = 352,
     height = 265,
-    border_texture = rf.GetBorderForSize(1),
+    border_texture = roundedFrame.GetBorderForSize(1),
     border_size = 1,
 })
+addon.TimerFrame = timerFrame
 timerFrame:Hide()
 local bossFrames = {}
 local function formatTime(seconds)
@@ -26,6 +34,21 @@ local function formatTime(seconds)
     else
         return string.format("%s%02d:%02d", sign, minutes, remaining_seconds)
     end
+end
+local function getBestTimes(mapID, affixID, keyLevel)
+    if db.bestTimes[mapID] and db.bestTimes[mapID][affixID] and db.bestTimes[mapID][affixID][keyLevel] and type(db.bestTimes[mapID][affixID][keyLevel]) == "table" then
+        return db.bestTimes[mapID][affixID][keyLevel]
+    end
+end
+
+local function saveBestTimes(mapID, affixID, keyLevel, times)
+    local dbTimes = getBestTimes(mapID, affixID, keyLevel) or {}
+    for index, newTime in pairs(times) do
+        if not dbTimes[index] or dbTimes[index] > newTime then
+            dbTimes[index] = newTime
+        end
+    end
+    db.bestTimes[mapID][affixID][keyLevel] = dbTimes
 end
 local function createBossBar(anchor)
     ---@class Frame
@@ -80,11 +103,24 @@ function timerFrame:ToggleMoveable()
     self:EnableMouse(makeMovable)
 end
 
+function timerFrame:ScaleFrame(percent)
+    local scale = percent / 100
+    self:SetScale(scale)
+end
+
+function timerFrame:SetAnchors(anchors)
+    self:ClearAllPoints()
+    for _, anchor in ipairs(anchors) do
+        self:SetPoint(unpack(anchor))
+    end
+end
+
 function timerFrame:OnEvent(event, ...)
     if event == "CHALLENGE_MODE_START" then
         self:FillFrame()
         self:SetScript("OnUpdate", timerFrame.UpdateFrame)
     elseif event == "CHALLENGE_MODE_COMPLETED" then
+        saveBestTimes(self:GetBossTimes())
         self:ReleaseFrame()
     elseif event == "PLAYER_ENTERING_WORLD" then
         if C_ChallengeMode.IsChallengeModeActive() then
@@ -108,26 +144,18 @@ function timerFrame:SetAffixes(...)
     self.affixes:SetText(affixString)
 end
 
-local fakeDB = {
-    [198] = {         -- mapID for DHT
-        [10] = {      -- affixID for Fortified
-            [6] = {   -- key Level
-                389,  -- [1] 06:29
-                689,  -- [2] 11:29
-                1093, -- [3] 18:13
-                1458, -- [4] 24:18
-                1758, -- [5] 29:18
-            }
-        }
-    }
-}
-local function getBestTimes(mapID, affixID, keyLevel)
-    if fakeDB[mapID] and fakeDB[mapID][affixID] and fakeDB[mapID][affixID][keyLevel] and type(fakeDB[mapID][affixID][keyLevel]) == "table" then
-        return fakeDB[mapID][affixID][keyLevel]
+function timerFrame:GetBossTimes()
+    local times = {}
+    for index, boss in pairs(self.bosses) do
+        times[index] = boss.dead
     end
+    return times
 end
 
 function timerFrame:FillFrame()
+    if ObjectiveTrackerFrame and ObjectiveTrackerFrame:IsVisible() then
+        ObjectiveTrackerFrame:Hide()
+    end
     self:Show()
     self.runData = {}
     local mapID = C_ChallengeMode.GetActiveChallengeMapID() or 0
@@ -207,7 +235,7 @@ function timerFrame:UpdateFrame()
     for bossIndex = 1, self.runData.maxCriteria - 1 do
         local bossBar = self.bosses[bossIndex]
         local dead = select(11, C_Scenario.GetCriteriaInfo(bossIndex))
-        if dead and dead>0 and not bossBar.dead then
+        if dead and dead > 0 and not bossBar.dead then
             bossBar.dead = dead
             local deathTime = dead - currentTime
             bossBar.name:SetTextColor(const.COLORS.POSITIVE:GetRGBA())
@@ -248,7 +276,7 @@ end
 local headerColor = CreateColorFromHexString("0DD0DCF5")
 local barColor = CreateColorFromHexString("FF333333")
 
-local headerBar = rf.CreateFrame(timerFrame, {
+local headerBar = roundedFrame.CreateFrame(timerFrame, {
     height = 38,
     use_border = false,
     background_color = headerColor,
@@ -278,7 +306,7 @@ affixes:SetJustifyH("LEFT")
 affixes:SetPoint("LEFT", dungeonTitle, "RIGHT", 12, 0)
 timerFrame.affixes = affixes
 
-local timeBar = pb.CreateFrame(timerFrame, {
+local timeBar = progressBar.CreateFrame(timerFrame, {
     height = 25,
     use_border = false,
     background_color = barColor,
@@ -322,7 +350,7 @@ plus1.text:SetJustifyH("RIGHT")
 plus1.text:SetPoint("RIGHT", timeBar, "RIGHT", -8, 0)
 timerFrame.plus1 = plus1
 
-local countBar = pb.CreateFrame(timerFrame, {
+local countBar = progressBar.CreateFrame(timerFrame, {
     height = 33,
     background_color = barColor,
     border_size = 1,

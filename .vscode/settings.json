@@ -94,7 +94,8 @@
     "DEFAULT",
     "ICON_LIST",
     "Background",
-    "RunNextFrame"
+    "RunNextFrame",
+    "ObjectiveTrackerFrame"
   ],
   "Lua.diagnostics.disable": [
     "deprecated"
