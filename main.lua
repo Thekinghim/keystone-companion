@@ -1,4 +1,5 @@
 local _, KeystoneCompanion = ...;
+local getTexturePath = KeystoneCompanion.utils.path.getTexturePath;
 
 KeystoneCompanion.loaded = false;
 local print, colorise, devPrint = KeystoneCompanion.print, KeystoneCompanion.colorise, KeystoneCompanion.dev.print
@@ -17,7 +18,7 @@ end
 
 local dataBrokerObj = LibDataBroker:NewDataObject('Keystone Companion', {
   type = 'launcher',
-  icon = 'Interface/AddOns/Keystone-Companion/assets/textures/addon-icon',
+  icon = getTexturePath('icons/addon'),
   OnClick = function() ToggleUI() end,
   OnTooltipShow = function(tooltip)
     tooltip:AddLine("Keystone Companion", 1, 1, 1)
