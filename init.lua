@@ -15,4 +15,3 @@ KeystoneCompanion = {
 }
 
 Private.Addon = KeystoneCompanion
-Private.DB = KeystoneCompanionDB

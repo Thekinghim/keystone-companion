@@ -1,7 +1,7 @@
 local Private = select(2, ...)
 local addon = Private.Addon
 local widgets = addon.Widgets
-local db = Private.DB
+local db = KeystoneCompanionDB
 if not db.bestTimes then
     db.bestTimes = {}
 end
@@ -9,6 +9,7 @@ end
 local roundedFrame = widgets.RoundedFrame
 local progressBar = widgets.ProgressBar
 local const = addon.constants.misc
+local mdt = MDT
 
 local timerFrame = roundedFrame.CreateFrame(UIParent, {
     width = 352,
@@ -18,6 +19,7 @@ local timerFrame = roundedFrame.CreateFrame(UIParent, {
 })
 addon.TimerFrame = timerFrame
 timerFrame:Hide()
+timerFrame.currentPull = {}
 local bossFrames = {}
 local function formatTime(seconds)
     local sign = ""
@@ -48,7 +50,19 @@ local function saveBestTimes(mapID, affixID, keyLevel, times)
             dbTimes[index] = newTime
         end
     end
+    if not db.bestTimes[mapID] then db.bestTimes[mapID] = {} end
+    if not db.bestTimes[mapID][affixID] then db.bestTimes[mapID][affixID] = {} end
     db.bestTimes[mapID][affixID][keyLevel] = dbTimes
+end
+
+local function getEnemyForces()
+    local enemyForces = select(3, C_Scenario.GetStepInfo())
+    local totalCount, _, _, mobPointsStr = select(5, C_Scenario.GetCriteriaInfo(enemyForces))
+    if not totalCount or not mobPointsStr then return 0, 100 end
+
+    local currentCountStr = gsub(mobPointsStr, "%%", "")
+    local currentCount = tonumber(currentCountStr)
+    return currentCount, totalCount
 end
 local function createBossBar(anchor)
     ---@class Frame
@@ -120,13 +134,52 @@ function timerFrame:OnEvent(event, ...)
         self:FillFrame()
         self:SetScript("OnUpdate", timerFrame.UpdateFrame)
     elseif event == "CHALLENGE_MODE_COMPLETED" then
-        saveBestTimes(self:GetBossTimes())
+        saveBestTimes(self.runData.mapID, self.runData.week, self.runData.level, self:GetBossTimes())
         self:ReleaseFrame()
     elseif event == "PLAYER_ENTERING_WORLD" then
         if C_ChallengeMode.IsChallengeModeActive() then
             self:OnEvent("CHALLENGE_MODE_START")
         end
+    elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
+        local _, se, _, _, _, _, _, destGUID = ...
+        if se == "UNIT_DIED" then
+            self:RemoveFromCurrentPull(destGUID)
+        end
+    elseif event == "UNIT_THREAT_LIST_UPDATE" then
+        local unit = ...
+        if unit and UnitExists(unit) then
+            local guid = UnitGUID(unit)
+            self:AddToCurrentPull(guid)
+        end
+    elseif event == "PLAYER_REGEN_ENABLED" or event == "PLAYER_DEAD" then
+        self:ResetCurrentPull()
     end
+end
+
+function timerFrame:ResetCurrentPull()
+    self.currentPull = {}
+end
+
+function timerFrame:AddToCurrentPull(guid)
+    self.currentPull[guid] = true
+end
+
+function timerFrame:RemoveFromCurrentPull(guid)
+    self.currentPull[guid] = false
+end
+
+function timerFrame:GetCurrentPull()
+    local count = 0
+    for guid, active in pairs(self.currentPull) do
+        if active and mdt then
+            local npc_id = select(6, strsplit("-", guid))
+            local added = mdt:GetEnemyForces(tonumber(npc_id))
+            if added and added > 0 then
+                count = count + added
+            end
+        end
+    end
+    return count
 end
 
 function timerFrame:SetAffixes(...)
@@ -153,6 +206,7 @@ function timerFrame:GetBossTimes()
 end
 
 function timerFrame:FillFrame()
+    self:ResetCurrentPull()
     if ObjectiveTrackerFrame and ObjectiveTrackerFrame:IsVisible() then
         ObjectiveTrackerFrame:Hide()
     end
@@ -168,7 +222,6 @@ function timerFrame:FillFrame()
     self.runData.plus3 = timeLimit * 0.6
     self.runData.plus2 = timeLimit * 0.8
     self.runData.maxCriteria = select(3, C_Scenario.GetStepInfo())
-    self.runData.maxCount = select(5, C_Scenario.GetCriteriaInfo(self.runData.maxCriteria))
     self:SetAffixes(affixes)
     self.title:SetText(string.format("+%d %s", level, dungeonName))
     self.bosses = {}
@@ -209,6 +262,10 @@ function timerFrame:UpdateFrame()
         self:ReleaseFrame()
         return
     end
+    if self.runData.maxCriteria ~= select(3, C_Scenario.GetStepInfo()) then
+        self:FillFrame()
+        return
+    end
     local currentTime = select(2, GetWorldElapsedTime(1))
     if self.last and currentTime <= self.last then return end
     self.last = currentTime
@@ -225,11 +282,18 @@ function timerFrame:UpdateFrame()
     local deaths = C_ChallengeMode.GetDeathCount()
     self.deaths:SetText(string.format("%d %s14|t", deaths, ICON_LIST[8]))
 
-    local count = select(4, C_Scenario.GetCriteriaInfo(self.runData.maxCriteria))
-    local countPercent = select(8, C_Scenario.GetCriteriaInfo(self.runData.maxCriteria))
-    self.countPercent:SetText(countPercent)
-    self.countNumber:SetText(string.format("%d/%d", count, self.runData.maxCount))
-    self.countBar:SetProgress(count, self.runData.maxCount)
+    local count, total = getEnemyForces()
+    self.countPercent:SetText(string.format("%.2f%%", count / total * 100))
+    self.countNumber:SetText(string.format("%d/%d", count, total))
+    if count < total and mdt then
+        local pullCount = self:GetCurrentPull()
+        if pullCount > 0 then
+            local pullPercent = pullCount / total * 100
+            self.countPercent:SetText(string.format("%s (+%.2f%%)", self.countPercent:GetText(), pullPercent))
+            self.countNumber:SetText(string.format("%s (+%d)", self.countNumber:GetText(), pullCount))
+        end
+    end
+    self.countBar:SetProgress(count, total)
 
     local liveIndex = 0
     for bossIndex = 1, self.runData.maxCriteria - 1 do
@@ -373,6 +437,13 @@ local eventFrame = CreateFrame("Frame")
 eventFrame:RegisterEvent("CHALLENGE_MODE_START")
 eventFrame:RegisterEvent("CHALLENGE_MODE_COMPLETED")
 eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
+eventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+eventFrame:RegisterEvent("UNIT_THREAT_LIST_UPDATE")
+eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
+eventFrame:RegisterEvent("PLAYER_DEAD")
 eventFrame:SetScript("OnEvent", function(_, ...)
     timerFrame:OnEvent(...)
 end)
+
+timerFrame:ToggleMoveable()
+timerFrame:SetAnchors({ { "RIGHT", -25, 0 } })
