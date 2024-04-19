@@ -28,7 +28,7 @@ local function InitDataBrokerIcon()
   if(not LibDBIcon:GetMinimapButton('Keystone Companion')) then
     LibDBIcon:Register('Keystone Companion', dataBrokerObj, KeystoneCompanionDB.libDBIcon);
   end
-  if(KeystoneCompanionDB.settings.MinimapButton) then
+  if(KeystoneCompanionDB.settings.MinimapButton ~= false) then
     LibDBIcon:Show('Keystone Companion')
   else
     LibDBIcon:Hide('Keystone Companion')
