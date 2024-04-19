@@ -70,15 +70,16 @@ function timerFrame:ToggleMoveable()
     if not self:GetScript("OnMouseDown") then
         makeMovable = true
     end
-    self:SetScript("OnMouseDown", makeMovable and function ()
+    self:SetScript("OnMouseDown", makeMovable and function()
         self:StartMoving()
     end or nil)
-    self:SetScript("OnMouseUp", makeMovable and function ()
+    self:SetScript("OnMouseUp", makeMovable and function()
         self:StopMovingOrSizing()
     end or nil)
     self:SetMovable(makeMovable)
     self:EnableMouse(makeMovable)
 end
+
 function timerFrame:OnEvent(event, ...)
     if event == "CHALLENGE_MODE_START" then
         self:FillFrame()
@@ -110,7 +111,7 @@ end
 local fakeDB = {
     [198] = {         -- mapID for DHT
         [10] = {      -- affixID for Fortified
-            [7] = {   -- key Level
+            [6] = {   -- key Level
                 389,  -- [1] 06:29
                 689,  -- [2] 11:29
                 1093, -- [3] 18:13
@@ -132,7 +133,7 @@ function timerFrame:FillFrame()
     local mapID = C_ChallengeMode.GetActiveChallengeMapID() or 0
     local dungeonName, _, timeLimit = C_ChallengeMode.GetMapUIInfo(mapID)
     local level, affixes = C_ChallengeMode.GetActiveKeystoneInfo()
-    self.runData.week = C_MythicPlus.GetCurrentAffixes()[1].id -- Fort or Tyra
+    self.runData.week = affixes[1] -- Fort or Tyra
     self.runData.mapID = mapID
     self.runData.level = level
     self.runData.timeLimit = timeLimit
@@ -202,19 +203,45 @@ function timerFrame:UpdateFrame()
     self.countNumber:SetText(string.format("%d/%d", count, self.runData.maxCount))
     self.countBar:SetProgress(count, self.runData.maxCount)
 
+    local liveIndex = 0
     for bossIndex = 1, self.runData.maxCriteria - 1 do
         local bossBar = self.bosses[bossIndex]
         local dead = select(11, C_Scenario.GetCriteriaInfo(bossIndex))
-        if dead and not bossBar.dead then
+        if dead and dead>0 and not bossBar.dead then
+            bossBar.dead = dead
+            local deathTime = dead - currentTime
+            bossBar.name:SetTextColor(const.COLORS.POSITIVE:GetRGBA())
+            bossBar.time:SetTextColor(const.COLORS.POSITIVE:GetRGBA())
+            bossBar.time:SetText(formatTime(deathTime))
             if self.runData.bestTimes and self.runData.bestTimes[self.runData.currentBoss] then
-                -- refresh boss best times here for dungeons where they don't kill in the right order
                 local best = self.runData.bestTimes[self.runData.currentBoss]
                 self.runData.currentBoss = self.runData.currentBoss + 1
+                bossBar.bestDiff:SetText(formatTime((best - deathTime) * -1))
+                if best < deathTime then
+                    bossBar.time:SetTextColor(const.COLORS.NEGATIVE:GetRGBA())
+                    bossBar.bestDiff:SetTextColor(const.COLORS.NEGATIVE:GetRGBA())
+                elseif best == deathTime then
+                    bossBar.time:SetTextColor(const.COLORS.NEUTRAL:GetRGBA())
+                    bossBar.bestDiff:SetTextColor(const.COLORS.NEUTRAL:GetRGBA())
+                elseif best > deathTime then
+                    bossBar.time:SetTextColor(const.COLORS.POSITIVE:GetRGBA())
+                    bossBar.bestDiff:SetTextColor(const.COLORS.POSITIVE:GetRGBA())
+                end
             end
         end
-        -- Shouldn't update this stuff after bosses are already dead
-        bossBar.bestDiff:SetText("")
-        bossBar.time:SetText("")
+
+        if not bossBar.dead then
+            local time = ""
+            if self.runData.bestTimes and self.runData.bestTimes[self.runData.currentBoss + liveIndex] then
+                local best = self.runData.bestTimes[self.runData.currentBoss + liveIndex]
+                time = formatTime(best)
+            end
+            bossBar.name:SetTextColor(const.COLORS.TEXT_PRIMARY:GetRGBA())
+            bossBar.time:SetTextColor(const.COLORS.TEXT_PRIMARY:GetRGBA())
+            bossBar.time:SetText(time)
+            bossBar.bestDiff:SetText("")
+            liveIndex = liveIndex + 1
+        end
     end
 end
 
