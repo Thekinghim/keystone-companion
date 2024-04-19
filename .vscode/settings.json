@@ -93,7 +93,8 @@
     "BACKGROUND",
     "DEFAULT",
     "ICON_LIST",
-    "Background"
+    "Background",
+    "RunNextFrame"
   ],
   "Lua.diagnostics.disable": [
     "deprecated"

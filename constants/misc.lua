@@ -29,6 +29,10 @@ const.FONTS = {
     BOLD = const.ASSETS_PATH .. "/fonts/RobotoSlab-Bold.ttf",
 }
 const.FONT_OBJECTS = {
+    DEFAULT_SMALL = addonName .. "DefaultSmall",
+    SEMIBOLD_SMALL = addonName .. "SemiboldSmall",
+    BOLD_SMALL = addonName .. "BoldSmall",
+
     DEFAULT = addonName .. "Default",
     SEMIBOLD = addonName .. "Semibold",
     BOLD = addonName .. "Bold",
@@ -43,15 +47,26 @@ do
 end
 do
     local font = CreateFont(addonName .. "Semibold")
+    font:CopyFontObject(const.FONT_OBJECTS.DEFAULT)
     font:SetFont(const.FONTS.SEMIBOLD, 16, "")
-    font:SetJustifyH("LEFT")
-    font:SetJustifyV("MIDDLE")
-    font:SetTextColor(const.COLORS.TEXT_PRIMARY:GetRGBA())
 end
 do
     local font = CreateFont(addonName .. "Bold")
+    font:CopyFontObject(const.FONT_OBJECTS.DEFAULT)
     font:SetFont(const.FONTS.BOLD, 16, "")
-    font:SetJustifyH("LEFT")
-    font:SetJustifyV("MIDDLE")
-    font:SetTextColor(const.COLORS.TEXT_PRIMARY:GetRGBA())
+end
+do
+    local font = CreateFont(addonName .. "DefaultSmall")
+    font:CopyFontObject(const.FONT_OBJECTS.DEFAULT)
+    font:SetFont(const.FONTS.DEFAULT, 14, "")
+end
+do
+    local font = CreateFont(addonName .. "SemiboldSmall")
+    font:CopyFontObject(const.FONT_OBJECTS.SEMIBOLD)
+    font:SetFont(const.FONTS.SEMIBOLD, 14, "")
+end
+do
+    local font = CreateFont(addonName .. "BoldSmall")
+    font:CopyFontObject(const.FONT_OBJECTS.BOLD)
+    font:SetFont(const.FONTS.BOLD, 14, "")
 end
