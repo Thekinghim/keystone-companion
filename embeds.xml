@@ -13,4 +13,6 @@
     <Script file="communication.lua"/>
     <Script file="ui.lua"/>
     <Script file="main.lua"/>
+
+    <Script file="scoreCalculator.lua"/>
 </Ui>
