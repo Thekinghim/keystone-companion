@@ -11,7 +11,9 @@
     <Script file="dev.lua"/>
     <Script file="inventory.lua"/>
     <Script file="communication.lua"/>
-    <Script file="ui.lua"/>
+    
+    <Include file="ui/embeds.xml" />
+    
     <Script file="main.lua"/>
 
     <Script file="scoreCalculator.lua"/>
