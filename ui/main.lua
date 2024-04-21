@@ -14,11 +14,12 @@ UI:EnableMouse(true);
 UI:SetSize(438, 566);
 UI:RegisterForDrag('LeftButton');
 UI:SetScript('OnDragStart', UI.StartMoving)
-UI:SetScript('OnDragStop', function(self) 
+UI:SetScript('OnDragStop', function(self)
   self:StopMovingOrSizing();
   local point, relativeTo, relativePoint, offsetX, offsetY = self:GetPoint();
   KeystoneCompanionDB.UI = KeystoneCompanionDB.UI or {};
-  KeystoneCompanionDB.UI = {point = point, relativeTo = relativeTo, relativePoint = relativePoint, offsetX = offsetX, offsetY = offsetY}
+  KeystoneCompanionDB.UI = { point = point, relativeTo = relativeTo, relativePoint = relativePoint, offsetX = offsetX, offsetY =
+  offsetY }
 end)
 
 UI.Top = CreateFrame('Frame', 'KeystoneCompanionTop', UI);
@@ -94,37 +95,37 @@ UI.Party.Header.PlayerName:SetSize(80, 12);
 UI.Party.Header.PlayerName:SetFontObject(styles.FONT_OBJECTS.BOLD);
 UI.Party.Header.PlayerName:SetJustifyH('LEFT');
 UI.Party.Header.PlayerName:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 10, 0);
-UI.Party.Header.PlayerName:SetText('Player Name');
+UI.Party.Header.PlayerName:SetText('Player name');
 
 UI.Party.Header.Food = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderFood', 'OVERLAY')
 UI.Party.Header.Food:SetSize(67, 12);
 UI.Party.Header.Food:SetFontObject(styles.FONT_OBJECTS.BOLD);
 UI.Party.Header.Food:SetJustifyH('LEFT');
-UI.Party.Header.Food:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 168 , 0);
+UI.Party.Header.Food:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 168, 0);
 UI.Party.Header.Food:SetText('Food');
 
 UI.Party.Header.Rune = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderRune', 'OVERLAY')
 UI.Party.Header.Rune:SetSize(67, 12);
 UI.Party.Header.Rune:SetFontObject(styles.FONT_OBJECTS.BOLD);
 UI.Party.Header.Rune:SetJustifyH('LEFT');
-UI.Party.Header.Rune:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 235 , 0);
+UI.Party.Header.Rune:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 235, 0);
 UI.Party.Header.Rune:SetText('Runes');
 
 UI.Party.Header.Potions = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderPotions', 'OVERLAY')
 UI.Party.Header.Potions:SetSize(67, 12);
 UI.Party.Header.Potions:SetFontObject(styles.FONT_OBJECTS.BOLD);
 UI.Party.Header.Potions:SetJustifyH('LEFT');
-UI.Party.Header.Potions:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 302 , 0);
+UI.Party.Header.Potions:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 302, 0);
 UI.Party.Header.Potions:SetText('Potions');
 
 UI.Party.Header.Flasks = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderFlasks', 'OVERLAY')
 UI.Party.Header.Flasks:SetSize(67, 12)
 UI.Party.Header.Flasks:SetFontObject(styles.FONT_OBJECTS.BOLD);
 UI.Party.Header.Flasks:SetJustifyH('LEFT');
-UI.Party.Header.Flasks:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 369 , 0);
+UI.Party.Header.Flasks:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 369, 0);
 UI.Party.Header.Flasks:SetText('Flasks')
 
-UI.Footer = CreateFrame('Frame', 'KeystoneCompanionFooter', UI.Party);
+UI.Footer = CreateFrame('Frame', 'KeystoneCompanionFooter', UI);
 UI.Footer:SetSize(411, 15);
 UI.Footer:SetPoint('BOTTOMLEFT', UI.Party, 'BOTTOMLEFT');
 UI.Footer:SetPoint('BOTTOMRIGHT', UI.Party, 'BOTTOMRIGHT');
@@ -194,7 +195,8 @@ UI.Discord:SetScript("OnLeave", function()
 end)
 
 UI.Tooltip = CreateFrame('GameTooltip', 'KeystoneCompanionTooltip', UIParent, 'GameTooltipTemplate');
-UI.CopyFrame = CreateRoundedFrame(UI, { width = UI:GetWidth(), height = 64, points = {{ "LEFT", UI, "LEFT", 20, 0 }, { "RIGHT", UI, "RIGHT", -20, 0}, { "CENTER", 0, 10}}, border_size = 1 })
+UI.CopyFrame = CreateRoundedFrame(UI,
+  { width = UI:GetWidth(), height = 64, points = { { "LEFT", UI, "LEFT", 20, 0 }, { "RIGHT", UI, "RIGHT", -20, 0 }, { "CENTER", 0, 10 } }, border_size = 1 })
 UI.CopyFrame:SetFrameStrata("DIALOG");
 UI.CopyFrame.Label = UI.CopyFrame:CreateFontString("KeystoneCompanionCopyFrameLabel", "OVERLAY");
 UI.CopyFrame.Label:SetPoint("TOPLEFT", UI.CopyFrame, "TOPLEFT", 5, -5);
@@ -218,7 +220,7 @@ UI.EditBox:SetScript("OnEscapePressed", function(self)
 end)
 
 UI.GitHub:SetScript("OnMouseDown", function()
-  if(UI.CopyFrame:IsShown() and UI.EditBox:GetText() == 'https://github.com/kaelonR/keystone-companion') then
+  if (UI.CopyFrame:IsShown() and UI.EditBox:GetText() == 'https://github.com/kaelonR/keystone-companion') then
     UI.CopyFrame:Hide();
     return;
   end
@@ -228,7 +230,7 @@ UI.GitHub:SetScript("OnMouseDown", function()
 end)
 
 UI.Discord:SetScript("OnMouseDown", function()
-  if(UI.CopyFrame:IsShown() and UI.EditBox:GetText() == 'https://discord.gg/KhFhC6kZ78') then
+  if (UI.CopyFrame:IsShown() and UI.EditBox:GetText() == 'https://discord.gg/KhFhC6kZ78') then
     UI.CopyFrame:Hide();
     return;
   end
@@ -239,11 +241,11 @@ end)
 
 local createPlayerTooltip = function(self)
   local playerName = self:GetAttribute('player')
-  if(playerName == nil) then return end
-  if(playerName == UnitName('player')) then playerName = 'self' end
+  if (playerName == nil) then return end
+  if (playerName == UnitName('player')) then playerName = 'self' end
 
   local playerData = KeystoneCompanion.inventory[playerName];
-  if(playerData == nil) then return end;
+  if (playerData == nil) then return end;
 
   UI.Tooltip:ClearLines();
   UI.Tooltip:SetOwner(self, 'ANCHOR_NONE');
@@ -251,32 +253,33 @@ local createPlayerTooltip = function(self)
   UI.Tooltip:SetText(self:GetAttribute('player'));
   UI.Tooltip:AddLine('');
 
-  if(playerData.mythicPlusScore ~= nil and playerData.mythicPlusScore > 0) then
+  if (playerData.mythicPlusScore ~= nil and playerData.mythicPlusScore > 0) then
     local scoreColor = C_ChallengeMode.GetDungeonScoreRarityColor(playerData.mythicPlusScore)
     UI.Tooltip:AddDoubleLine('Mythic+ score', playerData.mythicPlusScore, nil, nil, nil, scoreColor:GetRGB())
   end
 
-  if(playerData.itemLevel ~= nil and playerData.itemLevel.equipped ~= nil) then
+  if (playerData.itemLevel ~= nil and playerData.itemLevel.equipped ~= nil) then
     UI.Tooltip:AddDoubleLine('Item level', math.floor(playerData.itemLevel.equipped), nil, nil, nil, 1, 1, 1)
-    if(playerData.itemLevel.equipped ~= playerData.itemLevel.overall) then
+    if (playerData.itemLevel.equipped ~= playerData.itemLevel.overall) then
       UI.Tooltip:AddDoubleLine('Item level in bags', math.floor(playerData.itemLevel.overall), nil, nil, nil, 1, 1, 1)
     end
   end
 
   UI.Tooltip:Show();
 
-  local mythicPlusScore = playerData.mythicPlusScore ~= nil and playerData.mythicPlusScore > 0 and C_ChallengeMode.GetDungeonScoreRarityColor(playerData.mythicPlusScore) or '';
-  local scoreColor = mythicPlusScore 
+  local mythicPlusScore = playerData.mythicPlusScore ~= nil and playerData.mythicPlusScore > 0 and
+  C_ChallengeMode.GetDungeonScoreRarityColor(playerData.mythicPlusScore) or '';
+  local scoreColor = mythicPlusScore
   local itemLevel = playerData.itemLevel;
 end
 
 local createDungeonTooltip = function(self)
   local playerName = self:GetAttribute('player');
-  if(playerName == nil) then return end
-  if(playerName == UnitName('player')) then playerName = 'self' end
-  
+  if (playerName == nil) then return end
+  if (playerName == UnitName('player')) then playerName = 'self' end
+
   local playerData = KeystoneCompanion.inventory[playerName];
-  if(playerData.keystone.mapID == nil) then return end;
+  if (playerData.keystone.mapID == nil) then return end;
 
   local dungeonInfo = KeystoneCompanion.constants.dungeonTeleports[playerData.keystone.mapID];
   local spellId = dungeonInfo.spell.id;
@@ -291,9 +294,9 @@ local createDungeonTooltip = function(self)
   UI.Tooltip:SetText(dungeonInfo.name, 0.64, 0.21, 0.93, 1, true);
   UI.Tooltip:AddLine('Keystone level ' .. (playerData.keystone.level or 12))
   UI.Tooltip:AddLine(' ')
-  if(not spellKnown) then
+  if (not spellKnown) then
     UI.Tooltip:AddLine('You do not have this teleport', 1, 0, 0, true);
-  elseif(not spellUsable) then
+  elseif (not spellUsable) then
     UI.Tooltip:AddLine('Teleport not usable', 0.62, 0.62, 0.62, true);
   else
     UI.Tooltip:AddLine('Click to teleport');
@@ -309,21 +312,23 @@ local nextPage = function(self)
 
   cell.ItemButton:SetAttribute('page', currentPage + 1);
 
-  local playerData = player == UnitName('player') and KeystoneCompanion.inventory.self or KeystoneCompanion.inventory[player];
+  local playerData = player == UnitName('player') and KeystoneCompanion.inventory.self or
+  KeystoneCompanion.inventory[player];
   KeystoneCompanion.UI.RerenderItemCell(cell, player, playerData.items[itemCategory]);
 end
 
 local previousPage = function(self)
   local cell = self:GetParent():GetParent();
   local currentPage = cell.ItemButton:GetAttribute('page') or 1;
-  if(currentPage == 1) then return end;
+  if (currentPage == 1) then return end;
 
   local player = cell.ItemButton:GetAttribute('player');
   local itemCategory = cell.ItemButton:GetAttribute('category');
 
   cell.ItemButton:SetAttribute('page', currentPage - 1);
 
-  local playerData = player == UnitName('player') and KeystoneCompanion.inventory.self or KeystoneCompanion.inventory[player];
+  local playerData = player == UnitName('player') and KeystoneCompanion.inventory.self or
+  KeystoneCompanion.inventory[player];
   KeystoneCompanion.UI.RerenderItemCell(cell, player, playerData.items[itemCategory]);
 end
 
@@ -331,7 +336,8 @@ local createItemCell = function(parent, row, column, cellName)
   local cell = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. row .. cellName, parent);
   cell:SetSize(42, 42);
   cell:SetPoint("TOPLEFT", parent, "TOPLEFT", (67 * (column - 1)), 0);
-  cell.ItemButton = CreateFrame('ItemButton', "KeystoneCompanionPlayerRow" .. row .. cellName .. "ItemButton", cell, "InsecureActionButtonTemplate");
+  cell.ItemButton = CreateFrame('ItemButton', "KeystoneCompanionPlayerRow" .. row .. cellName .. "ItemButton", cell,
+    "InsecureActionButtonTemplate");
   cell.ItemButton:SetSize(27, 27);
   cell.ItemButton.NormalTexture:SetSize(27, 27);
   cell.ItemButton.PushedTexture:SetSize(20, 20);
@@ -345,7 +351,7 @@ local createItemCell = function(parent, row, column, cellName)
 
   cell.ItemButton:SetScript('OnEnter', function(self)
     local itemId = self:GetItem();
-    if(itemId ~= nil) then
+    if (itemId ~= nil) then
       UI.Tooltip:SetOwner(self, 'ANCHOR_NONE');
       UI.Tooltip:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT');
       UI.Tooltip:SetItemByID(itemId);
@@ -353,7 +359,7 @@ local createItemCell = function(parent, row, column, cellName)
     end
   end)
   cell.ItemButton:SetScript('OnLeave', function()
-    if(UI.Tooltip:IsShown()) then UI.Tooltip:Hide() end
+    if (UI.Tooltip:IsShown()) then UI.Tooltip:Hide() end
   end)
 
 
@@ -362,10 +368,12 @@ local createItemCell = function(parent, row, column, cellName)
   cell.Pagination:SetPoint("BOTTOMLEFT", cell, "BOTTOMLEFT");
   cell.Pagination:SetPoint("BOTTOMRIGHT", cell, "BOTTOMRIGHT");
 
-  cell.Pagination.PreviousButton = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. row .. cellName .. 'PrevButton', cell.Pagination);
+  cell.Pagination.PreviousButton = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. row .. cellName .. 'PrevButton',
+    cell.Pagination);
   cell.Pagination.PreviousButton:SetSize(12, 12);
   cell.Pagination.PreviousButton:SetPoint("LEFT", cell.Pagination, "LEFT")
-  cell.Pagination.PreviousButton.Texture = cell.Pagination.PreviousButton:CreateTexture('KeystoneCompanionPlayerRow' .. row .. cellName .. 'PrevButtonTexture');
+  cell.Pagination.PreviousButton.Texture = cell.Pagination.PreviousButton:CreateTexture('KeystoneCompanionPlayerRow' ..
+  row .. cellName .. 'PrevButtonTexture');
   cell.Pagination.PreviousButton.Texture:SetSize(8, 8);
   cell.Pagination.PreviousButton.Texture:SetPoint("TOPLEFT", cell.Pagination.PreviousButton, "TOPLEFT", 3, -3);
   cell.Pagination.PreviousButton.Texture:SetTexture(getTexturePath('widgets/previous-button'));
@@ -377,10 +385,12 @@ local createItemCell = function(parent, row, column, cellName)
   end)
   cell.Pagination.PreviousButton:SetScript("OnMouseDown", previousPage)
 
-  cell.Pagination.NextButton = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. row .. cellName .. 'NextButton', cell.Pagination);
+  cell.Pagination.NextButton = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. row .. cellName .. 'NextButton',
+    cell.Pagination);
   cell.Pagination.NextButton:SetSize(12, 12);
   cell.Pagination.NextButton:SetPoint("RIGHT", cell.Pagination, "RIGHT", -2, 0)
-  cell.Pagination.NextButton.Texture = cell.Pagination.NextButton:CreateTexture('KeystoneCompanionPlayerRow' .. row .. cellName .. 'NextButtonTexture');
+  cell.Pagination.NextButton.Texture = cell.Pagination.NextButton:CreateTexture('KeystoneCompanionPlayerRow' ..
+  row .. cellName .. 'NextButtonTexture');
   cell.Pagination.NextButton.Texture:SetSize(8, 8);
   cell.Pagination.NextButton.Texture:SetPoint("TOPLEFT", cell.Pagination.NextButton, "TOPLEFT", 3, -3);
   cell.Pagination.NextButton.Texture:SetTexture(getTexturePath('widgets/next-button'));
@@ -392,7 +402,8 @@ local createItemCell = function(parent, row, column, cellName)
   end)
   cell.Pagination.NextButton:SetScript("OnMouseDown", nextPage)
 
-  cell.Pagination.Label = cell.Pagination:CreateFontString("KeystoneCompanionPlayerRow" .. row .. cellName .. "PaginationLabel", "OVERLAY");
+  cell.Pagination.Label = cell.Pagination:CreateFontString(
+  "KeystoneCompanionPlayerRow" .. row .. cellName .. "PaginationLabel", "OVERLAY");
   cell.Pagination.Label:SetAllPoints(cell.Pagination, "CENTER", 1);
   cell.Pagination.Label:SetFontObject(styles.FONT_OBJECTS.NORMAL)
   cell.Pagination.Label:SetText("3/5");
@@ -403,13 +414,13 @@ local createItemCell = function(parent, row, column, cellName)
 end
 
 for i = 1, 5 do
-  UI['player' .. i] = CreateFrame('Frame', 'Player' .. i .. 'Row', UI);
+  UI['player' .. i] = CreateFrame('Frame', 'Player' .. i .. 'Row', UI.Party);
   local playerRow = UI['player' .. i];
 
   playerRow:SetSize(411, 83);
-  playerRow:SetPoint('TOPLEFT', UI.Party.HeaderBar, 'TOPLEFT', 0, -1 - (83 * (i-1)))
-  playerRow:SetPoint('TOPRIGHT', UI.Party.HeaderBar, 'TOPRIGHT', 0, -1 - (83 * (i-1)))
-  if(i % 2 == 0) then
+  playerRow:SetPoint('TOPLEFT', UI.Party.HeaderBar, 'TOPLEFT', 0, -1 - (83 * (i - 1)))
+  playerRow:SetPoint('TOPRIGHT', UI.Party.HeaderBar, 'TOPRIGHT', 0, -1 - (83 * (i - 1)))
+  if (i % 2 == 0) then
     playerRow.Mask = playerRow:CreateMaskTexture();
     playerRow.Mask:SetAllPoints(playerRow);
     playerRow.Mask:SetTexture(getTexturePath('frames/player-row-light'));
@@ -439,7 +450,8 @@ for i = 1, 5 do
   playerRow.ClassIcon.Mask = playerRow.ClassIcon:CreateMaskTexture();
   playerRow.ClassIcon.Mask:SetAllPoints(playerRow.ClassIcon);
   playerRow.ClassIcon.Mask:SetTexture(getTexturePath('masks/rounded-button'));
-  playerRow.ClassIcon.Texture = playerRow.ClassIcon:CreateTexture("KeystoneCompanionPlayerRow" .. i .. 'ClassIconTexture', 'ARTWORK');
+  playerRow.ClassIcon.Texture = playerRow.ClassIcon:CreateTexture(
+  "KeystoneCompanionPlayerRow" .. i .. 'ClassIconTexture', 'ARTWORK');
   playerRow.ClassIcon.Texture:SetAllPoints(playerRow.ClassIcon);
   playerRow.ClassIcon.Texture:AddMaskTexture(playerRow.ClassIcon.Mask);
   playerRow.ClassIcon.Texture:SetTexture('Interface/GLUES/CHARACTERCREATE/UI-CHARACTERCREATE-CLASSES');
@@ -447,14 +459,15 @@ for i = 1, 5 do
     createPlayerTooltip(self);
   end)
   playerRow.ClassIcon:SetScript('OnLeave', function(self)
-    if(UI.Tooltip:IsShown()) then UI.Tooltip:Hide() end
+    if (UI.Tooltip:IsShown()) then UI.Tooltip:Hide() end
   end)
   playerRow.ClassIcon:Hide();
 
   playerRow.RoleIcon = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. i .. 'RoleIcon', playerRow.ClassIcon);
   playerRow.RoleIcon:SetSize(20, 20);
   playerRow.RoleIcon:SetPoint('CENTER', playerRow.ClassIcon, 'BOTTOMRIGHT', 0, 0);
-  playerRow.RoleIcon.Texture = playerRow.RoleIcon:CreateTexture('KeystoneCompanionPlayerRow' .. i .. 'RoleIconTexture', 'ARTWORK');
+  playerRow.RoleIcon.Texture = playerRow.RoleIcon:CreateTexture('KeystoneCompanionPlayerRow' .. i .. 'RoleIconTexture',
+    'ARTWORK');
   playerRow.RoleIcon.Texture:SetAllPoints(playerRow.RoleIcon);
   playerRow.RoleIcon.Texture:SetTexture('Interface/LFGFRAME/UI-LFG-ICON-PORTRAITROLES');
   playerRow.RoleIcon:Hide();
@@ -462,12 +475,14 @@ for i = 1, 5 do
   playerRow.LeaderIcon = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. i .. 'LeaderIcon', playerRow.ClassIcon);
   playerRow.LeaderIcon:SetSize(20, 20);
   playerRow.LeaderIcon:SetPoint('CENTER', playerRow.ClassIcon, 'TOPRIGHT');
-  playerRow.LeaderIcon.Texture = playerRow.LeaderIcon:CreateTexture('KeystoneCompanionPlayerRow' .. i .. 'LeaderIconTexture', 'ARTWORK');
+  playerRow.LeaderIcon.Texture = playerRow.LeaderIcon:CreateTexture(
+  'KeystoneCompanionPlayerRow' .. i .. 'LeaderIconTexture', 'ARTWORK');
   playerRow.LeaderIcon.Texture:SetAllPoints(playerRow.LeaderIcon);
   playerRow.LeaderIcon.Texture:SetTexture('Interface/GROUPFRAME/UI-Group-LeaderIcon');
   playerRow.LeaderIcon:Hide();
 
-  playerRow.DungeonIcon = CreateFrame('Button', 'KeystoneCompanionPlayerRow' .. i .. 'DungeonButton', playerRow.Content, 'InsecureActionButtonTemplate');
+  playerRow.DungeonIcon = CreateFrame('Button', 'KeystoneCompanionPlayerRow' .. i .. 'DungeonButton', playerRow.Content,
+    'InsecureActionButtonTemplate');
   playerRow.DungeonIcon:SetSize(35, 35);
   playerRow.DungeonIcon:SetPoint("TOPLEFT", playerRow.Content, "TOPLEFT", 55, -25);
   playerRow.DungeonIcon:RegisterForClicks("AnyDown", "AnyUp");
@@ -477,7 +492,7 @@ for i = 1, 5 do
     createDungeonTooltip(self);
   end)
   playerRow.DungeonIcon:SetScript('OnLeave', function(self)
-    if(UI.Tooltip:IsShown()) then UI.Tooltip:Hide() end
+    if (UI.Tooltip:IsShown()) then UI.Tooltip:Hide() end
   end)
 
   playerRow.DungeonIcon:Hide();
@@ -488,11 +503,13 @@ for i = 1, 5 do
   playerRow.KeystoneLevel.Mask = playerRow.KeystoneLevel:CreateMaskTexture();
   playerRow.KeystoneLevel.Mask:SetAllPoints(playerRow.KeystoneLevel);
   playerRow.KeystoneLevel.Mask:SetTexture(getTexturePath('frames/portrait-black'));
-  playerRow.KeystoneLevel.Texture = playerRow.KeystoneLevel:CreateTexture('KeystoneCompanionPlayerRow' .. i .. 'KeystoneLevelTexture');
+  playerRow.KeystoneLevel.Texture = playerRow.KeystoneLevel:CreateTexture('KeystoneCompanionPlayerRow' ..
+  i .. 'KeystoneLevelTexture');
   playerRow.KeystoneLevel.Texture:SetAllPoints(playerRow.KeystoneLevel)
   playerRow.KeystoneLevel.Texture:SetTexture(getTexturePath('frames/portrait-black'));
   playerRow.KeystoneLevel.Texture:AddMaskTexture(playerRow.KeystoneLevel.Mask);
-  playerRow.KeystoneLevel.Label = playerRow.KeystoneLevel:CreateFontString('KeystoneCompanionPlayerRow' .. i .. 'KeystoneLevelLabel');
+  playerRow.KeystoneLevel.Label = playerRow.KeystoneLevel:CreateFontString('KeystoneCompanionPlayerRow' ..
+  i .. 'KeystoneLevelLabel');
   playerRow.KeystoneLevel.Label:SetFontObject(styles.FONT_OBJECTS.NORMAL)
   playerRow.KeystoneLevel.Label:SetTextColor(styles.COLORS.TEXT_SECONDARY:GetRGBA());
   playerRow.KeystoneLevel.Label:SetJustifyH('CENTER');
@@ -504,12 +521,11 @@ for i = 1, 5 do
   playerRow.Inventory:SetSize(243, 42);
   playerRow.Inventory:SetPoint("BOTTOMRIGHT", playerRow.Content, "BOTTOMRIGHT");
 
-  playerRow.Food =  createItemCell(playerRow.Inventory, i, 1, 'Food');
+  playerRow.Food = createItemCell(playerRow.Inventory, i, 1, 'Food');
   playerRow.Rune = createItemCell(playerRow.Inventory, i, 2, 'Rune');
   playerRow.Potions = createItemCell(playerRow.Inventory, i, 3, 'Potion');
   playerRow.Flasks = createItemCell(playerRow.Inventory, i, 4, 'Flask');
   playerRow.Inventory:Hide();
-  
 end
 
 
@@ -517,7 +533,7 @@ function KeystoneCompanion.UI.RerenderItemCell(cell, playerName, itemData)
   local itemCount = itemData == nil and 0 or #itemData;
   cell.ItemButton:SetAttribute('player', playerName);
 
-  if(itemCount == 0) then
+  if (itemCount == 0) then
     cell.Pagination:Hide();
     cell.ItemButton:Reset();
     cell.ItemButton.NormalTexture:Show();
@@ -525,17 +541,17 @@ function KeystoneCompanion.UI.RerenderItemCell(cell, playerName, itemData)
   end
 
   local currentPage = cell.ItemButton:GetAttribute('page') or 1;
-  if(currentPage > itemCount) then 
+  if (currentPage > itemCount) then
     cell.ItemButton:SetAttribute('page', itemCount);
     currentPage = itemCount;
   end
 
-  if(currentPage == 1) then
+  if (currentPage == 1) then
     cell.Pagination.PreviousButton:Hide();
   else
     cell.Pagination.PreviousButton:Show();
   end
-  if(currentPage == itemCount) then
+  if (currentPage == itemCount) then
     cell.Pagination.NextButton:Hide();
   else
     cell.Pagination.NextButton:Show();
@@ -549,7 +565,7 @@ function KeystoneCompanion.UI.RerenderItemCell(cell, playerName, itemData)
   cell.ItemButton:SetItemButtonCount(currentItem.count);
   cell.ItemButton.NormalTexture:Hide();
 
-  if(playerName == UnitName('player')) then
+  if (playerName == UnitName('player')) then
     cell.ItemButton:SetAttribute('item', select(1, C_Item.GetItemInfo(currentItem.itemID)));
   end
 end
@@ -558,7 +574,7 @@ function KeystoneCompanion.UI.RerenderPlayerRow(row, playerName, playerData)
   row.PlayerName:SetText(playerName);
 
   local unitClass = select(2, UnitClass(playerName));
-  if(unitClass ~= nil) then
+  if (unitClass ~= nil) then
     row.ClassIcon.Texture:SetTexCoord(unpack(CLASS_ICON_TCOORDS[unitClass]));
     row.ClassIcon:SetAttribute('player', playerName);
     row.ClassIcon:Show();
@@ -567,20 +583,20 @@ function KeystoneCompanion.UI.RerenderPlayerRow(row, playerName, playerData)
   end
 
   local role = UnitGroupRolesAssigned(playerName);
-  if(role == 'NONE') then
+  if (role == 'NONE') then
     row.RoleIcon:Hide();
   else
     row.RoleIcon.Texture:SetTexCoord(unpack(KeystoneCompanion.constants.roleIconCoords[role]))
     row.RoleIcon:Show();
   end
 
-  if(UnitIsGroupLeader(playerName, LE_PARTY_CATEGORY_HOME)) then
+  if (UnitIsGroupLeader(playerName, LE_PARTY_CATEGORY_HOME)) then
     row.LeaderIcon:Show();
   else
     row.LeaderIcon:Hide();
   end
 
-  if(playerData.keystone == nil or playerData.keystone.mapID == nil) then
+  if (playerData.keystone == nil or playerData.keystone.mapID == nil) then
     row.DungeonIcon:Hide();
     row.KeystoneLevel:Hide();
   else
@@ -593,14 +609,14 @@ function KeystoneCompanion.UI.RerenderPlayerRow(row, playerName, playerData)
     local spellKnown = IsSpellKnown(dungeonInfo.spell.id, false);
     local spellUsable = IsUsableSpell(dungeonInfo.spell.id);
 
-    if(spellKnown and spellUsable) then
+    if (spellKnown and spellUsable) then
       row.DungeonIcon:SetAlpha(1);
     else
       row.DungeonIcon:SetAlpha(0.6);
     end
 
     row.KeystoneLevel.Label:SetText(playerData.keystone.level);
-    if(playerData.keystone.level >= 10) then
+    if (playerData.keystone.level >= 10) then
       row.KeystoneLevel.Label:SetPoint('LEFT', row.KeystoneLevel, 'LEFT', 5, 0);
     else
       row.KeystoneLevel.Label:SetPoint('LEFT', row.KeystoneLevel, 'LEFT', 8, 0);
@@ -608,7 +624,7 @@ function KeystoneCompanion.UI.RerenderPlayerRow(row, playerName, playerData)
     row.KeystoneLevel:Show();
   end
 
-  if(playerData.items == nil) then
+  if (playerData.items == nil) then
     row.Inventory:Hide();
   else
     row.Inventory:Show();
