@@ -1,23 +1,7 @@
 local _, KeystoneCompanion = ...
 local styles = KeystoneCompanion.constants.styles;
 local RoundedFrame = KeystoneCompanion.widgets.RoundedFrame;
-
-if not KeystoneCompanion.widgets then
-    KeystoneCompanion.print("Widgets Missing")
-    return
-end
-
----@param ... table
----@return table
-local function mixTables(...)
-    local mixed = {}
-    for _, tbl in pairs({ ... }) do
-        if type(tbl) == "table" then
-            Mixin(mixed, tbl)
-        end
-    end
-    return mixed
-end
+local mixTables = KeystoneCompanion.widgets.Base.mixTables
 
 ---@class ProgressBarOptions
 ---@field fill_direction FillDirections?
@@ -62,6 +46,8 @@ local function createBar(parent, options)
     frame.Background:ClearAllPoints()
     frame.Background:SetAllPoints()
     frame.Background.Background:SetDrawLayer("BACKGROUND", -1)
+    options.border_size = 0
+    options.background_color = options.foreground_color
     frame.Foreground = RoundedFrame.CreateFrame(frame, options)
     frame.Foreground.Background:SetDrawLayer("BACKGROUND", 0)
     frame.Foreground:ClearAllPoints()

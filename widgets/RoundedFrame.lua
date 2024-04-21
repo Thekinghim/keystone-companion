@@ -1,6 +1,7 @@
 local _, KeystoneCompanion = ...
 local styles = KeystoneCompanion.constants.styles;
 local pathUtil = KeystoneCompanion.utils.path;
+local mixTables = KeystoneCompanion.widgets.Base.mixTables
 
 local borderTextures = {
   [1] = pathUtil.getTexturePath('rounded-frame/border-1px.tga');
@@ -17,18 +18,6 @@ local function applySlice(frame, texture)
     frame:SetTexture(texture)
     frame:SetTextureSliceMargins(12, 12, 12, 12)
     frame:SetTextureSliceMode(Enum.UITextureSliceMode.Tiled)
-end
-
----@param ... table
----@return table
-local function mixTables(...)
-    local mixed = {}
-    for _, tbl in pairs({ ... }) do
-        if type(tbl) == "table" then
-            Mixin(mixed, tbl)
-        end
-    end
-    return mixed
 end
 
 ---@class RoundedFrameOptions
