@@ -80,8 +80,6 @@ local function createRoundedFrame(parent, options)
     return frame
 end
 
-KeystoneCompanion.widgets = KeystoneCompanion.widgets or {};
-
 ---@class RoundedFrameAPI
 ---@field CreateFrame fun(parent:Frame, options:RoundedFrameOptions): Frame
 KeystoneCompanion.widgets.RoundedFrame = {

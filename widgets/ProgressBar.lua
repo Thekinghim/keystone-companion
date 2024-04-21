@@ -1,13 +1,11 @@
-local Private = select(2, ...)
-local addon = Private.Addon
+local _, KeystoneCompanion = ...
+local styles = KeystoneCompanion.constants.styles;
+local RoundedFrame = KeystoneCompanion.widgets.RoundedFrame;
 
-if not addon.Widgets then
-    addon.print("Widgets Missing")
+if not KeystoneCompanion.widgets then
+    KeystoneCompanion.print("Widgets Missing")
     return
 end
-
-local const = addon.constants.misc
-local roundedframe = addon.Widgets.RoundedFrame
 
 ---@param ... table
 ---@return table
@@ -30,13 +28,8 @@ local defaultOptions = {
     height = 200,
     width = 200,
     points = { { "CENTER" } },
-    background_color = const.COLORS.BACKGROUND,
-    background_texture = const.TEXTURES.ROUNDED_SQUARE,
-    use_border = true,
-    border_color = const.COLORS.BORDER,
-    border_texture = const.TEXTURES.ROUNDED_BORDER,
-    border_size = 2, -- Default Texture has a 2px border
-    foreground_color = const.COLORS.FOREGROUND,
+    border_size = 2,
+    border_color = styles.COLORS.BORDER,
     fill_direction = "RIGHT",
     progress_value = 50,
     progress_total = 100
@@ -64,13 +57,13 @@ local function createBar(parent, options)
         frame:SetPoint(unpack(point))
     end
     frame:SetSize(options.width, options.height)
-    frame.Background = roundedframe.CreateFrame(frame, options)
+    frame.Background = RoundedFrame.CreateFrame(frame, options)
     frame.Background:ClearAllPoints()
     frame.Background:SetAllPoints()
     frame.Background.Background:SetDrawLayer("BACKGROUND", -1)
     options.use_border = false
     options.background_color = options.foreground_color
-    frame.Foreground = roundedframe.CreateFrame(frame, options)
+    frame.Foreground = RoundedFrame.CreateFrame(frame, options)
     frame.Foreground.Background:SetDrawLayer("BACKGROUND", 0)
     frame.Foreground:ClearAllPoints()
     frame.Foreground:SetPoint("TOPLEFT")
@@ -131,7 +124,7 @@ local function createBar(parent, options)
 end
 --[[
     Example Usage:
-    local pb = KeystoneCompanion.Widgets.ProgressBar
+    local pb = KeystoneCompanion.widgets.ProgressBar
     local options = {
         width = 220,
         height = 22,
@@ -143,6 +136,6 @@ end
 
 ---@class ProgressBarAPI
 ---@field CreateFrame fun(parent:Frame, options:ProgressBarOptions) : ProgressBar
-addon.Widgets.ProgressBar = {
+KeystoneCompanion.widgets.ProgressBar = {
     CreateFrame = createBar,
 }

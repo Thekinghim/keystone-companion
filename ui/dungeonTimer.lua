@@ -1,23 +1,20 @@
-local Private = select(2, ...)
-local addon = Private.Addon
-local widgets = addon.Widgets
+local _, KeystoneCompanion = ...
+local widgets = KeystoneCompanion.widgets
+local styles = KeystoneCompanion.constants.styles;
 local db = KeystoneCompanionDB
+local getTexturePath = KeystoneCompanion.utils.path.getTexturePath;
 if not db.bestTimes then
     db.bestTimes = {}
 end
 
-local roundedFrame = widgets.RoundedFrame
-local progressBar = widgets.ProgressBar
-local const = addon.constants.misc
 local mdt = MDT
 
-local timerFrame = roundedFrame.CreateFrame(UIParent, {
+local timerFrame = widgets.RoundedFrame.CreateFrame(UIParent, {
     width = 352,
     height = 265,
-    border_texture = roundedFrame.GetBorderForSize(1),
     border_size = 1,
 })
-addon.TimerFrame = timerFrame
+KeystoneCompanion.DungeonTimerFrame = timerFrame
 timerFrame:Hide()
 timerFrame.currentPull = {}
 local bossFrames = {}
@@ -79,15 +76,15 @@ local function createBossBar(anchor)
         boss = CreateFrame("Frame", nil, timerFrame)
         boss:SetHeight(25)
         boss.name = boss:CreateFontString()
-        boss.name:SetFontObject(const.FONT_OBJECTS.DEFAULT_SMALL)
+        boss.name:SetFont(styles.FONTS.NORMAL, 14);
         boss.name:SetJustifyH("LEFT")
         boss.name:SetPoint("LEFT", 8, 0)
         boss.bestDiff = boss:CreateFontString()
-        boss.bestDiff:SetFontObject(const.FONT_OBJECTS.DEFAULT_SMALL)
+        boss.bestDiff:SetFont(styles.FONTS.NORMAL, 14);
         boss.bestDiff:SetJustifyH("RIGHT")
         boss.bestDiff:SetPoint("RIGHT", -75, 0)
         boss.time = boss:CreateFontString()
-        boss.time:SetFontObject(const.FONT_OBJECTS.DEFAULT_SMALL)
+        boss.time:SetFont(styles.FONTS.NORMAL, 14)
         boss.time:SetJustifyH("RIGHT")
         boss.time:SetPoint("RIGHT", -8, 0)
         tinsert(bossFrames, boss)
@@ -302,22 +299,22 @@ function timerFrame:UpdateFrame()
         if dead and dead > 0 and not bossBar.dead then
             bossBar.dead = dead
             local deathTime = dead - currentTime
-            bossBar.name:SetTextColor(const.COLORS.POSITIVE:GetRGBA())
-            bossBar.time:SetTextColor(const.COLORS.POSITIVE:GetRGBA())
+            bossBar.name:SetTextColor(styles.COLORS.GREEN_LIGHT:GetRGBA())
+            bossBar.time:SetTextColor(styles.COLORS.GREEN_LIGHT:GetRGBA())
             bossBar.time:SetText(formatTime(deathTime))
             if self.runData.bestTimes and self.runData.bestTimes[self.runData.currentBoss] then
                 local best = self.runData.bestTimes[self.runData.currentBoss]
                 self.runData.currentBoss = self.runData.currentBoss + 1
                 bossBar.bestDiff:SetText(formatTime((best - deathTime) * -1))
                 if best < deathTime then
-                    bossBar.time:SetTextColor(const.COLORS.NEGATIVE:GetRGBA())
-                    bossBar.bestDiff:SetTextColor(const.COLORS.NEGATIVE:GetRGBA())
+                    bossBar.time:SetTextColor(styles.COLORS.RED_LIGHT:GetRGBA())
+                    bossBar.bestDiff:SetTextColor(styles.COLORS.RED_LIGHT   :GetRGBA())
                 elseif best == deathTime then
-                    bossBar.time:SetTextColor(const.COLORS.NEUTRAL:GetRGBA())
-                    bossBar.bestDiff:SetTextColor(const.COLORS.NEUTRAL:GetRGBA())
+                    bossBar.time:SetTextColor(styles.COLORS.YELLOW_LIGHT:GetRGBA())
+                    bossBar.bestDiff:SetTextColor(styles.COLORS.YELLOW_LIGHT:GetRGBA())
                 elseif best > deathTime then
-                    bossBar.time:SetTextColor(const.COLORS.POSITIVE:GetRGBA())
-                    bossBar.bestDiff:SetTextColor(const.COLORS.POSITIVE:GetRGBA())
+                    bossBar.time:SetTextColor(styles.COLORS.YELLOW_LIGHT:GetRGBA())
+                    bossBar.bestDiff:SetTextColor(styles.COLORS.YELLOW_LIGHT:GetRGBA())
                 end
             end
         end
@@ -328,8 +325,8 @@ function timerFrame:UpdateFrame()
                 local best = self.runData.bestTimes[self.runData.currentBoss + liveIndex]
                 time = formatTime(best)
             end
-            bossBar.name:SetTextColor(const.COLORS.TEXT_PRIMARY:GetRGBA())
-            bossBar.time:SetTextColor(const.COLORS.TEXT_PRIMARY:GetRGBA())
+            bossBar.name:SetTextColor(styles.COLORS.TEXT_PRIMARY:GetRGBA())
+            bossBar.time:SetTextColor(styles.COLORS.TEXT_PRIMARY:GetRGBA())
             bossBar.time:SetText(time)
             bossBar.bestDiff:SetText("")
             liveIndex = liveIndex + 1
@@ -340,7 +337,7 @@ end
 local headerColor = CreateColorFromHexString("0DD0DCF5")
 local barColor = CreateColorFromHexString("FF333333")
 
-local headerBar = roundedFrame.CreateFrame(timerFrame, {
+local headerBar = widgets.RoundedFrame.CreateFrame(timerFrame, {
     height = 38,
     use_border = false,
     background_color = headerColor,
@@ -351,26 +348,26 @@ local headerBar = roundedFrame.CreateFrame(timerFrame, {
 })
 
 local deathText = headerBar:CreateFontString()
-deathText:SetFontObject(const.FONT_OBJECTS.SEMIBOLD)
+deathText:SetFont(styles.FONTS.BOLD, 16)
 deathText:SetJustifyH("RIGHT")
-deathText:SetTextColor(const.COLORS.TEXT_SECONDARY:GetRGBA())
+deathText:SetTextColor(styles.COLORS.TEXT_HIGHLIGHT:GetRGBA())
 deathText:SetPoint("RIGHT", -12, 0)
 timerFrame.deaths = deathText
 
 local dungeonTitle = headerBar:CreateFontString()
-dungeonTitle:SetFontObject(const.FONT_OBJECTS.SEMIBOLD)
+dungeonTitle:SetFont(styles.FONTS.BOLD, 16)
 dungeonTitle:SetJustifyH("LEFT")
-dungeonTitle:SetTextColor(const.COLORS.TEXT_PRIMARY:GetRGBA())
+dungeonTitle:SetTextColor(styles.COLORS.TEXT_PRIMARY:GetRGBA())
 dungeonTitle:SetPoint("LEFT", 12, 0)
 timerFrame.title = dungeonTitle
 
 local affixes = headerBar:CreateFontString()
-affixes:SetFontObject(const.FONT_OBJECTS.SEMIBOLD)
+affixes:SetFont(styles.FONTS.BOLD, 16)
 affixes:SetJustifyH("LEFT")
 affixes:SetPoint("LEFT", dungeonTitle, "RIGHT", 12, 0)
 timerFrame.affixes = affixes
 
-local timeBar = progressBar.CreateFrame(timerFrame, {
+local timeBar = widgets.ProgressBar.CreateFrame(timerFrame, {
     height = 25,
     use_border = false,
     background_color = barColor,
@@ -382,39 +379,39 @@ local timeBar = progressBar.CreateFrame(timerFrame, {
 timerFrame.timeBar = timeBar
 
 local timeText = timeBar.Foreground:CreateFontString()
-timeText:SetFontObject(const.FONT_OBJECTS.DEFAULT_SMALL)
+timeText:SetFont(styles.FONTS.NORMAL, 14)
 timeText:SetJustifyH("LEFT")
 timeText:SetPoint("LEFT", 8, 0)
 timerFrame.time = timeText
 
 local plus3 = timeBar.Foreground:CreateTexture()
-plus3:SetTexture(const.TEXTURES.ROUNDED_SQUARE)
+plus3:SetTexture(getTexturePath('roudned-frame/base'))
 plus3:SetPoint("LEFT", timeBar.Background:GetWidth() * 0.6, 0) -- 40% Time left
 plus3:SetSize(2, 14)
 plus3.text = timeBar.Foreground:CreateFontString()
-plus3.text:SetFontObject(const.FONT_OBJECTS.DEFAULT_SMALL)
+plus3.text:SetFont(styles.FONTS.NORMAL, 14)
 plus3.text:SetJustifyH("RIGHT")
 plus3.text:SetPoint("RIGHT", plus3, "LEFT", -8, 0)
 timerFrame.plus3 = plus3
 
 local plus2 = timeBar.Foreground:CreateTexture()
-plus2:SetTexture(const.TEXTURES.ROUNDED_SQUARE)
+plus2:SetTexture(getTexturePath('roudned-frame/base'))
 plus2:SetPoint("LEFT", timeBar.Background:GetWidth() * 0.8, 0) -- 20% Time left
 plus2:SetSize(2, 14)
 plus2.text = timeBar.Foreground:CreateFontString()
-plus2.text:SetFontObject(const.FONT_OBJECTS.DEFAULT_SMALL)
+plus2.text:SetFont(styles.FONTS.NORMAL, 14)
 plus2.text:SetJustifyH("RIGHT")
 plus2.text:SetPoint("RIGHT", plus2, "LEFT", -8, 0)
 timerFrame.plus2 = plus2
 
 local plus1 = {}
 plus1.text = timeBar.Foreground:CreateFontString()
-plus1.text:SetFontObject(const.FONT_OBJECTS.DEFAULT_SMALL)
+plus1.text:SetFont(styles.FONTS.NORMAL, 14)
 plus1.text:SetJustifyH("RIGHT")
 plus1.text:SetPoint("RIGHT", timeBar, "RIGHT", -8, 0)
 timerFrame.plus1 = plus1
 
-local countBar = progressBar.CreateFrame(timerFrame, {
+local countBar = widgets.ProgressBar.CreateFrame(timerFrame, {
     height = 33,
     background_color = barColor,
     border_size = 1,
@@ -422,13 +419,13 @@ local countBar = progressBar.CreateFrame(timerFrame, {
 timerFrame.countBar = countBar
 
 local countPercent = countBar.Foreground:CreateFontString()
-countPercent:SetFontObject(const.FONT_OBJECTS.DEFAULT_SMALL)
+countPercent:SetFont(styles.FONTS.NORMAL, 14)
 countPercent:SetJustifyH("LEFT")
 countPercent:SetPoint("LEFT", countBar, "LEFT", 8, 0)
 timerFrame.countPercent = countPercent
 
 local countNumber = countBar.Foreground:CreateFontString()
-countNumber:SetFontObject(const.FONT_OBJECTS.DEFAULT_SMALL)
+countNumber:SetFont(styles.FONTS.NORMAL, 14)
 countNumber:SetJustifyH("RIGHT")
 countNumber:SetPoint("RIGHT", countBar, "RIGHT", -8, 0)
 timerFrame.countNumber = countNumber

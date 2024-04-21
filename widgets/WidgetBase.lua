@@ -1,6 +1,5 @@
-local Private = select(2, ...)
-local addon = Private.Addon
+local _, KeystoneCompanion = ...
 
-addon.Widgets = addon.Widgets or {}
+KeystoneCompanion.widgets = KeystoneCompanion.widgets or {}
 
 -- maybe use this file for mixins later that add basic functionality to all custom frame templates
