@@ -313,8 +313,8 @@ function timerFrame:UpdateFrame()
                     bossBar.time:SetTextColor(styles.COLORS.YELLOW_LIGHT:GetRGBA())
                     bossBar.bestDiff:SetTextColor(styles.COLORS.YELLOW_LIGHT:GetRGBA())
                 elseif best > deathTime then
-                    bossBar.time:SetTextColor(styles.COLORS.YELLOW_LIGHT:GetRGBA())
-                    bossBar.bestDiff:SetTextColor(styles.COLORS.YELLOW_LIGHT:GetRGBA())
+                    bossBar.time:SetTextColor(styles.COLORS.GREEN_LIGHT:GetRGBA())
+                    bossBar.bestDiff:SetTextColor(styles.COLORS.GREEN_LIGHT:GetRGBA())
                 end
             end
         end
@@ -339,7 +339,6 @@ local barColor = CreateColorFromHexString("FF333333")
 
 local headerBar = widgets.RoundedFrame.CreateFrame(timerFrame, {
     height = 38,
-    use_border = false,
     background_color = headerColor,
     points = {
         { "TOPLEFT",  12,  -12 },
@@ -369,7 +368,6 @@ timerFrame.affixes = affixes
 
 local timeBar = widgets.ProgressBar.CreateFrame(timerFrame, {
     height = 25,
-    use_border = false,
     background_color = barColor,
     points = {
         { "TOPLEFT",  headerBar, "BOTTOMLEFT",  0, -12 },

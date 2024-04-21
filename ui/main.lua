@@ -4,7 +4,7 @@ local getTexturePath = KeystoneCompanion.utils.path.getTexturePath;
 local styles = KeystoneCompanion.constants.styles;
 
 local UI = CreateRoundedFrame(UIParent, {
-  width = 438, height = 566, border_size = 1, frame_strata = "HIGH"
+  width = 438, height = 566, border_size = 1, frame_strata = "DIALOG"
 });
 KeystoneCompanion.UI = { Frame = UI };
 

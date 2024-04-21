@@ -20,7 +20,6 @@ local function mixTables(...)
 end
 
 ---@class ProgressBarOptions
----@field foreground_color colorRGB?
 ---@field fill_direction FillDirections?
 ---@field progress_value number?
 ---@field progress_total number?
@@ -30,6 +29,8 @@ local defaultOptions = {
     points = { { "CENTER" } },
     border_size = 2,
     border_color = styles.COLORS.BORDER,
+    background_color = styles.COLORS.BACKGROUND,
+    frame_strata = 'HIGH',
     fill_direction = "RIGHT",
     progress_value = 50,
     progress_total = 100
@@ -61,8 +62,6 @@ local function createBar(parent, options)
     frame.Background:ClearAllPoints()
     frame.Background:SetAllPoints()
     frame.Background.Background:SetDrawLayer("BACKGROUND", -1)
-    options.use_border = false
-    options.background_color = options.foreground_color
     frame.Foreground = RoundedFrame.CreateFrame(frame, options)
     frame.Foreground.Background:SetDrawLayer("BACKGROUND", 0)
     frame.Foreground:ClearAllPoints()
@@ -119,6 +118,10 @@ local function createBar(parent, options)
 
     frame:SetFill(options.fill_direction)
     frame:SetProgress(options.progress_value, options.progress_total)
+
+    if options.frame_strata then
+        frame:SetFrameStrata(options.frame_strata)
+    end
 
     return frame
 end

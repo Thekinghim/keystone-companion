@@ -37,12 +37,16 @@ end
 ---@field points table?
 ---@field border_size number?
 ---@field border_color colorRGB?
+---@field background_color colorRGB?
+---@field frame_strata FrameStrata?
 local defaultOptions = {
     height = 200,
     width = 200,
     points = { { "CENTER" } },
     border_size = 0,
     border_color = styles.COLORS.BORDER,
+    background_color = styles.COLORS.BACKGROUND,
+    frame_strata = "HIGH"
 }
 
 ---@param parent Frame
@@ -62,7 +66,8 @@ local function createRoundedFrame(parent, options)
 
     frame.Background = frame:CreateTexture(nil, "BACKGROUND")
     applySlice(frame.Background, pathUtil.getTexturePath('rounded-frame/base.tga'))
-    frame.Background:SetVertexColor(styles.COLORS.BACKGROUND:GetRGBA())
+    print(options.background_color:GetRGBA())
+    frame.Background:SetVertexColor(options.background_color:GetRGBA())
     frame.Background:SetAllPoints()
 
     if options.border_size > 0 then
