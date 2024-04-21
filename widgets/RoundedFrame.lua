@@ -66,7 +66,6 @@ local function createRoundedFrame(parent, options)
 
     frame.Background = frame:CreateTexture(nil, "BACKGROUND")
     applySlice(frame.Background, pathUtil.getTexturePath('rounded-frame/base.tga'))
-    print(options.background_color:GetRGBA())
     frame.Background:SetVertexColor(options.background_color:GetRGBA())
     frame.Background:SetAllPoints()
 

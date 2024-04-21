@@ -13,6 +13,7 @@ local timerFrame = widgets.RoundedFrame.CreateFrame(UIParent, {
     width = 352,
     height = 265,
     border_size = 1,
+    background_color = CreateColorFromHexString("99131315")
 })
 KeystoneCompanion.DungeonTimerFrame = timerFrame
 timerFrame:Hide()
