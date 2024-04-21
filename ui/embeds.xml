@@ -3,4 +3,5 @@
 ..\FrameXML\UI.xsd">
     <Script file="main.lua"/>
     <Script file="settings.lua"/>
+    <Script file="seasonBest.lua"/>
 </Ui>

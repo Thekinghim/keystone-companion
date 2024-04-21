@@ -90,6 +90,8 @@
     "COLORS",
     "BACK",
     "BACKGROUND",
-    "YELL"
+    "YELL",
+    "HIGHLIGHT_FONT_COLOR",
+    "ChallengesFrame"
   ]
 }
