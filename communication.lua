@@ -1,3 +1,5 @@
+local _, KeystoneCompanion = ...
+
 KeystoneCompanion.communication = { prefix = "keystonecomp", messageTypes = {LOGON = "LOGON", QUERY = "QUERY", UPDATE = "UPDATE"}, handlers = {}}
 local LibDeflate = LibStub:GetLibrary("LibDeflate");
 local LIB_OPEN_RAID_COMM_PREFIX = 'LRS';

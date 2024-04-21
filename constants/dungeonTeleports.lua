@@ -1,3 +1,5 @@
+local _, KeystoneCompanion = ...
+
 KeystoneCompanion.constants = KeystoneCompanion.constants or {};
 KeystoneCompanion.constants.dungeonTeleports = {
   [643] = {

@@ -1,3 +1,4 @@
+local _, KeystoneCompanion = ...
 KeystoneCompanion.dev = {};
 
 function KeystoneCompanion.dev.CloneInventory(from, to)

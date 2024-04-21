@@ -96,9 +96,13 @@
     "Background",
     "RunNextFrame",
     "ObjectiveTrackerFrame",
+    "PRIMARY",
+    "ICON_LIST",
+    "COLOR",
+    "COLORS",
+    "BACK",
+    "BACKGROUND",
+    "YELL",
     "MDT"
-  ],
-  "Lua.diagnostics.disable": [
-    "deprecated"
   ]
 }

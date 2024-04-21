@@ -1,23 +1,21 @@
-local Private = select(2, ...)
-local addon = Private.Addon
+local _, KeystoneCompanion = ...
+local styles = KeystoneCompanion.constants.styles;
+local pathUtil = KeystoneCompanion.utils.path;
 
-if not addon.Widgets then
-    addon.print("Widgets Missing")
-    return
-end
-local const = addon.constants.misc
-
----@param size number
-local function getBorderForSize(size)
-    if not const.VALID_BORDER_SIZES[size] then size = 2 end
-    return const.ASSETS_PATH .. "/textures/rounded-square-border-" .. size .. "px.tga"
-end
+local borderTextures = {
+  [1] = pathUtil.getTexturePath('rounded-frame/border-1px.tga');
+  [2] = pathUtil.getTexturePath('rounded-frame/border-2px.tga');
+  [4] = pathUtil.getTexturePath('rounded-frame/border-4px.tga');
+  [6] = pathUtil.getTexturePath('rounded-frame/border-6px.tga');
+  [8] = pathUtil.getTexturePath('rounded-frame/border-8px.tga');
+  [10] = pathUtil.getTexturePath('rounded-frame/border-10px.tga');
+}
 
 ---@param frame Texture
 ---@param texture string
 local function applySlice(frame, texture)
     frame:SetTexture(texture)
-    frame:SetTextureSliceMargins(24, 24, 24, 24)
+    frame:SetTextureSliceMargins(12, 12, 12, 12)
     frame:SetTextureSliceMode(Enum.UITextureSliceMode.Tiled)
 end
 
@@ -36,24 +34,15 @@ end
 ---@class RoundedFrameOptions
 ---@field height number?
 ---@field width number?
----@field parent Frame?
 ---@field points table?
----@field background_color colorRGB?
----@field background_texture string?
----@field use_border boolean?
----@field border_color colorRGB?
----@field border_texture string?
 ---@field border_size number?
+---@field border_color colorRGB?
 local defaultOptions = {
     height = 200,
     width = 200,
     points = { { "CENTER" } },
-    background_color = const.COLORS.BACKGROUND,
-    background_texture = const.TEXTURES.ROUNDED_SQUARE,
-    use_border = true,
-    border_color = const.COLORS.BORDER,
-    border_texture = const.TEXTURES.ROUNDED_BORDER,
-    border_size = 2, -- Default Texture has a 2px border
+    border_size = 0,
+    border_color = styles.COLORS.BORDER,
 }
 
 ---@param parent Frame
@@ -62,46 +51,39 @@ local defaultOptions = {
 local function createRoundedFrame(parent, options)
     parent = parent or UIParent
     options = mixTables(defaultOptions, options)
+
     ---@class RoundedFrame:Frame
     local frame = CreateFrame("Frame", nil, parent)
     for _, point in ipairs(options.points) do
         frame:SetPoint(unpack(point))
     end
+
     frame:SetSize(options.width, options.height)
 
     frame.Background = frame:CreateTexture(nil, "BACKGROUND")
-    applySlice(frame.Background, options.background_texture)
-    frame.Background:SetVertexColor(options.background_color:GetRGBA())
+    applySlice(frame.Background, pathUtil.getTexturePath('rounded-frame/base.tga'))
+    frame.Background:SetVertexColor(styles.COLORS.BACKGROUND:GetRGBA())
     frame.Background:SetAllPoints()
 
-    if options.use_border then
+    if options.border_size > 0 then
         frame.Border = frame:CreateTexture(nil, "BORDER")
-        applySlice(frame.Border, options.border_texture)
+        applySlice(frame.Border, borderTextures[options.border_size])
         frame.Border:SetVertexColor(options.border_color:GetRGBA())
         frame.Border:SetPoint("TOPLEFT", -options.border_size, options.border_size)
         frame.Border:SetPoint("BOTTOMRIGHT", options.border_size, -options.border_size)
     end
 
+    if options.frame_strata then
+        frame:SetFrameStrata(options.frame_strata)
+    end
+
     return frame
 end
 
---[[
-    Example Usage:
-    local rf = Private.RoundedFrame
-    local borderSize = 4
-    local options = {
-        width = 352,
-        height = 265,
-        border_size = borderSize,
-        border_texture = rf.GetBorderForSize(borderSize)
-    }
-    local frame = rf.CreateFrame(UIParent, options)
-]]
+KeystoneCompanion.widgets = KeystoneCompanion.widgets or {};
 
 ---@class RoundedFrameAPI
----@field CreateFrame fun(parent:Frame, options:RoundedFrameOptions) : RoundedFrame
----@field GetBorderForSize fun(size:number)
-addon.Widgets.RoundedFrame = {
-    CreateFrame = createRoundedFrame,
-    GetBorderForSize = getBorderForSize,
+---@field CreateFrame fun(parent:Frame, options:RoundedFrameOptions): Frame
+KeystoneCompanion.widgets.RoundedFrame = {
+    CreateFrame = createRoundedFrame
 }

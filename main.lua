@@ -1,3 +1,6 @@
+local addonName, KeystoneCompanion = ...;
+local getTexturePath = KeystoneCompanion.utils.path.getTexturePath;
+
 KeystoneCompanion.loaded = false;
 local print, colorise, devPrint = KeystoneCompanion.print, KeystoneCompanion.colorise, KeystoneCompanion.dev.print
 local LibSerialize = LibStub:GetLibrary("LibSerialize");
@@ -8,6 +11,8 @@ local function ToggleUI()
   if(KeystoneCompanion.UI.Frame:IsShown()) then
     KeystoneCompanion.UI.Frame:Hide();
   else
+    KeystoneCompanion.UI.Settings:Hide();
+    KeystoneCompanion.UI.Frame.Party:Show();
     KeystoneCompanion.UI.Rerender();
     KeystoneCompanion.UI.Frame:Show();
   end
@@ -15,7 +20,7 @@ end
 
 local dataBrokerObj = LibDataBroker:NewDataObject('Keystone Companion', {
   type = 'launcher',
-  icon = 'Interface/AddOns/Keystone-Companion/assets/textures/addon-icon',
+  icon = getTexturePath('icons/addon'),
   OnClick = function() ToggleUI() end,
   OnTooltipShow = function(tooltip)
     tooltip:AddLine("Keystone Companion", 1, 1, 1)
@@ -27,6 +32,11 @@ local function InitDataBrokerIcon()
   KeystoneCompanionDB.libDBIcon = KeystoneCompanionDB.libDBIcon or {hide = false};
   if(not LibDBIcon:GetMinimapButton('Keystone Companion')) then
     LibDBIcon:Register('Keystone Companion', dataBrokerObj, KeystoneCompanionDB.libDBIcon);
+  end
+  if(KeystoneCompanionDB.settings.MinimapButton ~= false) then
+    LibDBIcon:Show('Keystone Companion')
+  else
+    LibDBIcon:Hide('Keystone Companion')
   end
 end
 
@@ -40,6 +50,7 @@ KeystoneCompanion.EventFrame:SetScript('OnEvent', function(self, event, ...)
   devPrint('event - ' .. event);
   if event == 'PLAYER_ENTERING_WORLD' then
       if (KeystoneCompanionDB.UI ~= nil) then
+        KeystoneCompanion.UI.Frame:ClearAllPoints();
         KeystoneCompanion.UI.Frame:SetPoint(KeystoneCompanionDB.UI.point, KeystoneCompanionDB.UI.relativeTo, KeystoneCompanionDB.UI.relativePoint, KeystoneCompanionDB.UI.offsetX, KeystoneCompanionDB.UI.offsetY)
       else
         KeystoneCompanion.UI.Frame:SetPoint('CENTER', UIParent, 'CENTER')
@@ -134,11 +145,23 @@ function SlashCmdList.KEYSTONECOMPANION(msg, editBox)
     if(args[2] == 'on' or args[2] == 'enable') then
       KeystoneCompanionDB.settings.DevMode = true;
       print('Developer mode ' .. colorise('38ee45', 'enabled'));
-    elseif(args[2] == 'off' or args[2] == 'disables') then
+    elseif(args[2] == 'off' or args[2] == 'disable') then
       KeystoneCompanionDB.settings.DevMode = false;
       print('Developer mode ' .. colorise('00ffff', 'disabled'));
     else
       print('/kc dev [enable|on|disable|off]')
+    end
+  elseif(args[1] == 'minimap') then
+    if(args[2] == 'on' or args[2] == 'enable') then
+      KeystoneCompanionDB.settings.MinimapButton = true;
+      print('Minimap button ' .. colorise('38ee45', 'enabled'));
+      LibDBIcon:Show('Keystone Companion')
+    elseif(args[2] == 'off' or args[2] == 'disable') then
+      KeystoneCompanionDB.settings.MinimapButton = false;
+      print('Minimap button ' .. colorise('00ffff', 'disabled'));
+      LibDBIcon:Hide('Keystone Companion')
+    else
+      print('/kc minimap [enable|on|disable|off]')
     end
   end
 end
