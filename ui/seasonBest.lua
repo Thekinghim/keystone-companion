@@ -1,9 +1,10 @@
 local KeystoneCompanion = select(2, ...)
 local styles = KeystoneCompanion.constants.styles;
 local customIconMixin = { customMixin = true }
+local screenWidth = GetScreenWidth()
 
 local shortDungeonNames = {
-    -- Season 3 DF Dungeons
+    -- Season 3 Dragonflight Dungeons
     [168] = "EB",   -- The Everbloom
     [198] = "DHT",  -- Darkheart Thicket
     [244] = "AD",   -- Atal'Dazar
@@ -12,8 +13,23 @@ local shortDungeonNames = {
     [456] = "TOTT", -- Throne of the Tides
     [463] = "FALL", -- Dawn of the Infinite: Galakrond's Fall
     [248] = "WM",   -- Waycrest Manor
+
+    -- Season 4 Dragonflight Dungeons
+    [399] = "RLP",  -- Ruby Life Pools
+    [404] = "NELT", -- Neltharus
+    [401] = "AV",   -- The Azure Vault
+    [402] = "AA",   -- Algeth'ar Academy
+    [400] = "NO",   -- The Nokhud Offensive
+    [403] = "ULD",  -- Uldaman: Legacy of Tyr
+    [406] = "HOI",  -- Halls of Infusion
+    [405] = "BH",   -- Brackenhide Hollow
 }
 
+--[[ 
+    This function is as backup
+    This will auto generate short names
+    It will return the last word if the short name is longer than 4 Letters
+]]
 local function shortenName(name)
     local short = ""
     for letter in name:gmatch("(%a)%a+") do
@@ -27,7 +43,7 @@ end
 
 local function getFont(parent, color, align)
     local font = parent:CreateFontString()
-    font:SetFont(styles.FONTS.BOLD, 10, "OUTLINE")
+    font:SetFont(styles.FONTS.BOLD, screenWidth > 1920 and 12 or 11, "OUTLINE")
     font:SetJustifyV("MIDDLE")
     font:SetFontObject(styles.FONT_OBJECTS.BOLD)
     font:SetJustifyH(align)
@@ -41,22 +57,22 @@ function customIconMixin:InitializeCustomFrames()
     dimm:SetColorTexture(0, 0, 0, .6)
 
     local divider = self:CreateTexture()
-    divider:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 8, 8)
-    divider:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", -8, 8)
+    divider:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 6, 6)
+    divider:SetPoint("BOTTOMRIGHT", self, "TOPRIGHT", -6, 6)
     divider:SetHeight(2)
     divider:SetColorTexture(styles.COLORS.BORDER:GetRGBA())
 
     local tyra = getFont(self, styles.COLORS.TEXT_PRIMARY, "LEFT")
-    tyra:SetPoint("LEFT", 6, -8)
-    tyra:SetText("TYRA")
+    tyra:SetPoint("LEFT", 5, -10)
+    tyra:SetText("TYRA:")
     local forti = getFont(self, styles.COLORS.TEXT_PRIMARY, "LEFT")
-    forti:SetPoint("LEFT", 6, 8)
-    forti:SetText("FORTI")
+    forti:SetPoint("LEFT", 5, 10)
+    forti:SetText("FORTI:")
 
     local tLevel = getFont(self, styles.COLORS.TEXT_HIGHLIGHT, "RIGHT")
-    tLevel:SetPoint("RIGHT", -6, -8)
+    tLevel:SetPoint("RIGHT", -5, -10)
     local fLevel = getFont(self, styles.COLORS.TEXT_HIGHLIGHT, "RIGHT")
-    fLevel:SetPoint("RIGHT", -6, 8)
+    fLevel:SetPoint("RIGHT", -5, 10)
 
     local shortName = getFont(self, styles.COLORS.TEXT_PRIMARY, "LEFT")
     shortName:SetPoint("BOTTOMLEFT", divider, "TOPLEFT", -2, 4)
