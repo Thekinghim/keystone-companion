@@ -2,6 +2,7 @@ local addonName, KeystoneCompanion = ...
 local widgets = KeystoneCompanion.widgets
 local styles = KeystoneCompanion.constants.styles;
 local getTexturePath = KeystoneCompanion.utils.path.getTexturePath;
+local fillColor = CreateColorFromHexString("FF009901")
 local dungeonNameFixes = {
     [464] = "DotI: Upper", -- Dawn of the Infinite: Murozond's Rise
     [463] = "DotI: Lower", -- Dawn of the Infinite: Galakrond's Fall
@@ -85,15 +86,15 @@ local function loadTimerFrame()
             boss = CreateFrame("Frame", nil, timerFrame)
             boss:SetHeight(25)
             boss.name = boss:CreateFontString()
-            boss.name:SetFont(styles.FONTS.NORMAL, 14);
+            boss.name:SetFont(styles.FONTS.BOLD, 14);
             boss.name:SetJustifyH("LEFT")
             boss.name:SetPoint("LEFT", 8, 0)
             boss.bestDiff = boss:CreateFontString()
-            boss.bestDiff:SetFont(styles.FONTS.NORMAL, 14);
+            boss.bestDiff:SetFont(styles.FONTS.BOLD, 14);
             boss.bestDiff:SetJustifyH("RIGHT")
             boss.bestDiff:SetPoint("RIGHT", -75, 0)
             boss.time = boss:CreateFontString()
-            boss.time:SetFont(styles.FONTS.NORMAL, 14)
+            boss.time:SetFont(styles.FONTS.BOLD, 14)
             boss.time:SetJustifyH("RIGHT")
             boss.time:SetPoint("RIGHT", -8, 0)
             tinsert(bossFrames, boss)
@@ -453,7 +454,8 @@ local function loadTimerFrame()
     local timeBar = widgets.ProgressBar.CreateFrame(timerFrame, {
         height = 25,
         background_color = barColor,
-        border_size = 2,
+        foreground_color = fillColor,
+        border_size = 0,
         points = {
             { "TOPLEFT",  headerBar, "BOTTOMLEFT",  0, -12 },
             { "TOPRIGHT", headerBar, "BOTTOMRIGHT", 0, -12 }
@@ -462,34 +464,34 @@ local function loadTimerFrame()
     timerFrame.timeBar = timeBar
 
     local timeText = timeBar.Foreground:CreateFontString()
-    timeText:SetFont(styles.FONTS.NORMAL, 14)
+    timeText:SetFont(styles.FONTS.BOLD, 14)
     timeText:SetJustifyH("LEFT")
     timeText:SetPoint("LEFT", 8, 0)
     timerFrame.time = timeText
 
     local plus3 = timeBar.Foreground:CreateTexture()
-    plus3:SetTexture(getTexturePath('roudned-frame/base'))
+    plus3:SetTexture(getTexturePath('rounded-frame/base'))
     plus3:SetPoint("LEFT", timeBar.Background:GetWidth() * 0.6, 0) -- 40% Time left
     plus3:SetSize(2, 14)
     plus3.text = timeBar.Foreground:CreateFontString()
-    plus3.text:SetFont(styles.FONTS.NORMAL, 14)
+    plus3.text:SetFont(styles.FONTS.BOLD, 14)
     plus3.text:SetJustifyH("RIGHT")
     plus3.text:SetPoint("RIGHT", plus3, "LEFT", -8, 0)
     timerFrame.plus3 = plus3
 
     local plus2 = timeBar.Foreground:CreateTexture()
-    plus2:SetTexture(getTexturePath('roudned-frame/base'))
+    plus2:SetTexture(getTexturePath('rounded-frame/base'))
     plus2:SetPoint("LEFT", timeBar.Background:GetWidth() * 0.8, 0) -- 20% Time left
     plus2:SetSize(2, 14)
     plus2.text = timeBar.Foreground:CreateFontString()
-    plus2.text:SetFont(styles.FONTS.NORMAL, 14)
+    plus2.text:SetFont(styles.FONTS.BOLD, 14)
     plus2.text:SetJustifyH("RIGHT")
     plus2.text:SetPoint("RIGHT", plus2, "LEFT", -8, 0)
     timerFrame.plus2 = plus2
 
     local plus1 = {}
     plus1.text = timeBar.Foreground:CreateFontString()
-    plus1.text:SetFont(styles.FONTS.NORMAL, 14)
+    plus1.text:SetFont(styles.FONTS.BOLD, 14)
     plus1.text:SetJustifyH("RIGHT")
     plus1.text:SetPoint("RIGHT", timeBar, "RIGHT", -8, 0)
     timerFrame.plus1 = plus1
@@ -502,13 +504,13 @@ local function loadTimerFrame()
     timerFrame.countBar = countBar
 
     local countPercent = countBar.Foreground:CreateFontString()
-    countPercent:SetFont(styles.FONTS.NORMAL, 14)
+    countPercent:SetFont(styles.FONTS.BOLD, 14)
     countPercent:SetJustifyH("LEFT")
     countPercent:SetPoint("LEFT", countBar, "LEFT", 8, 0)
     timerFrame.countPercent = countPercent
 
     local countNumber = countBar.Foreground:CreateFontString()
-    countNumber:SetFont(styles.FONTS.NORMAL, 14)
+    countNumber:SetFont(styles.FONTS.BOLD, 14)
     countNumber:SetJustifyH("RIGHT")
     countNumber:SetPoint("RIGHT", countBar, "RIGHT", -8, 0)
     timerFrame.countNumber = countNumber
