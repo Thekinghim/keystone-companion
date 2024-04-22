@@ -136,6 +136,7 @@
     "UnitClass",
     "GetSpellTexture",
     "C_Item",
+    "HIGHLIGHT_FONT_COLOR",
     "ChallengesFrame"
   ]
 }
