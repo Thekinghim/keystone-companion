@@ -537,6 +537,16 @@ eventFrame:SetScript("OnEvent", function(_, ...)
         local loadedAddon = select(2, ...)
         if loadedAddon == addonName then
             loadTimerFrame()
+            -- Creates a Tooltip hook to show MDT count on Unit Tooltips
+            TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tooltip, data)
+                if not MDT then return end
+                local guid = data.guid
+                if not guid then return end
+                local npcID = select(6, strsplit("-", guid))
+                if not npcID then return end
+                local count = MDT:GetEnemyForces(tonumber(npcID))
+                tooltip:AddDoubleLine("M+ Count", count)
+            end)
             eventFrame:UnregisterEvent("ADDON_LOADED")
         end
     end
