@@ -86,15 +86,15 @@ local function loadTimerFrame()
             boss = CreateFrame("Frame", nil, timerFrame)
             boss:SetHeight(25)
             boss.name = boss:CreateFontString()
-            boss.name:SetFont(styles.FONTS.BOLD, 14);
+            boss.name:SetFont(styles.FONTS.BOLD, 14, "OUTLINE");
             boss.name:SetJustifyH("LEFT")
             boss.name:SetPoint("LEFT", 8, 0)
             boss.bestDiff = boss:CreateFontString()
-            boss.bestDiff:SetFont(styles.FONTS.BOLD, 14);
+            boss.bestDiff:SetFont(styles.FONTS.BOLD, 14, "OUTLINE");
             boss.bestDiff:SetJustifyH("RIGHT")
             boss.bestDiff:SetPoint("RIGHT", -75, 0)
             boss.time = boss:CreateFontString()
-            boss.time:SetFont(styles.FONTS.BOLD, 14)
+            boss.time:SetFont(styles.FONTS.BOLD, 14, "OUTLINE")
             boss.time:SetJustifyH("RIGHT")
             boss.time:SetPoint("RIGHT", -8, 0)
             tinsert(bossFrames, boss)
@@ -432,21 +432,21 @@ local function loadTimerFrame()
     })
 
     local deathText = headerBar:CreateFontString()
-    deathText:SetFont(styles.FONTS.BOLD, 16)
+    deathText:SetFont(styles.FONTS.BOLD, 16, "OUTLINE")
     deathText:SetJustifyH("RIGHT")
     deathText:SetTextColor(styles.COLORS.TEXT_HIGHLIGHT:GetRGBA())
     deathText:SetPoint("RIGHT", -12, 0)
     timerFrame.deaths = deathText
 
     local dungeonTitle = headerBar:CreateFontString()
-    dungeonTitle:SetFont(styles.FONTS.BOLD, 16)
+    dungeonTitle:SetFont(styles.FONTS.BOLD, 16, "OUTLINE")
     dungeonTitle:SetJustifyH("LEFT")
     dungeonTitle:SetTextColor(styles.COLORS.TEXT_PRIMARY:GetRGBA())
     dungeonTitle:SetPoint("LEFT", 12, 0)
     timerFrame.title = dungeonTitle
 
     local affixes = headerBar:CreateFontString()
-    affixes:SetFont(styles.FONTS.BOLD, 16)
+    affixes:SetFont(styles.FONTS.BOLD, 16, "OUTLINE")
     affixes:SetJustifyH("LEFT")
     affixes:SetPoint("LEFT", dungeonTitle, "RIGHT", 12, 0)
     timerFrame.affixes = affixes
@@ -464,7 +464,7 @@ local function loadTimerFrame()
     timerFrame.timeBar = timeBar
 
     local timeText = timeBar.Foreground:CreateFontString()
-    timeText:SetFont(styles.FONTS.BOLD, 14)
+    timeText:SetFont(styles.FONTS.BOLD, 14, "")
     timeText:SetJustifyH("LEFT")
     timeText:SetPoint("LEFT", 8, 0)
     timerFrame.time = timeText
@@ -474,7 +474,7 @@ local function loadTimerFrame()
     plus3:SetPoint("LEFT", timeBar.Background:GetWidth() * 0.6, 0) -- 40% Time left
     plus3:SetSize(2, 14)
     plus3.text = timeBar.Foreground:CreateFontString()
-    plus3.text:SetFont(styles.FONTS.BOLD, 14)
+    plus3.text:SetFont(styles.FONTS.BOLD, 14, "")
     plus3.text:SetJustifyH("RIGHT")
     plus3.text:SetPoint("RIGHT", plus3, "LEFT", -8, 0)
     timerFrame.plus3 = plus3
@@ -484,14 +484,14 @@ local function loadTimerFrame()
     plus2:SetPoint("LEFT", timeBar.Background:GetWidth() * 0.8, 0) -- 20% Time left
     plus2:SetSize(2, 14)
     plus2.text = timeBar.Foreground:CreateFontString()
-    plus2.text:SetFont(styles.FONTS.BOLD, 14)
+    plus2.text:SetFont(styles.FONTS.BOLD, 14, "")
     plus2.text:SetJustifyH("RIGHT")
     plus2.text:SetPoint("RIGHT", plus2, "LEFT", -8, 0)
     timerFrame.plus2 = plus2
 
     local plus1 = {}
     plus1.text = timeBar.Foreground:CreateFontString()
-    plus1.text:SetFont(styles.FONTS.BOLD, 14)
+    plus1.text:SetFont(styles.FONTS.BOLD, 14, "")
     plus1.text:SetJustifyH("RIGHT")
     plus1.text:SetPoint("RIGHT", timeBar, "RIGHT", -8, 0)
     timerFrame.plus1 = plus1
@@ -499,18 +499,22 @@ local function loadTimerFrame()
     local countBar = widgets.ProgressBar.CreateFrame(timerFrame, {
         height = 33,
         background_color = barColor,
+        foreground_color = fillColor,
         border_size = 2,
     })
+    countBar.Background.Border:ClearAllPoints()
+    countBar.Background.Border:SetPoint("TOPLEFT", -1, 1)
+    countBar.Background.Border:SetPoint("BOTTOMRIGHT", 1, -1)
     timerFrame.countBar = countBar
 
     local countPercent = countBar.Foreground:CreateFontString()
-    countPercent:SetFont(styles.FONTS.BOLD, 14)
+    countPercent:SetFont(styles.FONTS.BOLD, 14, "")
     countPercent:SetJustifyH("LEFT")
     countPercent:SetPoint("LEFT", countBar, "LEFT", 8, 0)
     timerFrame.countPercent = countPercent
 
     local countNumber = countBar.Foreground:CreateFontString()
-    countNumber:SetFont(styles.FONTS.BOLD, 14)
+    countNumber:SetFont(styles.FONTS.BOLD, 14, "")
     countNumber:SetJustifyH("RIGHT")
     countNumber:SetPoint("RIGHT", countBar, "RIGHT", -8, 0)
     timerFrame.countNumber = countNumber
