@@ -7,7 +7,7 @@ KeystoneCompanionDB = {
   }
 }
 
-KeystoneCompanion.version = '1.0.4';
+KeystoneCompanion.version = '1.1.1';
 KeystoneCompanion.buildType = 'release';
 KeystoneCompanion.isDev = function() return KeystoneCompanionDB.settings.DevMode end;
 KeystoneCompanion.print = function(msg) print("|cffddca2eKeystoneCompanion|r: " .. msg) end;
