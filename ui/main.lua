@@ -23,11 +23,11 @@ UI:SetScript('OnDragStop', function(self)
 end)
 
 UI.Top = CreateFrame('Frame', 'KeystoneCompanionTop', UI);
-UI.Top:SetSize(384, 56)
+UI.Top:SetSize(431, 56)
 UI.Top:SetPoint('TOPRIGHT', UI, 'TOPRIGHT', -20, -13)
 
 UI.Title = CreateFrame('Frame', 'KeystoneCompanionTitle', UI);
-UI.Title:SetSize(345, 56);
+UI.Title:SetSize(388, 56);
 UI.Title:SetPoint('LEFT', UI.Top, 'LEFT');
 UI.Title.Mask = UI.Title:CreateMaskTexture();
 UI.Title.Mask:SetAllPoints(UI.Title);
@@ -79,11 +79,11 @@ UI.Party:SetSize(438, 461);
 UI.Party:SetPoint('TOPLEFT', UI, 'TOPLEFT', 13, -93);
 
 UI.Party.Header = CreateFrame('Frame', 'KeystoneCompanionPartyHeader', UI.Party);
-UI.Party.Header:SetSize(438, 17);
+UI.Party.Header:SetSize(442, 17);
 UI.Party.Header:SetPoint('TOPLEFT', UI.Party, 'TOPLEFT')
 
 UI.Party.HeaderBar = CreateFrame('Frame', 'KeystoneCompanionHeaderBar', UI.Header);
-UI.Party.HeaderBar:SetSize(470, 1);
+UI.Party.HeaderBar:SetHeight(1);
 UI.Party.HeaderBar:SetPoint('BOTTOMLEFT', UI.Party.Header, 'BOTTOMLEFT');
 UI.Party.HeaderBar:SetPoint('BOTTOMRIGHT', UI.Party.Header, 'BOTTOMRIGHT');
 UI.Party.HeaderBar.Texture = UI.Party.Header:CreateTexture('KeystoneCompanionHeaderBarTexture', 'OVERLAY')
@@ -129,7 +129,7 @@ UI.Party.Header.Weapon = UI.Party.Header:CreateFontString('KeystoneCompanionHead
 UI.Party.Header.Weapon:SetSize(67, 12)
 UI.Party.Header.Weapon:SetFontObject(styles.FONT_OBJECTS.BOLD);
 UI.Party.Header.Weapon:SetJustifyH('LEFT');
-UI.Party.Header.Weapon:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 396, 0);
+UI.Party.Header.Weapon:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 392, 0);
 UI.Party.Header.Weapon:SetText('Weapon')
 
 UI.Footer = CreateFrame('Frame', 'KeystoneCompanionFooter', UI);
@@ -532,7 +532,7 @@ for i = 1, 5 do
   playerRow.Rune = createItemCell(playerRow.Inventory, i, 2, 'Rune');
   playerRow.Potions = createItemCell(playerRow.Inventory, i, 3, 'Potion');
   playerRow.Flasks = createItemCell(playerRow.Inventory, i, 4, 'Flask');
-  playerRow.Weapon = createItemCell(playerRow.Inventory, i, 5, 'Weapon');
+  playerRow.Weapon = createItemCell(playerRow.Inventory, i, 5, 'WeaponEnchantment');
   playerRow.Inventory:Hide();
 end
 
