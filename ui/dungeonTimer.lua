@@ -135,7 +135,8 @@ local function loadTimerFrame()
     end
 
     function timerFrame:SaveAnchors()
-        db.settings.timerSettings.anchor = { self:GetPoint() }
+        local point, _, relativePoint, offsetX, offsetY = self:GetPoint();
+        db.settings.timerSettings.anchor = { point = point, relativePoint = relativePoint, offsetX = offsetX, offsetY = offsetY }
     end
 
     function timerFrame:SetActivated(state)
@@ -151,12 +152,10 @@ local function loadTimerFrame()
         self:SaveAnchors()
     end
 
-    function timerFrame:SetAnchors(anchors)
-        if not anchors then return end
+    function timerFrame:SetAnchors(anchor)
+        if not anchor then return end
         self:ClearAllPoints()
-        for _, anchor in ipairs(anchors) do
-            self:SetPoint(unpack(anchor))
-        end
+        self:SetPoint(anchor.point, UIParent, anchor.relativePoint, anchor.offsetX, anchor.offsetY)
     end
 
     function timerFrame:ChangeAlpha(percent)
@@ -168,16 +167,16 @@ local function loadTimerFrame()
 
     function timerFrame:LoadSettings()
         if not db.settings then db.settings = {} end
-        if not db.settings.timerSettings then
+        if not db.settings.timerSettings or db.settings.timerSettings.anchor[1] ~= nil then
             db.settings.timerSettings = {
                 active = true,
                 scale = 80,
-                anchor = { "RIGHT", -25, 0 },
+                anchor = { point = "RIGHT", relativePoint = "RIGHT", offsetX = -25, offsetY = 0 },
                 alpha = 100
             }
         end
         local settings = db.settings.timerSettings
-        self:SetAnchors({ settings.anchor })
+        self:SetAnchors(settings.anchor)
         self:ScaleFrame(settings.scale)
         self:ChangeAlpha(settings.alpha)
 
