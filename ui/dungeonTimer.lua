@@ -333,6 +333,7 @@ local function loadTimerFrame()
     end
 
     function timerFrame:ReleaseFrame()
+        self.last = 0
         self:Hide()
         self:SetScript("OnUpdate", nil)
         for _, frame in ipairs(bossFrames) do
