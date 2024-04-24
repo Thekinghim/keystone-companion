@@ -17,4 +17,6 @@
     <Include file="ui/embeds.xml" />
 
     <Script file="main.lua"/>
+
+    <Script file="scoreCalculator.lua"/>
 </Ui>
