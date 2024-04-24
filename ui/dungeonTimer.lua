@@ -129,7 +129,7 @@ local function loadTimerFrame()
         self:EnableMouse(makeMovable)
 
         self:Show()
-        if not makeMovable and not C_ChallengeMode.IsChallengeModeActive() then
+        if not makeMovable and (not C_ChallengeMode.IsChallengeModeActive() or not db.settings.timerSettings.active) then
             self:Hide()
         end
     end
@@ -142,6 +142,10 @@ local function loadTimerFrame()
     function timerFrame:SetActivated(state)
         if state == nil then return end
         db.settings.timerSettings.active = state
+        self:ToggleMoveable(self:IsMovable())
+        if C_ChallengeMode.IsChallengeModeActive() then
+            self:OnEvent("CHALLENGE_MODE_START")
+        end
     end
 
     function timerFrame:ScaleFrame(percent)
