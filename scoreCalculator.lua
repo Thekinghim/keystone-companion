@@ -88,7 +88,6 @@ local function calcScores(dungeonId, customRuns)
     end
     if customRuns then
         for affix, info in pairs(customRuns) do
-            print(info.level)
             scoreData[affix] = calcScore(dungeonId, info.level, info.durationSec)
         end
     end
