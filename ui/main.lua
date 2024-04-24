@@ -202,6 +202,11 @@ UI.Discord:SetScript("OnLeave", function()
 end)
 
 UI.Tooltip = CreateFrame('GameTooltip', 'KeystoneCompanionTooltip', UIParent, 'GameTooltipTemplate');
+UI.Tooltip:RegisterEvent("MODIFIER_STATE_CHANGED");
+UI.Tooltip:SetScript("OnHide", function (self)
+  self:SetScript("OnEvent", nil);
+end);
+
 UI.CopyFrame = CreateRoundedFrame(UI,
   { width = UI:GetWidth(), height = 64, points = { { "LEFT", UI, "LEFT", 20, 0 }, { "RIGHT", UI, "RIGHT", -20, 0 }, { "CENTER", 0, 10 } }, border_size = 1 })
 UI.CopyFrame:SetFrameStrata("DIALOG");
@@ -246,7 +251,7 @@ UI.Discord:SetScript("OnMouseDown", function()
   UI.CopyFrame:Show();
 end)
 
-local createPlayerTooltip = function(self)
+local function createPlayerTooltip(self) -- changed it so that the function can call itself
   local playerName = self:GetAttribute('player')
   if (playerName == nil) then return end
   if (playerName == UnitName('player')) then playerName = 'self' end
@@ -276,8 +281,24 @@ local createPlayerTooltip = function(self)
 
   local mythicPlusScore = playerData.mythicPlusScore ~= nil and playerData.mythicPlusScore > 0 and
   C_ChallengeMode.GetDungeonScoreRarityColor(playerData.mythicPlusScore) or '';
-  local scoreColor = mythicPlusScore
+  local scoreColor = mythicPlusScore;
   local itemLevel = playerData.itemLevel;
+
+  UI.Tooltip:SetScript("OnEvent", function (tooltip)
+    if IsAltKeyDown() then
+      tooltip:ClearLines();
+      tooltip:SetText(self:GetAttribute('player'));
+      local maps = C_ChallengeMode.GetMapTable();
+      for _, mapID in ipairs(maps) do
+        local level = select(2, C_MythicPlus.GetWeeklyBestForMap(mapID)) or 0;
+        local name = C_ChallengeMode.GetMapUIInfo(mapID);
+        tooltip:AddDoubleLine(name, level, nil, nil, nil, C_ChallengeMode.GetKeystoneLevelRarityColor(level):GetRGBA());
+        UI.Tooltip:Show();
+      end
+    else
+      createPlayerTooltip(self);
+    end
+  end);
 end
 
 local createDungeonTooltip = function(self)
