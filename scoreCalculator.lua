@@ -592,31 +592,44 @@ end
 calculateButton.ShowResults = printScoreTable
 
 local UI = KeystoneCompanion.UI
-local calcButton = CreateFrame('Frame', nil, UI.Frame.Top)
-calcButton:SetSize(25, 25)
-calcButton:SetPoint('TOPRIGHT', UI.Frame.Top, 'TOPRIGHT', -30, 0)
-local mask = calcButton:CreateMaskTexture()
-mask:SetAllPoints()
-mask:SetTexture(getTexturePath('widgets/settings-button'), 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE')
-local background = calcButton:CreateTexture(nil, "BACKGROUND")
-background:SetAllPoints()
-background:SetColorTexture(28 / 255, 29 / 255, 32 / 255)
-background:AddMaskTexture(mask)
-local icon = calcButton:CreateTexture()
-icon:SetPoint("TOPLEFT", 2, -2)
-icon:SetPoint("BOTTOMRIGHT", -2, 2)
-icon:SetTexture(getTexturePath("widgets/calculator"))
-icon:SetVertexColor(.9, .9, .9)
-calcButton.bg = background
-UI.CalculatorButton = calcButton
+local function createCalcButton(parent, offsetX, offsetY)
+    local calcButton = CreateFrame('Frame', nil, parent)
+    calcButton:SetSize(25, 25)
+    calcButton:SetPoint('TOPRIGHT', parent, 'TOPRIGHT', offsetX, offsetY)
+    local mask = calcButton:CreateMaskTexture()
+    mask:SetAllPoints()
+    mask:SetTexture(getTexturePath('widgets/settings-button'), 'CLAMPTOBLACKADDITIVE', 'CLAMPTOBLACKADDITIVE')
+    local background = calcButton:CreateTexture(nil, "BACKGROUND")
+    background:SetAllPoints()
+    background:SetColorTexture(28 / 255, 29 / 255, 32 / 255)
+    background:AddMaskTexture(mask)
+    local icon = calcButton:CreateTexture()
+    icon:SetPoint("TOPLEFT", 2, -2)
+    icon:SetPoint("BOTTOMRIGHT", -2, 2)
+    icon:SetTexture(getTexturePath("widgets/calculator"))
+    icon:SetVertexColor(.9, .9, .9)
+    calcButton.bg = background
 
-calcButton:EnableMouse(true)
-calcButton:SetScript("OnMouseDown", function()
-    calculatorFrame:Show()
-end)
-calcButton:SetScript("OnEnter", function(self)
-    self.bg:SetColorTexture(50 / 255, 51 / 255, 54 / 255)
-end)
-calcButton:SetScript("OnLeave", function(self)
-    self.bg:SetColorTexture(28 / 255, 29 / 255, 32 / 255)
+    calcButton:EnableMouse(true)
+    calcButton:SetScript("OnMouseDown", function()
+        calculatorFrame:Show()
+    end)
+    calcButton:SetScript("OnEnter", function(self)
+        self.bg:SetColorTexture(50 / 255, 51 / 255, 54 / 255)
+    end)
+    calcButton:SetScript("OnLeave", function(self)
+        self.bg:SetColorTexture(28 / 255, 29 / 255, 32 / 255)
+    end)
+    return calcButton
+end
+
+UI.CalculatorButton = createCalcButton(UI.Frame.Top, -30, 0)
+
+local eventFrame = CreateFrame("Frame")
+eventFrame:RegisterEvent("ADDON_LOADED")
+eventFrame:SetScript("OnEvent", function(_, event, addon)
+    if event == "ADDON_LOADED" and addon == "Blizzard_ChallengesUI" then
+        createCalcButton(ChallengesFrame, -15, -30)
+        eventFrame:UnregisterAllEvents()
+    end
 end)
