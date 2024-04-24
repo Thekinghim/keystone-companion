@@ -203,7 +203,7 @@ local function loadTimerFrame()
         if not db.settings.timerSettings then
             timerFrame:LoadSettings()
         end
-        if not db.settings.timerSettings.active then
+        if not db.settings.timerSettings.active and event ~= "PLAYER_ENTERING_WORLD"  then
             self:ReleaseFrame()
             return
         end
