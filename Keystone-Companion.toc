@@ -6,6 +6,7 @@
 ## Notes: See your party's M+ keystones, dungeon reagents, and dungeon portals.
 ## SavedVariables: KeystoneCompanionDB
 ## DefaultState: enabled
+## OptionalDeps: MythicDungeonTools
 ## X-Curse-Project-ID: 984971
 ## X-WoWI-ID: 26711
 ## X-Wago-ID: 96do4ENO

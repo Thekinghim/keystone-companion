@@ -4,14 +4,14 @@ local getTexturePath = KeystoneCompanion.utils.path.getTexturePath;
 local styles = KeystoneCompanion.constants.styles;
 
 local UI = CreateRoundedFrame(UIParent, {
-  width = 438, height = 566, border_size = 1
+  width = 438, height = 566, border_size = 1, frame_strata = "DIALOG"
 });
 KeystoneCompanion.UI = { Frame = UI };
 
 UI:Hide();
 UI:SetMovable(true);
 UI:EnableMouse(true);
-UI:SetSize(438, 566);
+UI:SetSize(470, 566);
 UI:RegisterForDrag('LeftButton');
 UI:SetScript('OnDragStart', UI.StartMoving)
 UI:SetScript('OnDragStop', function(self)
@@ -23,7 +23,7 @@ UI:SetScript('OnDragStop', function(self)
 end)
 
 UI.Top = CreateFrame('Frame', 'KeystoneCompanionTop', UI);
-UI.Top:SetSize(384, 56)
+UI.Top:SetSize(431, 56)
 UI.Top:SetPoint('TOPRIGHT', UI, 'TOPRIGHT', -20, -13)
 
 UI.Title = CreateFrame('Frame', 'KeystoneCompanionTitle', UI);
@@ -75,15 +75,15 @@ UI.Title.AddonName:SetPoint('TOPLEFT', UI.Title, 'TOPLEFT', 50, -16);
 UI.Title.AddonName:SetText('Keystone Companion')
 
 UI.Party = CreateFrame('Frame', 'KeystoneCompanionParty', UI);
-UI.Party:SetSize(411, 461);
+UI.Party:SetSize(438, 461);
 UI.Party:SetPoint('TOPLEFT', UI, 'TOPLEFT', 13, -93);
 
 UI.Party.Header = CreateFrame('Frame', 'KeystoneCompanionPartyHeader', UI.Party);
-UI.Party.Header:SetSize(411, 17);
+UI.Party.Header:SetSize(442, 17);
 UI.Party.Header:SetPoint('TOPLEFT', UI.Party, 'TOPLEFT')
 
 UI.Party.HeaderBar = CreateFrame('Frame', 'KeystoneCompanionHeaderBar', UI.Header);
-UI.Party.HeaderBar:SetSize(411, 1);
+UI.Party.HeaderBar:SetHeight(1);
 UI.Party.HeaderBar:SetPoint('BOTTOMLEFT', UI.Party.Header, 'BOTTOMLEFT');
 UI.Party.HeaderBar:SetPoint('BOTTOMRIGHT', UI.Party.Header, 'BOTTOMRIGHT');
 UI.Party.HeaderBar.Texture = UI.Party.Header:CreateTexture('KeystoneCompanionHeaderBarTexture', 'OVERLAY')
@@ -101,29 +101,36 @@ UI.Party.Header.Food = UI.Party.Header:CreateFontString('KeystoneCompanionHeader
 UI.Party.Header.Food:SetSize(67, 12);
 UI.Party.Header.Food:SetFontObject(styles.FONT_OBJECTS.BOLD);
 UI.Party.Header.Food:SetJustifyH('LEFT');
-UI.Party.Header.Food:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 168, 0);
+UI.Party.Header.Food:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 128, 0);
 UI.Party.Header.Food:SetText('Food');
 
 UI.Party.Header.Rune = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderRune', 'OVERLAY')
 UI.Party.Header.Rune:SetSize(67, 12);
 UI.Party.Header.Rune:SetFontObject(styles.FONT_OBJECTS.BOLD);
 UI.Party.Header.Rune:SetJustifyH('LEFT');
-UI.Party.Header.Rune:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 235, 0);
+UI.Party.Header.Rune:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 195, 0);
 UI.Party.Header.Rune:SetText('Runes');
 
 UI.Party.Header.Potions = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderPotions', 'OVERLAY')
 UI.Party.Header.Potions:SetSize(67, 12);
 UI.Party.Header.Potions:SetFontObject(styles.FONT_OBJECTS.BOLD);
 UI.Party.Header.Potions:SetJustifyH('LEFT');
-UI.Party.Header.Potions:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 302, 0);
+UI.Party.Header.Potions:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 262, 0);
 UI.Party.Header.Potions:SetText('Potions');
 
 UI.Party.Header.Flasks = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderFlasks', 'OVERLAY')
 UI.Party.Header.Flasks:SetSize(67, 12)
 UI.Party.Header.Flasks:SetFontObject(styles.FONT_OBJECTS.BOLD);
 UI.Party.Header.Flasks:SetJustifyH('LEFT');
-UI.Party.Header.Flasks:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 369, 0);
+UI.Party.Header.Flasks:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 329, 0);
 UI.Party.Header.Flasks:SetText('Flasks')
+
+UI.Party.Header.Weapon = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderWeapon', 'OVERLAY')
+UI.Party.Header.Weapon:SetSize(67, 12)
+UI.Party.Header.Weapon:SetFontObject(styles.FONT_OBJECTS.BOLD);
+UI.Party.Header.Weapon:SetJustifyH('LEFT');
+UI.Party.Header.Weapon:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 392, 0);
+UI.Party.Header.Weapon:SetText('Weapon')
 
 UI.Footer = CreateFrame('Frame', 'KeystoneCompanionFooter', UI);
 UI.Footer:SetSize(411, 15);
@@ -417,7 +424,7 @@ for i = 1, 5 do
   UI['player' .. i] = CreateFrame('Frame', 'Player' .. i .. 'Row', UI.Party);
   local playerRow = UI['player' .. i];
 
-  playerRow:SetSize(411, 83);
+  playerRow:SetSize(438, 83);
   playerRow:SetPoint('TOPLEFT', UI.Party.HeaderBar, 'TOPLEFT', 0, -1 - (83 * (i - 1)))
   playerRow:SetPoint('TOPRIGHT', UI.Party.HeaderBar, 'TOPRIGHT', 0, -1 - (83 * (i - 1)))
   if (i % 2 == 0) then
@@ -431,7 +438,7 @@ for i = 1, 5 do
   end
 
   playerRow.Content = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. i .. 'Content', playerRow);
-  playerRow.Content:SetSize(391, 63);
+  playerRow.Content:SetSize(458, 63);
   playerRow.Content:SetPoint("TOPLEFT", playerRow, "TOPLEFT", 10, -10);
   playerRow.Content:SetPoint("BOTTOMRIGHT", playerRow, "BOTTOMRIGHT", -10, 10);
 
@@ -518,13 +525,14 @@ for i = 1, 5 do
   playerRow.KeystoneLevel:Hide();
 
   playerRow.Inventory = CreateFrame('Frame', 'KeystoneCompanionPlayerRow' .. i .. 'Inventory', playerRow.Content);
-  playerRow.Inventory:SetSize(243, 42);
+  playerRow.Inventory:SetSize(310, 42);
   playerRow.Inventory:SetPoint("BOTTOMRIGHT", playerRow.Content, "BOTTOMRIGHT");
 
   playerRow.Food = createItemCell(playerRow.Inventory, i, 1, 'Food');
   playerRow.Rune = createItemCell(playerRow.Inventory, i, 2, 'Rune');
   playerRow.Potions = createItemCell(playerRow.Inventory, i, 3, 'Potion');
   playerRow.Flasks = createItemCell(playerRow.Inventory, i, 4, 'Flask');
+  playerRow.Weapon = createItemCell(playerRow.Inventory, i, 5, 'WeaponEnchantment');
   playerRow.Inventory:Hide();
 end
 
@@ -632,6 +640,7 @@ function KeystoneCompanion.UI.RerenderPlayerRow(row, playerName, playerData)
     KeystoneCompanion.UI.RerenderItemCell(row.Rune, playerName, playerData.items.Rune);
     KeystoneCompanion.UI.RerenderItemCell(row.Potions, playerName, playerData.items.Potion);
     KeystoneCompanion.UI.RerenderItemCell(row.Flasks, playerName, playerData.items.Flask);
+    KeystoneCompanion.UI.RerenderItemCell(row.Weapon, playerName, playerData.items.WeaponEnchantment);
   end
 
   row:Show();

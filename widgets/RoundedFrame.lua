@@ -1,6 +1,7 @@
 local _, KeystoneCompanion = ...
 local styles = KeystoneCompanion.constants.styles;
 local pathUtil = KeystoneCompanion.utils.path;
+local mixTables = KeystoneCompanion.widgets.Base.mixTables
 
 local borderTextures = {
   [1] = pathUtil.getTexturePath('rounded-frame/border-1px.tga');
@@ -19,30 +20,22 @@ local function applySlice(frame, texture)
     frame:SetTextureSliceMode(Enum.UITextureSliceMode.Tiled)
 end
 
----@param ... table
----@return table
-local function mixTables(...)
-    local mixed = {}
-    for _, tbl in pairs({ ... }) do
-        if type(tbl) == "table" then
-            Mixin(mixed, tbl)
-        end
-    end
-    return mixed
-end
-
 ---@class RoundedFrameOptions
 ---@field height number?
 ---@field width number?
 ---@field points table?
 ---@field border_size number?
 ---@field border_color colorRGB?
+---@field background_color colorRGB?
+---@field frame_strata FrameStrata?
 local defaultOptions = {
     height = 200,
     width = 200,
     points = { { "CENTER" } },
     border_size = 0,
     border_color = styles.COLORS.BORDER,
+    background_color = styles.COLORS.BACKGROUND,
+    frame_strata = "HIGH"
 }
 
 ---@param parent Frame
@@ -62,7 +55,7 @@ local function createRoundedFrame(parent, options)
 
     frame.Background = frame:CreateTexture(nil, "BACKGROUND")
     applySlice(frame.Background, pathUtil.getTexturePath('rounded-frame/base.tga'))
-    frame.Background:SetVertexColor(styles.COLORS.BACKGROUND:GetRGBA())
+    frame.Background:SetVertexColor(options.background_color:GetRGBA())
     frame.Background:SetAllPoints()
 
     if options.border_size > 0 then
@@ -73,10 +66,12 @@ local function createRoundedFrame(parent, options)
         frame.Border:SetPoint("BOTTOMRIGHT", options.border_size, -options.border_size)
     end
 
+    if options.frame_strata then
+        frame:SetFrameStrata(options.frame_strata)
+    end
+
     return frame
 end
-
-KeystoneCompanion.widgets = KeystoneCompanion.widgets or {};
 
 ---@class RoundedFrameAPI
 ---@field CreateFrame fun(parent:Frame, options:RoundedFrameOptions): Frame
