@@ -286,6 +286,7 @@ local function createPlayerTooltip(self) -- changed it so that the function can 
 
   UI.Tooltip:SetScript("OnEvent", function (tooltip)
     if IsAltKeyDown() then
+      if not self:GetAttribute('player') == UnitName('player') then return end;
       tooltip:ClearLines();
       tooltip:SetText(self:GetAttribute('player'));
       local maps = C_ChallengeMode.GetMapTable();
