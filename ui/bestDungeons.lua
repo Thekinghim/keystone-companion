@@ -1,4 +1,6 @@
 local KeystoneCompanion = select(2, ...)
+local CreateRoundedFrame = KeystoneCompanion.widgets.RoundedFrame.CreateFrame;
+local getTexturePath = KeystoneCompanion.utils.path.getTexturePath;
 local styles = KeystoneCompanion.constants.styles;
 local customIconMixin = { customMixin = true }
 local screenWidth = GetScreenWidth()
@@ -25,7 +27,7 @@ local shortDungeonNames = {
     [405] = "BH",   -- Brackenhide Hollow
 }
 
---[[ 
+--[[
     This function is as backup
     This will auto generate short names
     It will return the last word if the short name is longer than 4 Letters
@@ -105,6 +107,7 @@ function customIconMixin:SetUp(mapInfo)
         Tyrannical = 0,
         Fortified = 0
     }
+    if not bestRuns then return end
     for _, info in ipairs(bestRuns) do
         levels[info.name] = info.level
     end
@@ -124,14 +127,104 @@ local function applyMixin(self)
     self.WeeklyInfo.Child.SeasonBest:Hide()
 end
 
+local weeklyBest
+local function createWeeklyBest()
+    weeklyBest = CreateRoundedFrame(ChallengesFrame, {
+        height = 225,
+        width = 130,
+        points = { { "TOPLEFT", 20, -75 } },
+        border_size = 2,
+    })
+    local title = weeklyBest:CreateFontString()
+    title:SetPoint("TOP", 0, -10)
+    title:SetFontObject(styles.FONT_OBJECTS.BOLD)
+    title:SetTextColor(styles.COLORS.TEXT_HIGHLIGHT:GetRGBA())
+    title:SetText("WEEKLY BEST")
+
+    local divider = weeklyBest:CreateTexture()
+    divider:SetPoint("TOPLEFT", title, "BOTTOMLEFT", -11, -4)
+    divider:SetPoint("TOPRIGHT", title, "BOTTOMRIGHT", 11, -4)
+    divider:SetHeight(2)
+    divider:SetColorTexture(styles.COLORS.BORDER:GetRGBA())
+
+    local rowContainer = CreateFrame("Frame", nil, weeklyBest)
+    rowContainer:SetPoint("TOPLEFT", divider, "BOTTOMLEFT", 0, -10)
+    rowContainer:SetPoint("BOTTOMRIGHT", -12, 12)
+    local heightPerRow = (rowContainer:GetHeight() - 8 * 2) / 8
+    weeklyBest.heightPerRow = heightPerRow
+
+    local anchorFrame = rowContainer
+    local unevenBG = CreateColorFromHexString("0DD0DCF5")
+    local keyColor = CreateColorFromHexString("FFE0C73A")
+    local rows = {}
+    weeklyBest.rows = rows
+    for i = 1, 8 do
+        local row = CreateRoundedFrame(rowContainer, {
+            height = heightPerRow,
+            points = {
+                { "TOPLEFT",  anchorFrame, i == 1 and "TOPLEFT" or "BOTTOMLEFT",   0, -2 },
+                { "TOPRIGHT", anchorFrame, i == 1 and "TOPRIGHT" or "BOTTOMRIGHT", 0, -2 }
+            },
+            background_color = i % 2 ~= 0 and unevenBG or nil
+        })
+        anchorFrame = row
+        tinsert(rows, row)
+        local key = row:CreateFontString()
+        key:SetPoint("LEFT", 4, 0)
+        key:SetFontObject(styles.FONT_OBJECTS.BOLD)
+        key:SetTextColor(keyColor:GetRGBA())
+        key:SetText("BRH +25")
+
+        local score = row:CreateFontString()
+        score:SetPoint("RIGHT", -4, 0)
+        score:SetFontObject(styles.FONT_OBJECTS.BOLD)
+        score:SetText(styles.COLORS.TEXT_HIGHLIGHT:WrapTextInColorCode("390"))
+
+        function row:UpdateKey(dungeon, level, scoreNum)
+            if not scoreNum then return end
+            local shortName = shortDungeonNames[dungeon]
+            key:SetText(string.format("%s +%d", shortName, level))
+            local scoreColor = C_ChallengeMode.GetKeystoneLevelRarityColor(level)
+            score:SetText(scoreColor:WrapTextInColorCode(scoreNum))
+            self:Show()
+        end
+    end
+end
+
+local function updateWeeklyBest()
+    if not weeklyBest then return end
+    for _, row in ipairs(weeklyBest.rows) do
+        row:Hide()
+    end
+    local weeklyRuns = C_MythicPlus.GetRunHistory()
+    local runs = {}
+    for _, runInfo in ipairs(weeklyRuns) do
+        tinsert(runs, { dungeon = runInfo.mapChallengeModeID, level = runInfo.level, score = runInfo.runScore })
+    end
+    sort(runs, function(a, b)
+        return a.score > b.score
+    end)
+    for i, runInfo in ipairs(runs) do
+        if weeklyBest.rows[i] then
+            weeklyBest.rows[i]:UpdateKey(runInfo.dungeon, runInfo.level, runInfo.score)
+        end
+    end
+    weeklyBest:SetHeight(min(8, #runs) * (weeklyBest.heightPerRow + 2) + 48)
+end
+
 local eventFrame = CreateFrame("Frame")
 eventFrame:RegisterEvent("ADDON_LOADED")
+eventFrame:RegisterEvent("CHALLENGE_MODE_MAPS_UPDATE")
 eventFrame:SetScript("OnEvent", function(_, event, addon)
     if event == "ADDON_LOADED" and addon == "Blizzard_ChallengesUI" then
         ChallengesFrame:HookScript("OnShow", function(self)
             applyMixin(self)
         end)
-        eventFrame:UnregisterAllEvents()
+        eventFrame:UnregisterEvent("ADDON_LOADED")
         eventFrame:SetScript("OnEvent", nil)
+        createWeeklyBest()
+        updateWeeklyBest()
+    elseif event == "CHALLENGE_MODE_MAPS_UPDATE" then
+        updateWeeklyBest()
     end
 end)
