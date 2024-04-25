@@ -227,6 +227,7 @@ local function updateTalentCheck(showFrame)
         talentCheckFrame:Show()
     end
 end
+talentCheckFrame:Hide()
 
 local function onEvent(_, event)
     local diff = select(3, GetInstanceInfo())
