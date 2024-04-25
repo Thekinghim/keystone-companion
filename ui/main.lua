@@ -27,7 +27,7 @@ UI.Top:SetSize(431, 56)
 UI.Top:SetPoint('TOPRIGHT', UI, 'TOPRIGHT', -20, -13)
 
 UI.Title = CreateFrame('Frame', 'KeystoneCompanionTitle', UI);
-UI.Title:SetSize(325, 56);
+UI.Title:SetSize(370, 56);
 UI.Title:SetPoint('LEFT', UI.Top, 'LEFT');
 UI.Title.Mask = UI.Title:CreateMaskTexture();
 UI.Title.Mask:SetAllPoints(UI.Title);
