@@ -7,4 +7,5 @@
 
     <Script file="seasonBest.lua"/>
     <Script file="dungeonTimer.lua"/>
+    <Script file="talentCheck.lua"/>
 </Ui>
