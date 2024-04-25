@@ -1,18 +1,22 @@
 local _, KeystoneCompanion = ...
+KeystoneCompanion.constants = KeystoneCompanion.constants or {};
+KeystoneCompanion.constants.affixTalents = {}
+local aTalents = KeystoneCompanion.constants.affixTalents
 
-local function copyTable(tbl)
-    local newTbl = {}
-    for k, v in pairs(tbl) do
-        if type(v) == "table" then
-            newTbl[k] = copyTable(v)
-        else
-            newTbl[k] = v
-        end
-    end
-    return newTbl
-end
+--[[
+    Table Structure is as follows: [ClassID] -> [AffixID] -> Info Table
+    Info Table:
+        - specs (table)
+            - A list of specs that the talent is valid for.
+        - definitionID (number)
+            - The unique Talent ID.
+        - reason (string)
+            - A short Reason for why this talent is valid.
+]]
+--
 
-local affixes = {
+-- Warrior [71] = Arms, [72] = Fury, [73] = Protection
+aTalents[1] = {
     -- Level 2 Affixes:
     -- Tyrannical
     [9] = {},
@@ -44,21 +48,302 @@ local affixes = {
     [8] = {},
 }
 
-KeystoneCompanion.constants = KeystoneCompanion.constants or {};
-KeystoneCompanion.constants.affixTalents = {}
-local aTalents = KeystoneCompanion.constants.affixTalents
+-- Paladin [65] = Holy, [66] = Protection, [70] = Retribution
+aTalents[2] = {
+    -- Level 2 Affixes:
+    -- Tyrannical
+    [9] = {},
+    -- Fortified
+    [10] = {},
 
---[[
-    Table Structure is as follows: [ClassID] -> [AffixID] -> Info Table
-    Info Table:
-        - specs (table)
-            - A list of specs that the talent is valid for.
-        - definitionID (number)
-            - The unique Talent ID.
-        - reason (string)
-            - A short Reason for why this talent is valid.
-]]
---
+    -- Level 5 Affixes:
+    -- Afflicted
+    [135] = {},
+    -- Incorporeal
+    [136] = {},
+    -- Volcanic
+    [3] = {},
+    -- Entangling
+    [134] = {},
+    -- Storming
+    [124] = {},
+
+    -- Level 10 Affixes:
+    -- Spiteful
+    [123] = {},
+    -- Raging
+    [6] = {},
+    -- Bolstering
+    [7] = {},
+    -- Bursting
+    [11] = {},
+    -- Sanguine
+    [8] = {},
+}
+
+-- Hunter [253] = Beast Mastery, [254] = Marksmanship, [255] = Survival
+aTalents[3] = {
+    -- Level 2 Affixes:
+    -- Tyrannical
+    [9] = {},
+    -- Fortified
+    [10] = {},
+
+    -- Level 5 Affixes:
+    -- Afflicted
+    [135] = {},
+    -- Incorporeal
+    [136] = {},
+    -- Volcanic
+    [3] = {},
+    -- Entangling
+    [134] = {},
+    -- Storming
+    [124] = {},
+
+    -- Level 10 Affixes:
+    -- Spiteful
+    [123] = {},
+    -- Raging
+    [6] = {},
+    -- Bolstering
+    [7] = {},
+    -- Bursting
+    [11] = {},
+    -- Sanguine
+    [8] = {},
+}
+
+-- Rogue [259] = Assasination, [260] = Outlaw, [261] = Subtlety
+aTalents[4] = {
+    -- Level 2 Affixes:
+    -- Tyrannical
+    [9] = {},
+    -- Fortified
+    [10] = {},
+
+    -- Level 5 Affixes:
+    -- Afflicted
+    [135] = {},
+    -- Incorporeal
+    [136] = {},
+    -- Volcanic
+    [3] = {},
+    -- Entangling
+    [134] = {},
+    -- Storming
+    [124] = {},
+
+    -- Level 10 Affixes:
+    -- Spiteful
+    [123] = {},
+    -- Raging
+    [6] = {},
+    -- Bolstering
+    [7] = {},
+    -- Bursting
+    [11] = {},
+    -- Sanguine
+    [8] = {},
+}
+
+-- Priest [256] = Discipline, [257] = Holy, [258] = Shadow
+aTalents[5] = {
+    -- Level 2 Affixes:
+    -- Tyrannical
+    [9] = {},
+    -- Fortified
+    [10] = {},
+
+    -- Level 5 Affixes:
+    -- Afflicted
+    [135] = {},
+    -- Incorporeal
+    [136] = {},
+    -- Volcanic
+    [3] = {},
+    -- Entangling
+    [134] = {},
+    -- Storming
+    [124] = {},
+
+    -- Level 10 Affixes:
+    -- Spiteful
+    [123] = {},
+    -- Raging
+    [6] = {},
+    -- Bolstering
+    [7] = {},
+    -- Bursting
+    [11] = {},
+    -- Sanguine
+    [8] = {},
+}
+
+-- Death Knight [250] = Blood, [251] = Frost, [252] = Unholy
+aTalents[6] = {
+    -- Level 2 Affixes:
+    -- Tyrannical
+    [9] = {},
+    -- Fortified
+    [10] = {},
+
+    -- Level 5 Affixes:
+    -- Afflicted
+    [135] = {},
+    -- Incorporeal
+    [136] = {},
+    -- Volcanic
+    [3] = {},
+    -- Entangling
+    [134] = {},
+    -- Storming
+    [124] = {},
+
+    -- Level 10 Affixes:
+    -- Spiteful
+    [123] = {},
+    -- Raging
+    [6] = {},
+    -- Bolstering
+    [7] = {},
+    -- Bursting
+    [11] = {},
+    -- Sanguine
+    [8] = {},
+}
+
+-- Shaman [262] = Elemental, [263] = Enhancement, [264] = Restoration
+aTalents[7] = {
+    -- Level 2 Affixes:
+    -- Tyrannical
+    [9] = {},
+    -- Fortified
+    [10] = {},
+
+    -- Level 5 Affixes:
+    -- Afflicted
+    [135] = {},
+    -- Incorporeal
+    [136] = {},
+    -- Volcanic
+    [3] = {},
+    -- Entangling
+    [134] = {},
+    -- Storming
+    [124] = {},
+
+    -- Level 10 Affixes:
+    -- Spiteful
+    [123] = {},
+    -- Raging
+    [6] = {},
+    -- Bolstering
+    [7] = {},
+    -- Bursting
+    [11] = {},
+    -- Sanguine
+    [8] = {},
+}
+
+-- Mage [62] = Arcane, [63] = Fire, [64] = Frost    
+aTalents[8] = {
+    -- Level 2 Affixes:
+    -- Tyrannical
+    [9] = {},
+    -- Fortified
+    [10] = {},
+
+    -- Level 5 Affixes:
+    -- Afflicted
+    [135] = {},
+    -- Incorporeal
+    [136] = {},
+    -- Volcanic
+    [3] = {},
+    -- Entangling
+    [134] = {},
+    -- Storming
+    [124] = {},
+
+    -- Level 10 Affixes:
+    -- Spiteful
+    [123] = {},
+    -- Raging
+    [6] = {},
+    -- Bolstering
+    [7] = {},
+    -- Bursting
+    [11] = {},
+    -- Sanguine
+    [8] = {},
+}
+
+-- Warlock [265] = Affliction, [266] = Demonology, [267] = Destruction
+aTalents[9] = {
+    -- Level 2 Affixes:
+    -- Tyrannical
+    [9] = {},
+    -- Fortified
+    [10] = {},
+
+    -- Level 5 Affixes:
+    -- Afflicted
+    [135] = {},
+    -- Incorporeal
+    [136] = {},
+    -- Volcanic
+    [3] = {},
+    -- Entangling
+    [134] = {},
+    -- Storming
+    [124] = {},
+
+    -- Level 10 Affixes:
+    -- Spiteful
+    [123] = {},
+    -- Raging
+    [6] = {},
+    -- Bolstering
+    [7] = {},
+    -- Bursting
+    [11] = {},
+    -- Sanguine
+    [8] = {},
+}
+
+-- Monk [268] = Brewmaster, [269] = Windwalker, [270] = Mistweaver
+aTalents[10] = {
+    -- Level 2 Affixes:
+    -- Tyrannical
+    [9] = {},
+    -- Fortified
+    [10] = {},
+
+    -- Level 5 Affixes:
+    -- Afflicted
+    [135] = {},
+    -- Incorporeal
+    [136] = {},
+    -- Volcanic
+    [3] = {},
+    -- Entangling
+    [134] = {},
+    -- Storming
+    [124] = {},
+
+    -- Level 10 Affixes:
+    -- Spiteful
+    [123] = {},
+    -- Raging
+    [6] = {},
+    -- Bolstering
+    [7] = {},
+    -- Bursting
+    [11] = {},
+    -- Sanguine
+    [8] = {},
+}
 
 -- Druid [102] = Balance, [103] = Feral, [104] = Guardian, [105] = Restoration
 aTalents[11] = {
@@ -112,4 +397,70 @@ aTalents[11] = {
         { specs = { 102, 103, 104, 105 }, definitionID = 108292, reason = "You can reposition mobs with this to reduce the healing they receive from Sanguine puddles." }, -- Typhoon
         { specs = { 102, 103, 104, 105 }, definitionID = 108326, reason = "You can reposition mobs with this to reduce the healing they receive from Sanguine puddles." }, -- Ursol's Vortex
     },
+}
+
+-- Demon Hunter [577] = Havoc, [581] = Vengeance
+aTalents[12] = {
+    -- Level 2 Affixes:
+    -- Tyrannical
+    [9] = {},
+    -- Fortified
+    [10] = {},
+
+    -- Level 5 Affixes:
+    -- Afflicted
+    [135] = {},
+    -- Incorporeal
+    [136] = {},
+    -- Volcanic
+    [3] = {},
+    -- Entangling
+    [134] = {},
+    -- Storming
+    [124] = {},
+
+    -- Level 10 Affixes:
+    -- Spiteful
+    [123] = {},
+    -- Raging
+    [6] = {},
+    -- Bolstering
+    [7] = {},
+    -- Bursting
+    [11] = {},
+    -- Sanguine
+    [8] = {},
+}
+
+-- Evoker [1467] = Devastation, [1468] = Preservation, [1473] = Augmentation
+aTalents[13] = {
+    -- Level 2 Affixes:
+    -- Tyrannical
+    [9] = {},
+    -- Fortified
+    [10] = {},
+
+    -- Level 5 Affixes:
+    -- Afflicted
+    [135] = {},
+    -- Incorporeal
+    [136] = {},
+    -- Volcanic
+    [3] = {},
+    -- Entangling
+    [134] = {},
+    -- Storming
+    [124] = {},
+
+    -- Level 10 Affixes:
+    -- Spiteful
+    [123] = {},
+    -- Raging
+    [6] = {},
+    -- Bolstering
+    [7] = {},
+    -- Bursting
+    [11] = {},
+    -- Sanguine
+    [8] = {},
 }
