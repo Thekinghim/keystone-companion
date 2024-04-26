@@ -97,7 +97,7 @@ local function createScrollable(options)
     return scrollView, scrollBox, scrollBar
 end
 
-local talentCheckFrame = CreateRoundedFrame(UIParent, { border_size = 2, width = 300, height = 250 })
+local talentCheckFrame = CreateRoundedFrame(UIParent, { border_size = 2, width = 300, height = 200 })
 talentCheckFrame:EnableMouse(true)
 talentCheckFrame:SetMovable(true)
 talentCheckFrame:SetScript("OnMouseDown", function(self)
@@ -136,6 +136,10 @@ local iconView, iconBox = createScrollable({
             local icon = frame:CreateTexture()
             icon:SetPoint("TOPLEFT", 1, -1)
             icon:SetPoint("BOTTOMRIGHT", -1, 1)
+            local mask = frame:CreateMaskTexture();
+            mask:SetAllPoints(icon)
+            mask:SetAtlas("UI-Frame-IconMask")
+            icon:AddMaskTexture(mask)
             frame.icon = icon
             frame.initialized = true
         end
@@ -205,6 +209,10 @@ local function isRecommendedForSpec(specs, specID)
     return false
 end
 
+local noRecommendation = string.format(
+"%s%sKeystone Companion|r\n\nIt appears that there are no talent recommendations for this affix yet. You might want to submit something through the Discord.\n\n%s%s|r",
+    secondaryMarkup, highlightMarkup, highlightMarkup, "https://discord.gg/KhFhC6kZ78")
+
 local function updateTalentCheck(showFrame)
     local info = {}
     local classID = select(2, UnitClassBase("player"))
@@ -222,12 +230,56 @@ local function updateTalentCheck(showFrame)
             end
         end
     end
+    if #info < 1 then
+        tinsert(info, { texture = 3610509, tooltipText = noRecommendation, talented = true })
+    end
     iconView:UpdateContentData(info)
     if showFrame then
         talentCheckFrame:Show()
     end
 end
 talentCheckFrame:Hide()
+
+RasuTest = function()
+    ---@diagnostic disable-next-line: duplicate-set-field
+    function C_MythicPlus.GetCurrentAffixes()
+        local affixes = {
+            {        -- Level 2 Affixes
+                9,   -- Tyrannical
+                10   -- Fortified
+            },
+            {        -- Level 5 Affixes
+                135, -- Afflicted
+                136, -- Incorporeal
+                3,   -- Volcanic
+                134, -- Entangling
+                124, -- Storming
+            },
+            {        -- Level 10 Affixes
+                123, -- Spiteful
+                6,   -- Raging
+                7,   -- Bolstering
+                11,  -- Bursting
+                8    -- Sanguine
+            }
+        }
+        local affixesNow = {}
+        print("============================")
+        print("Affixes: |cFF808080(These Affixes are randomly generated!)")
+        for _, levelAffixes in ipairs(affixes) do
+            if #levelAffixes > 1 then
+                local affixID = levelAffixes[math.random(1, #levelAffixes)]
+                local name, _, icon = C_ChallengeMode.GetAffixInfo(affixID)
+                print(string.format("|T%s:16|t %s", icon, name))
+                tinsert(affixesNow, { id = affixID })
+            end
+        end
+        print("============================")
+        return affixesNow
+    end
+
+    updateTalentCheck(true)
+end
 
 local function onEvent(_, event)
     local diff = select(3, GetInstanceInfo())

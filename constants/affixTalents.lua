@@ -27,17 +27,24 @@ aTalents[1] = {
     -- Afflicted
     [135] = {},
     -- Incorporeal
-    [136] = {},
+    [136] = {
+        { specs = { 71, 72, 73 }, definitionID = 117255, reason = "Menace is a bit of a mixed bag, since it knocks all nearby enemies back 15 yards. It's useful for shutting down the Incorporeal adds, but only if you specifically target the Incorporeal, but knocking packs of enemies around can be pretty dangerous at times. Intimidating Shout is still somewhat useful without Menace, but it only lasts 8 seconds, rather than 15, so it's not nearly as effective for completely locking down an Incorporeal add." }, -- Menace
+    },
     -- Volcanic
     [3] = {},
     -- Entangling
-    [134] = {},
+    [134] = {
+        { specs = { 71, 72 }, definitionID = 117213, reason = "Entangling can be easily handled by saving Heroic Leap to immediately break the effect." }, -- Heroic Leap
+        { specs = { 73 }, definitionID = 117237, reason = "Avatar will break you free from the Entangling vine without having to leave the circle." }, -- Avatar
+    },
     -- Storming
     [124] = {},
 
     -- Level 10 Affixes:
     -- Spiteful
-    [123] = {},
+    [123] = {
+        { specs = { 71, 72, 73 }, definitionID = 117203, reason = "Help keep Spiteful Shades off of you and your party members." }, -- Storm Bolt
+    },
     -- Raging
     [6] = {},
     -- Bolstering
@@ -246,7 +253,7 @@ aTalents[7] = {
     [8] = {},
 }
 
--- Mage [62] = Arcane, [63] = Fire, [64] = Frost    
+-- Mage [62] = Arcane, [63] = Fire, [64] = Frost
 aTalents[8] = {
     -- Level 2 Affixes:
     -- Tyrannical
