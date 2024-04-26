@@ -5,4 +5,5 @@
     <Script file="constants/items.lua" />
     <Script file="constants/roleIcons.lua" />
     <Script file="constants/styles.lua" />
+    <Script file="constants/affixTalents.lua" />
 </Ui>
