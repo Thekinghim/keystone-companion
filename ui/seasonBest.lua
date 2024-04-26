@@ -105,6 +105,7 @@ function customIconMixin:SetUp(mapInfo)
         Tyrannical = 0,
         Fortified = 0
     }
+    if not bestRuns then return end
     for _, info in ipairs(bestRuns) do
         levels[info.name] = info.level
     end
