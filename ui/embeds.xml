@@ -5,6 +5,6 @@
     
     <Script file="settings.lua"/>
 
-    <Script file="seasonBest.lua"/>
+    <Script file="bestDungeons.lua"/>
     <Script file="dungeonTimer.lua"/>
 </Ui>
