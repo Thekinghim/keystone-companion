@@ -13,6 +13,7 @@ local aTalents = KeystoneCompanion.constants.affixTalents
         - reason (string)
             - A short Reason for why this talent is valid.
 ]]
+--{specs = {}, definitionID = 0, reason = ""}, -- Spell
 --
 
 -- Warrior [71] = Arms, [72] = Fury, [73] = Protection
@@ -65,25 +66,46 @@ aTalents[2] = {
 
     -- Level 5 Affixes:
     -- Afflicted
-    [135] = {},
+    [135] = {
+        {specs = {65}, definitionID = 107482, reason = "You need this for this affix as Afflicted Afflicted cannot be dispelled with a magic dispel."}, -- Improved Cleanse
+        {specs = {66, 70}, definitionID = 107481, reason = "With this, you can help on every single spawn."}, -- Cleanse Toxins
+    },
     -- Incorporeal
-    [136] = {},
+    [136] = {
+        {specs = {65, 66, 70}, definitionID = 107628, reason = "You can use this to control Incorporeal."}, -- Turn Evil
+        {specs = {65, 66, 70}, definitionID = 107590, reason = "You can also use this for Incorporeal but giving up Blinding Light might be too steep a cost."}, -- Repentance
+    },
     -- Volcanic
     [3] = {},
     -- Entangling
-    [134] = {},
+    [134] = {
+        {specs = {65, 66, 70}, definitionID = 107592, reason = "You can use this for every single one."}, -- Blessing of Freedom
+        {specs = {66}, definitionID = 120491, reason = "You can free yourself and a party member with this."}, -- Unbound Freedom
+        {specs = {70}, definitionID = 120466, reason = "You can free yourself and a party member with this."}, -- Unbound Freedom
+    },
     -- Storming
     [124] = {},
 
     -- Level 10 Affixes:
     -- Spiteful
-    [123] = {},
+    [123] = {
+        {specs = {65}, definitionID = 107609, reason = "This lets you ignore Spiteful adds for a while."}, -- Blessing of Protection
+        {specs = {66}, definitionID = 107464, reason = "Get this to help slow them and keep them under control."}, -- Consecrated Ground
+    },
     -- Raging
-    [6] = {},
+    [6] = {
+        {specs = {65}, definitionID = 107607, reason = "You can use it on the tank if they need it during Raging."}, -- Blessing of Sacrifice
+    },
     -- Bolstering
     [7] = {},
     -- Bursting
-    [11] = {},
+    [11] = {
+        {specs = {66}, definitionID = 116891, reason = "You can cast this on the healer to lower incoming damage drastically"}, -- Blessing of Spellwarding
+        {specs = {65}, definitionID = 107537, reason = "This helps a lot! Using it as late as possible as stacks ramp is imperative in dealing with large packs dying."}, -- Beacon of Virtue
+        {specs = {65}, definitionID = 107470, reason = "This is also incredibly good at healing through Bursting."}, -- Divine Toll
+        {specs = {65}, definitionID = 107568, reason = "This is also incredibly good at healing through Bursting."}, -- Daybreak
+        {specs = {65}, definitionID = 107607, reason = "Use this liberally on classes that cannot not remove stacks on their own."}, -- Blessing of Sacrifice
+    },
     -- Sanguine
     [8] = {},
 }
