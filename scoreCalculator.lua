@@ -7,7 +7,7 @@ local const = {
     THRESHOLD = 0.4,
     MAX_ADDITION = 5,
     MAX_REMOVAL = 10,
-    BASE_SCORE = { 0, 40, 45, 55, 60, 65, 75, 80, 85, 100 },
+    BASE_SCORE = { 0, 94, 101, 108, 125, 132, 139, 146, 153, 170 },
     AFFIX = { [9] = "Tyrannical", [10] = "Fortified", ["Tyrannical"] = 9, ["Fortified"] = 10 }
 }
 local function calcTimeBonus(timePercent)
