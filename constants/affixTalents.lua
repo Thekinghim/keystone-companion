@@ -295,27 +295,41 @@ aTalents[7] = {
 
     -- Level 5 Affixes:
     -- Afflicted
-    [135] = {},
+    [135] = {
+        { specs = { 262, 263 },    definitionID = 106966, reason = "You can easily deal with Afflicted adds with this." },                       -- Cleanse Spirit
+        { specs = { 262, 263, 264 }, definitionID = 106984, reason = "This basically removes the affix but you might not have it for each spawn." }, -- Poison Cleansing Totem
+        { specs = { 264 },         definitionID = 106962, reason = "You need this to dispel afflicted." },                                       -- Improved Purify Spirit
+    },
     -- Incorporeal
-    [136] = {},
+    [136] = {
+        { specs = { 262, 263, 264 }, definitionID = 106981, reason = "You can completely handle one Incorporeal with this." }, -- Hex
+    },
     -- Volcanic
     [3] = {},
     -- Entangling
-    [134] = {},
+    [134] = {
+        { specs = { 262, 263, 264 }, definitionID = 106958, reason = "You can use this to immediately break the root." }, -- Thunderous Paws
+    },
     -- Storming
     [124] = {},
 
     -- Level 10 Affixes:
     -- Spiteful
-    [123] = {},
+    [123] = {
+        { specs = { 262, 263, 264 }, definitionID = 106971, reason = "Great for keeping Shades away" }, -- Earthgrab Totem
+    },
     -- Raging
     [6] = {},
     -- Bolstering
     [7] = {},
     -- Bursting
-    [11] = {},
+    [11] = {
+        { specs = { 264 }, definitionID = 106933, reason = "This can sometimes come in handy during Bursting." }, -- Spirit Link Totem
+    },
     -- Sanguine
-    [8] = {},
+    [8] = {
+        { specs = { 262, 263, 264 }, definitionID = 106989, reason = "You can use this to knock adds out of the sanguine puddles." }, -- Thundershock
+    },
 }
 
 -- Mage [62] = Arcane, [63] = Fire, [64] = Frost
