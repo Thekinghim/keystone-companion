@@ -393,7 +393,9 @@ aTalents[9] = {
     -- Afflicted
     [135] = {},
     -- Incorporeal
-    [136] = {},
+    [136] = {
+        { specs = { 265, 266, 267 }, definitionID = 96456, reason = "You can Banish the mobs that spawn, effectively negating the affix." }, -- Banish
+    },
     -- Volcanic
     [3] = {},
     -- Entangling
@@ -403,9 +405,14 @@ aTalents[9] = {
 
     -- Level 10 Affixes:
     -- Spiteful
-    [123] = {},
+    [123] = {
+        { specs = { 265, 266, 267 }, definitionID = 96454, reason = "This or Mortal Coil are great ways to deal with Shades." }, -- Shadowfury
+        { specs = { 265, 266, 267 }, definitionID = 96459, reason = "This or Shadowfury are great ways to deal with Shades." }, -- Mortal Coil
+    },
     -- Raging
-    [6] = {},
+    [6] = {
+        { specs = { 265, 266, 267 }, definitionID = 96444, reason = "You can use this to greatly increase the cast time with Curse of Tongues" }, -- Amplify Curse
+    },
     -- Bolstering
     [7] = {},
     -- Bursting
