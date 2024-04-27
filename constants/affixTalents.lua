@@ -211,18 +211,18 @@ aTalents[5] = {
     -- Afflicted
     [135] = {
         { specs = { 256, 257 }, definitionID = 108860, reason = "Be sure to spec into this to deal with afflicted." }, -- Improved Purify
-        { specs = { 256, 257 }, definitionID = 108827, reason = "This is also very good for afflicted." },         -- Power Word: Life
+        { specs = { 256, 257 }, definitionID = 108827, reason = "This is also very good for afflicted." },             -- Power Word: Life
     },
     -- Incorporeal
     [136] = {
         { specs = { 256, 257, 258 }, definitionID = 108683, reason = "This will control the minion and cause it to cast damage reduction debuffs onto enemies." }, -- Dominate Mind
-        { specs = { 256, 257, 258 }, definitionID = 108848, reason = "This can be used on the second Incorporeal." },                                          -- Shackle Undead
+        { specs = { 256, 257, 258 }, definitionID = 108848, reason = "This can be used on the second Incorporeal." },                                              -- Shackle Undead
     },
     -- Volcanic
     [3] = {},
     -- Entangling
     [134] = {
-        { specs = { 256, 257, 258 }, definitionID = 108839, reason = "With this you can use Fade to remove entangling." },                       -- Phantasm
+        { specs = { 256, 257, 258 }, definitionID = 108839, reason = "With this you can use Fade to remove entangling." },                           -- Phantasm
         { specs = { 256, 257, 258 }, definitionID = 108841, reason = "You can spec into this to ensure that you always have fade for entangling." }, -- Improved Fade
     },
     -- Storming
@@ -239,7 +239,7 @@ aTalents[5] = {
     [7] = {},
     -- Bursting
     [11] = {
-        { specs = { 256, 257, 258 }, definitionID = 108854, reason = "This will remove all Busting stacks." },     -- Mass Dispel
+        { specs = { 256, 257, 258 }, definitionID = 108854, reason = "This will remove all Busting stacks." },         -- Mass Dispel
         { specs = { 256, 257, 258 }, definitionID = 108853, reason = "This is a solid option if mana is a concern." }, -- Mental Agility
     },
     -- Sanguine
@@ -258,11 +258,15 @@ aTalents[6] = {
     -- Afflicted
     [135] = {},
     -- Incorporeal
-    [136] = {},
+    [136] = {
+        { specs = { 250, 251, 252 }, definitionID = 101190, reason = "You can use this to deal with this Affix" }, -- Control Undead
+    },
     -- Volcanic
     [3] = {},
     -- Entangling
-    [134] = {},
+    [134] = {
+        { specs = { 250, 251, 252 }, definitionID = 101209, reason = "This can directly remove entangling but it's recommended to just use Death's Advance to get out instead." }, -- Wraith Walk
+    },
     -- Storming
     [124] = {},
 
@@ -274,7 +278,9 @@ aTalents[6] = {
     -- Bolstering
     [7] = {},
     -- Bursting
-    [11] = {},
+    [11] = {
+        { specs = { 250, 251, 252 }, definitionID = 101201, reason = "You can pre cast this to not get any Bursting stacks." }, -- Anti-Magic Shell
+    },
     -- Sanguine
     [8] = {},
 }
