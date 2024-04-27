@@ -167,23 +167,34 @@ aTalents[4] = {
     -- Afflicted
     [135] = {},
     -- Incorporeal
-    [136] = {},
+    [136] = {
+        { specs = { 259, 260, 261 }, definitionID = 117636, reason = "Use this or other CC to deal with Incorporeal" }, -- Gouge
+        { specs = { 259, 261 },    definitionID = 117577, reason = "Use this or other CC to deal with Incorporeal" }, -- Blind
+    },
     -- Volcanic
     [3] = {},
     -- Entangling
     [134] = {},
     -- Storming
-    [124] = {},
+    [124] = {
+        { specs = { 259, 260, 261 }, definitionID = 117649, reason = "This makes it significantly easier to manage storming." }, -- Acrobatic Strikes
+    },
 
     -- Level 10 Affixes:
     -- Spiteful
-    [123] = {},
+    [123] = {
+        { specs = { 259, 260, 261 }, definitionID = 117662, reason = "You always wanna use this for Spitefuls" }, -- Evasion
+    },
     -- Raging
-    [6] = {},
+    [6] = {
+        { specs = { 260, 261 }, definitionID = 117635, reason = "Can be used to clear enrage from big mobs." }, -- Shiv
+    },
     -- Bolstering
     [7] = {},
     -- Bursting
-    [11] = {},
+    [11] = {
+        { specs = { 259, 260 }, definitionID = 117590, reason = "This is great for high stacks." }, -- Cloak of Shadows
+    },
     -- Sanguine
     [8] = {},
 }
