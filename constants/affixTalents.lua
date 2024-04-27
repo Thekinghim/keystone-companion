@@ -536,25 +536,37 @@ aTalents[12] = {
     -- Afflicted
     [135] = {},
     -- Incorporeal
-    [136] = {},
+    [136] = {
+        {specs = {577, 581}, definitionID = 117932, reason = "You should be able to cage 1 add per spawn with this."}, -- Imprison
+    },
     -- Volcanic
     [3] = {},
     -- Entangling
-    [134] = {},
+    [134] = {
+        {specs = {581}, definitionID = 117858, reason = "You can get this to immediately remove entangling."}, -- Vengeful Retreat
+    },
     -- Storming
     [124] = {},
 
     -- Level 10 Affixes:
     -- Spiteful
-    [123] = {},
+    [123] = {
+        {specs = {577}, definitionID = 117916, reason = "This is great for dealing with Shades."}, -- Chaos Nova
+        {specs = {581}, definitionID = 117872, reason = "This is great for keeping Shades together"}, -- Sigil of Chains
+    },
     -- Raging
     [6] = {},
     -- Bolstering
     [7] = {},
     -- Bursting
-    [11] = {},
+    [11] = {
+        {specs = {577}, definitionID = 117926, reason = "You should use this for high Bursting stacks."}, -- Darkness
+    },
     -- Sanguine
-    [8] = {},
+    [8] = {
+        {specs = {577}, definitionID = 122755, reason = "You can reduce sanguine healing with this."}, -- Mortal Dance
+        {specs = {581}, definitionID = 117872, reason = "You can grip mobs out of sanguine with this."}, -- Sigil of Chains
+    },
 }
 
 -- Evoker [1467] = Devastation, [1468] = Preservation, [1473] = Augmentation
