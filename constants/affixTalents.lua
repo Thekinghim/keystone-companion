@@ -169,7 +169,7 @@ aTalents[4] = {
     -- Incorporeal
     [136] = {
         { specs = { 259, 260, 261 }, definitionID = 117636, reason = "Use this or other CC to deal with Incorporeal" }, -- Gouge
-        { specs = { 259, 261 },    definitionID = 117577, reason = "Use this or other CC to deal with Incorporeal" }, -- Blind
+        { specs = { 259, 261 },      definitionID = 117577, reason = "Use this or other CC to deal with Incorporeal" }, -- Blind
     },
     -- Volcanic
     [3] = {},
@@ -209,25 +209,39 @@ aTalents[5] = {
 
     -- Level 5 Affixes:
     -- Afflicted
-    [135] = {},
+    [135] = {
+        { specs = { 256, 257 }, definitionID = 108860, reason = "Be sure to spec into this to deal with afflicted." }, -- Improved Purify
+        { specs = { 256, 257 }, definitionID = 108827, reason = "This is also very good for afflicted." },         -- Power Word: Life
+    },
     -- Incorporeal
-    [136] = {},
+    [136] = {
+        { specs = { 256, 257, 258 }, definitionID = 108683, reason = "This will control the minion and cause it to cast damage reduction debuffs onto enemies." }, -- Dominate Mind
+        { specs = { 256, 257, 258 }, definitionID = 108848, reason = "This can be used on the second Incorporeal." },                                          -- Shackle Undead
+    },
     -- Volcanic
     [3] = {},
     -- Entangling
-    [134] = {},
+    [134] = {
+        { specs = { 256, 257, 258 }, definitionID = 108839, reason = "With this you can use Fade to remove entangling." },                       -- Phantasm
+        { specs = { 256, 257, 258 }, definitionID = 108841, reason = "You can spec into this to ensure that you always have fade for entangling." }, -- Improved Fade
+    },
     -- Storming
     [124] = {},
 
     -- Level 10 Affixes:
     -- Spiteful
-    [123] = {},
+    [123] = {
+        { specs = { 256, 257, 258 }, definitionID = 108683, reason = "You can use this on Shades that target you to dispose them." }, -- Dominate Mind
+    },
     -- Raging
     [6] = {},
     -- Bolstering
     [7] = {},
     -- Bursting
-    [11] = {},
+    [11] = {
+        { specs = { 256, 257, 258 }, definitionID = 108854, reason = "This will remove all Busting stacks." },     -- Mass Dispel
+        { specs = { 256, 257, 258 }, definitionID = 108853, reason = "This is a solid option if mana is a concern." }, -- Mental Agility
+    },
     -- Sanguine
     [8] = {},
 }
