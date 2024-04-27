@@ -210,7 +210,7 @@ local function isRecommendedForSpec(specs, specID)
 end
 
 local noRecommendation = string.format(
-"%s%sKeystone Companion|r\n\nIt appears that there are no talent recommendations for this affix yet. You might want to submit something through the Discord.\n\n%s%s|r",
+    "%s%sKeystone Companion|r\n\nIt appears that there are no talent recommendations for this affix yet. You might want to submit something through the Discord.\n\n%s%s|r",
     secondaryMarkup, highlightMarkup, highlightMarkup, "https://discord.gg/KhFhC6kZ78")
 
 local function updateTalentCheck(showFrame)
@@ -240,7 +240,8 @@ local function updateTalentCheck(showFrame)
 end
 talentCheckFrame:Hide()
 
-RasuTest = function()
+KeystoneCompanion.TestTalentsCheck = function()
+    local originalFunc = C_MythicPlus.GetCurrentAffixes
     ---@diagnostic disable-next-line: duplicate-set-field
     function C_MythicPlus.GetCurrentAffixes()
         local affixes = {
@@ -279,6 +280,7 @@ RasuTest = function()
     end
 
     updateTalentCheck(true)
+    C_MythicPlus.GetCurrentAffixes = originalFunc
 end
 
 local function onEvent(_, event)
