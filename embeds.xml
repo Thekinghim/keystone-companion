@@ -19,4 +19,5 @@
     <Script file="main.lua"/>
 
     <Script file="scoreCalculator.lua"/>
+    <Script file="itemTooltip.lua"/>
 </Ui>
