@@ -407,7 +407,7 @@ aTalents[9] = {
     -- Spiteful
     [123] = {
         { specs = { 265, 266, 267 }, definitionID = 96454, reason = "This or Mortal Coil are great ways to deal with Shades." }, -- Shadowfury
-        { specs = { 265, 266, 267 }, definitionID = 96459, reason = "This or Shadowfury are great ways to deal with Shades." }, -- Mortal Coil
+        { specs = { 265, 266, 267 }, definitionID = 96459, reason = "This or Shadowfury are great ways to deal with Shades." },  -- Mortal Coil
     },
     -- Raging
     [6] = {
@@ -431,27 +431,43 @@ aTalents[10] = {
 
     -- Level 5 Affixes:
     -- Afflicted
-    [135] = {},
+    [135] = {
+        { specs = { 268, 269 }, definitionID = 107631, reason = "Get this to deal with afflicted." }, -- Detox
+        { specs = { 270 },    definitionID = 107632, reason = "You need this to handle afflicted." }, -- Improved Detox
+    },
     -- Incorporeal
-    [136] = {},
+    [136] = {
+        { specs = { 268, 269, 270 }, definitionID = 106508, reason = "Use this to handle incoporeal." }, -- Paralysis
+    },
     -- Volcanic
     [3] = {},
     -- Entangling
-    [134] = {},
+    [134] = {
+        { specs = { 269, 270 }, definitionID = 106509, reason = "This immediately removes the entangling debuff." }, -- Tiger's Lust
+    },
     -- Storming
     [124] = {},
 
     -- Level 10 Affixes:
     -- Spiteful
-    [123] = {},
+    [123] = {
+        { specs = { 268, 269, 270 }, definitionID = 106518, reason = "You can use this to create a safe area from shades." }, -- Ring of Peace
+    },
     -- Raging
     [6] = {},
     -- Bolstering
-    [7] = {},
+    [7] = {
+        { specs = { 268 }, definitionID = 106518, reason = "You can make use of this to keep mobs with high stacks aways from you." }, -- Ring of Peace
+    },
     -- Bursting
-    [11] = {},
+    [11] = {
+        { specs = { 270 },         definitionID = 106380, reason = "You can clear the entire group with this." },        -- Revival
+        { specs = { 268, 269, 270 }, definitionID = 106517, reason = "You can remove your own Bursting stacks with this." }, -- Diffuse Magic
+    },
     -- Sanguine
-    [8] = {},
+    [8] = {
+        { specs = { 268, 269, 270 }, definitionID = 106518, reason = "This is great to get mobs out of sanguine pools." }, -- Ring of Peace
+    },
 }
 
 -- Druid [102] = Balance, [103] = Feral, [104] = Guardian, [105] = Restoration
