@@ -432,8 +432,8 @@ aTalents[10] = {
     -- Level 5 Affixes:
     -- Afflicted
     [135] = {
-        { specs = { 268, 269 }, definitionID = 107631, reason = "Get this to deal with afflicted." }, -- Detox
-        { specs = { 270 },    definitionID = 107632, reason = "You need this to handle afflicted." }, -- Improved Detox
+        { specs = { 268, 269 }, definitionID = 107631, reason = "Get this to deal with afflicted." },   -- Detox
+        { specs = { 270 },      definitionID = 107632, reason = "You need this to handle afflicted." }, -- Improved Detox
     },
     -- Incorporeal
     [136] = {
@@ -461,7 +461,7 @@ aTalents[10] = {
     },
     -- Bursting
     [11] = {
-        { specs = { 270 },         definitionID = 106380, reason = "You can clear the entire group with this." },        -- Revival
+        { specs = { 270 },           definitionID = 106380, reason = "You can clear the entire group with this." },          -- Revival
         { specs = { 268, 269, 270 }, definitionID = 106517, reason = "You can remove your own Bursting stacks with this." }, -- Diffuse Magic
     },
     -- Sanguine
@@ -537,13 +537,13 @@ aTalents[12] = {
     [135] = {},
     -- Incorporeal
     [136] = {
-        {specs = {577, 581}, definitionID = 117932, reason = "You should be able to cage 1 add per spawn with this."}, -- Imprison
+        { specs = { 577, 581 }, definitionID = 117932, reason = "You should be able to cage 1 add per spawn with this." }, -- Imprison
     },
     -- Volcanic
     [3] = {},
     -- Entangling
     [134] = {
-        {specs = {581}, definitionID = 117858, reason = "You can get this to immediately remove entangling."}, -- Vengeful Retreat
+        { specs = { 581 }, definitionID = 117858, reason = "You can get this to immediately remove entangling." }, -- Vengeful Retreat
     },
     -- Storming
     [124] = {},
@@ -551,8 +551,8 @@ aTalents[12] = {
     -- Level 10 Affixes:
     -- Spiteful
     [123] = {
-        {specs = {577}, definitionID = 117916, reason = "This is great for dealing with Shades."}, -- Chaos Nova
-        {specs = {581}, definitionID = 117872, reason = "This is great for keeping Shades together"}, -- Sigil of Chains
+        { specs = { 577 }, definitionID = 117916, reason = "This is great for dealing with Shades." },    -- Chaos Nova
+        { specs = { 581 }, definitionID = 117872, reason = "This is great for keeping Shades together" }, -- Sigil of Chains
     },
     -- Raging
     [6] = {},
@@ -560,12 +560,12 @@ aTalents[12] = {
     [7] = {},
     -- Bursting
     [11] = {
-        {specs = {577}, definitionID = 117926, reason = "You should use this for high Bursting stacks."}, -- Darkness
+        { specs = { 577 }, definitionID = 117926, reason = "You should use this for high Bursting stacks." }, -- Darkness
     },
     -- Sanguine
     [8] = {
-        {specs = {577}, definitionID = 122755, reason = "You can reduce sanguine healing with this."}, -- Mortal Dance
-        {specs = {581}, definitionID = 117872, reason = "You can grip mobs out of sanguine with this."}, -- Sigil of Chains
+        { specs = { 577 }, definitionID = 122755, reason = "You can reduce sanguine healing with this." },   -- Mortal Dance
+        { specs = { 581 }, definitionID = 117872, reason = "You can grip mobs out of sanguine with this." }, -- Sigil of Chains
     },
 }
 
@@ -579,9 +579,14 @@ aTalents[13] = {
 
     -- Level 5 Affixes:
     -- Afflicted
-    [135] = {},
+    [135] = {
+        { specs = { 1467, 1473 },       definitionID = 120627, reason = "Get this to deal with afflicted." },     -- Expunge
+        { specs = { 1467, 1468, 1473 }, definitionID = 120614, reason = "This can also be used for afflicted." }, -- Cauterizing Flame
+    },
     -- Incorporeal
-    [136] = {},
+    [136] = {
+        { specs = { 1467, 1468, 1473 }, definitionID = 120613, reason = "You can get this to deal with incoporeal." }, -- Sleep Walk
+    },
     -- Volcanic
     [3] = {},
     -- Entangling
@@ -591,13 +596,23 @@ aTalents[13] = {
 
     -- Level 10 Affixes:
     -- Spiteful
-    [123] = {},
+    [123] = {
+        { specs = { 1468 }, definitionID = 120626, reason = "You can get this to keep Shades away." }, -- Landslide
+    },
     -- Raging
-    [6] = {},
+    [6] = {
+        { specs = { 1467, 1468, 1473 }, definitionID = 120618, reason = "You can AoE remove Raging with this." }, -- Overawe
+    },
     -- Bolstering
     [7] = {},
     -- Bursting
-    [11] = {},
+    [11] = {
+        { specs = { 1467, 1468, 1473 }, definitionID = 120670, reason = "This is great for Bursting as it heals you back." }, -- Renewing Blaze
+        { specs = { 1468 },             definitionID = 120567, reason = "This is good to heal against Bursting." },           -- Ouroboros
+        { specs = { 1468 },             definitionID = 120663, reason = "This is great if you get really high stacks." },     -- Rewind
+    },
     -- Sanguine
-    [8] = {},
+    [8] = {
+        { specs = { 1467, 1468, 1473 }, definitionID = 120617, reason = "You should get this to knock mobs out of sanguine." }, -- Heavy Wingbeats
+    },
 }
