@@ -381,8 +381,8 @@ end)
 local scrollView = createScrollable({
     parent = calculatorFrame,
     anchors = {
+        { "BOTTOMLEFT", 15,              15 },
         { "TOPRIGHT",   calculateButton, "BOTTOMRIGHT", 0, -5 },
-        { "BOTTOMLEFT", 15,              15 }
     },
     type = "LIST",
     elementHeight = 65,
