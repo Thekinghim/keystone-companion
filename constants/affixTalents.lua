@@ -296,9 +296,9 @@ aTalents[7] = {
     -- Level 5 Affixes:
     -- Afflicted
     [135] = {
-        { specs = { 262, 263 },    definitionID = 106966, reason = "You can easily deal with Afflicted adds with this." },                       -- Cleanse Spirit
+        { specs = { 262, 263 },      definitionID = 106966, reason = "You can easily deal with Afflicted adds with this." },                         -- Cleanse Spirit
         { specs = { 262, 263, 264 }, definitionID = 106984, reason = "This basically removes the affix but you might not have it for each spawn." }, -- Poison Cleansing Totem
-        { specs = { 264 },         definitionID = 106962, reason = "You need this to dispel afflicted." },                                       -- Improved Purify Spirit
+        { specs = { 264 },           definitionID = 106962, reason = "You need this to dispel afflicted." },                                         -- Improved Purify Spirit
     },
     -- Incorporeal
     [136] = {
@@ -342,27 +342,43 @@ aTalents[8] = {
 
     -- Level 5 Affixes:
     -- Afflicted
-    [135] = {},
+    [135] = {
+        { specs = { 62, 63, 64 }, definitionID = 85178, reason = "Use this to deal with Afflicted." }, -- Remove Curse
+    },
     -- Incorporeal
     [136] = {},
     -- Volcanic
-    [3] = {},
+    [3] = {
+        { specs = { 62, 63, 64 }, definitionID = 85165, reason = "This or Shimmer are both great here." },  -- Ice Floes
+        { specs = { 62, 63, 64 }, definitionID = 85166, reason = "This or Ice Floes are both great here" }, -- Shimmer
+    },
     -- Entangling
-    [134] = {},
+    [134] = {
+        { specs = { 62, 63, 64 }, definitionID = 85160, reason = "If you don't want to move you can use this to clear entangling." }, -- Energized Barriers
+    },
     -- Storming
-    [124] = {},
+    [124] = {
+        { specs = { 62, 63, 64 }, definitionID = 85165, reason = "This or Shimmer are both great here." },  -- Ice Floes
+        { specs = { 62, 63, 64 }, definitionID = 85166, reason = "This or Ice Floes are both great here" }, -- Shimmer
+    },
 
     -- Level 10 Affixes:
     -- Spiteful
-    [123] = {},
+    [123] = {
+        { specs = { 62, 63, 64 }, definitionID = 85147, reason = "Use this to keep Shades away." }, -- Ring of Frost
+    },
     -- Raging
     [6] = {},
     -- Bolstering
     [7] = {},
     -- Bursting
-    [11] = {},
+    [11] = {
+        { specs = { 62, 63, 64 }, definitionID = 85177, reason = "Use this before you get high stacks." }, -- Alter Time
+    },
     -- Sanguine
-    [8] = {},
+    [8] = {
+        { specs = { 62, 63, 64 }, definitionID = 85163, reason = "Use this to knock mobs away from pools." }, -- Blast Wave
+    },
 }
 
 -- Warlock [265] = Affliction, [266] = Demonology, [267] = Destruction
