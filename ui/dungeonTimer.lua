@@ -27,22 +27,6 @@ local function loadTimerFrame()
     timerFrame:Hide()
     timerFrame.currentPull = {}
     local bossFrames = {}
-    local function formatTime(seconds)
-        local sign = ""
-        if seconds < 0 then
-            sign = "-"
-            seconds = -seconds
-        end
-        local hours = math.floor(seconds / 3600)
-        local minutes = math.floor((seconds % 3600) / 60)
-        local remaining_seconds = seconds % 60
-
-        if hours > 0 then
-            return string.format("%s%02d:%02d:%02d", sign, hours, minutes, remaining_seconds)
-        else
-            return string.format("%s%02d:%02d", sign, minutes, remaining_seconds)
-        end
-    end
     local function getBestTimes(mapID, affixID, keyLevel)
         if not db.bestTimes then return end
         if db.bestTimes[mapID] and db.bestTimes[mapID][affixID] and db.bestTimes[mapID][affixID][keyLevel] and type(db.bestTimes[mapID][affixID][keyLevel]) == "table" then
@@ -136,7 +120,8 @@ local function loadTimerFrame()
 
     function timerFrame:SaveAnchors()
         local point, _, relativePoint, offsetX, offsetY = self:GetPoint();
-        db.settings.timerSettings.anchor = { point = point, relativePoint = relativePoint, offsetX = offsetX, offsetY = offsetY }
+        db.settings.timerSettings.anchor = { point = point, relativePoint = relativePoint, offsetX = offsetX, offsetY =
+        offsetY }
     end
 
     function timerFrame:SetActivated(state)
@@ -207,7 +192,7 @@ local function loadTimerFrame()
         if not db.settings.timerSettings then
             timerFrame:LoadSettings()
         end
-        if not db.settings.timerSettings.active and event ~= "PLAYER_ENTERING_WORLD"  then
+        if not db.settings.timerSettings.active and event ~= "PLAYER_ENTERING_WORLD" then
             self:ReleaseFrame()
             return
         end
@@ -337,6 +322,13 @@ local function loadTimerFrame()
         self:Hide()
         self:SetScript("OnUpdate", nil)
         for _, frame in ipairs(bossFrames) do
+            frame.name:SetText("")
+            frame.name:SetTextColor()
+            frame.bestDiff:SetText("")
+            frame.bestDiff:SetTextColor()
+            frame.time:SetText("")
+            frame.time:SetTextColor()
+            frame.dead = false
             frame.used = false
             frame:Hide()
         end
@@ -356,14 +348,14 @@ local function loadTimerFrame()
         if self.last and currentTime <= self.last then return end
         self.last = currentTime
 
-        self.time:SetText(string.format("%s / %s", formatTime(currentTime), formatTime(self.runData.timeLimit)))
+        self.time:SetText(string.format("%s / %s", SecondsToClock(currentTime), SecondsToClock(self.runData.timeLimit)))
         self.timeBar:SetProgress(currentTime, self.runData.timeLimit)
         local plus3Remain = self.runData.plus3 - currentTime
         local plus2Remain = self.runData.plus2 - currentTime
         local plus1Remain = self.runData.timeLimit - currentTime
-        self.plus3.text:SetText(formatTime(plus3Remain))
-        self.plus2.text:SetText(formatTime(plus2Remain))
-        self.plus1.text:SetText(formatTime(plus1Remain))
+        self.plus3.text:SetText(SecondsToClock(plus3Remain))
+        self.plus2.text:SetText(SecondsToClock(plus2Remain))
+        self.plus1.text:SetText(SecondsToClock(plus1Remain))
 
         local deaths = C_ChallengeMode.GetDeathCount()
         self.deaths:SetText(string.format("%d %s14|t", deaths, ICON_LIST[8]))
@@ -390,11 +382,11 @@ local function loadTimerFrame()
                 local deathTime = dead - currentTime
                 bossBar.name:SetTextColor(styles.COLORS.GREEN_LIGHT:GetRGBA())
                 bossBar.time:SetTextColor(styles.COLORS.GREEN_LIGHT:GetRGBA())
-                bossBar.time:SetText(formatTime(deathTime))
+                bossBar.time:SetText(SecondsToClock(deathTime))
                 if self.runData.bestTimes and self.runData.bestTimes[self.runData.currentBoss] then
                     local best = self.runData.bestTimes[self.runData.currentBoss]
                     self.runData.currentBoss = self.runData.currentBoss + 1
-                    bossBar.bestDiff:SetText(formatTime((best - deathTime) * -1))
+                    bossBar.bestDiff:SetText(SecondsToClock((best - deathTime) * -1))
                     if best < deathTime then
                         bossBar.time:SetTextColor(styles.COLORS.RED_LIGHT:GetRGBA())
                         bossBar.bestDiff:SetTextColor(styles.COLORS.RED_LIGHT:GetRGBA())
@@ -412,7 +404,7 @@ local function loadTimerFrame()
                 local time = ""
                 if self.runData.bestTimes and self.runData.bestTimes[self.runData.currentBoss + liveIndex] then
                     local best = self.runData.bestTimes[self.runData.currentBoss + liveIndex]
-                    time = formatTime(best)
+                    time = SecondsToClock(best)
                 end
                 bossBar.name:SetTextColor(styles.COLORS.TEXT_PRIMARY:GetRGBA())
                 bossBar.time:SetTextColor(styles.COLORS.TEXT_PRIMARY:GetRGBA())
