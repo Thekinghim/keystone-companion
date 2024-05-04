@@ -215,7 +215,7 @@ end);
 
 UI.CopyFrame = CreateRoundedFrame(UI,
   { width = UI:GetWidth(), height = 64, points = { { "LEFT", UI, "LEFT", 20, 0 }, { "RIGHT", UI, "RIGHT", -20, 0 }, { "CENTER", 0, 10 } }, border_size = 1 })
-UI.CopyFrame:SetFrameStrata("DIALOG");
+UI.CopyFrame:SetFrameStrata("TOOLTIP");
 UI.CopyFrame.Label = UI.CopyFrame:CreateFontString("KeystoneCompanionCopyFrameLabel", "OVERLAY");
 UI.CopyFrame.Label:SetPoint("TOPLEFT", UI.CopyFrame, "TOPLEFT", 5, -5);
 UI.CopyFrame.Label:SetPoint("BOTTOMRIGHT", UI.CopyFrame, "BOTTOMRIGHT", -5, 35);
@@ -225,7 +225,7 @@ UI.CopyFrame:Hide();
 
 UI.EditBox = CreateFrame("EditBox", 'KeystoneCompanionCopyFrameEditBox', UI.CopyFrame, 'InputBoxTemplate');
 UI.EditBox:SetFontObject("GameFontNormal")
-UI.EditBox:SetFrameStrata("DIALOG")
+UI.EditBox:SetFrameStrata("TOOLTIP")
 UI.EditBox:SetHeight(24);
 UI.EditBox:SetJustifyH("CENTER");
 UI.EditBox:SetPoint("LEFT", UI.CopyFrame, "LEFT", 25, 0)

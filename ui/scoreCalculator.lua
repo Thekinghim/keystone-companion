@@ -106,6 +106,7 @@ local calculatorFrame = KeystoneCompanion.widgets.RoundedFrame.CreateFrame(UIPar
     width = 600,
     border_size = 2,
 })
+calculatorFrame:SetFrameStrata("FULLSCREEN")
 calculatorFrame:Hide()
 calculatorFrame:EnableMouse(true)
 calculatorFrame:SetMovable(true)
