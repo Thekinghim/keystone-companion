@@ -6,6 +6,7 @@ local fillColor = CreateColorFromHexString("FF009901")
 local dungeonNameFixes = {
     [464] = "DotI: Upper", -- Dawn of the Infinite: Murozond's Rise
     [463] = "DotI: Lower", -- Dawn of the Infinite: Galakrond's Fall
+    [403] = "Uldaman", -- Uldaman: Legacy of Tyr
 }
 local timerFrame
 
