@@ -24,6 +24,7 @@ local function loadTimerFrame()
         background_color = CreateColorFromHexString("99131315")
     })
     KeystoneCompanion.DungeonTimerFrame = timerFrame
+    timerFrame:SetClampedToScreen(true)
     timerFrame:Hide()
     timerFrame.currentPull = {}
     local bossFrames = {}
@@ -328,11 +329,11 @@ local function loadTimerFrame()
         self:SetScript("OnUpdate", nil)
         for _, frame in ipairs(bossFrames) do
             frame.name:SetText("")
-            frame.name:SetTextColor()
+            frame.name:SetTextColor(styles.COLORS.TEXT_PRIMARY:GetRGBA())
             frame.bestDiff:SetText("")
-            frame.bestDiff:SetTextColor()
+            frame.bestDiff:SetTextColor(styles.COLORS.TEXT_PRIMARY:GetRGBA())
             frame.time:SetText("")
-            frame.time:SetTextColor()
+            frame.time:SetTextColor(styles.COLORS.TEXT_PRIMARY:GetRGBA())
             frame.dead = false
             frame.used = false
             frame:Hide()

@@ -13,7 +13,8 @@ local infoIcon = {
     fileStr = string.format("|T%s:16|t", getTexturePath("icons/info")),
 }
 
-local talentCheckFrame = createRoundedFrame(UIParent, { border_size = 2, width = 300, height = 200 })
+local talentCheckFrame = createRoundedFrame(UIParent,
+    { border_size = 2, width = 300, height = 200, frame_strata = "FULLSCREEN" })
 talentCheckFrame:EnableMouse(true)
 talentCheckFrame:SetMovable(true)
 talentCheckFrame:SetScript("OnMouseDown", function(self)

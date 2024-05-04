@@ -1,6 +1,7 @@
-local _, KeystoneCompanion = ...
-local styles = KeystoneCompanion.constants.styles;
-local mixTables = KeystoneCompanion.widgets.Base.mixTables
+local lib = LibStub("RasuGUI")
+if lib.Widgets.Slider then return end
+
+local mixTables = lib.Widgets.Base.mixTables
 
 ---@class SliderOptions
 ---@field width number?
@@ -24,7 +25,7 @@ local defaultOptions = {
     maxValue = 100,
     isDisabled = false,
     text = "",
-    fontObject = styles.FONT_OBJECTS.BOLD,
+    fontObject = GameFontHighlightCenter,
 }
 
 ---@param parent Frame
@@ -74,6 +75,6 @@ end
 
 ---@class SliderAPI
 ---@field CreateFrame fun(parent:Frame, options:SliderOptions): ModernSlider
-KeystoneCompanion.widgets.Slider = {
+lib.Widgets.Slider = {
     CreateFrame = createSlider
 }

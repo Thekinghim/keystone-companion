@@ -4,7 +4,7 @@
 ## IconTexture: Interface\AddOns\Keystone-Companion\assets\textures\icons\addon
 ## Author: Kaelon/Jordy141
 ## Notes: See your party's M+ keystones, dungeon reagents, and dungeon portals.
-## SavedVariables: KeystoneCompanionDB
+## SavedVariables: KeystoneCompanionDB, KeystoneCompanionDebug
 ## DefaultState: enabled
 ## OptionalDeps: MythicDungeonTools
 ## X-Curse-Project-ID: 984971

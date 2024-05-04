@@ -129,14 +129,11 @@ end
 
 local weeklyBest
 local function createWeeklyBest()
-<<<<<<< Updated upstream
-=======
     local wc = ChallengesFrame.WeeklyInfo.Child.WeeklyChest
     local wcText = wc.RunStatus
     wcText:ClearAllPoints()
     wcText:SetPoint("TOPLEFT", -50, 150)
     wcText:SetPoint("BOTTOMRIGHT", 50, 0)
->>>>>>> Stashed changes
     weeklyBest = CreateRoundedFrame(ChallengesFrame, {
         height = 225,
         width = 130,

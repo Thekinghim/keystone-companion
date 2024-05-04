@@ -1,6 +1,7 @@
-local _, KeystoneCompanion = ...
-local styles = KeystoneCompanion.constants.styles;
-local mixTables = KeystoneCompanion.widgets.Base.mixTables
+local lib = LibStub("RasuGUI")
+if lib.Widgets.CheckBox then return end
+
+local mixTables = lib.Widgets.Base.mixTables
 
 ---@class CheckBoxOptions
 ---@field size number?
@@ -16,7 +17,7 @@ local defaultOptions = {
     defaultState = false,
     isDisabled = false,
     text = "",
-    fontObject = styles.FONT_OBJECTS.BOLD,
+    fontObject = GameFontHighlightCenter,
 }
 
 ---@param parent Frame
@@ -63,6 +64,6 @@ end
 
 ---@class CheckBoxAPI
 ---@field CreateFrame fun(parent:Frame, options:CheckBoxOptions): CheckBox
-KeystoneCompanion.widgets.CheckBox = {
+lib.Widgets.CheckBox = {
     CreateFrame = createCheckBox
 }

@@ -1,15 +1,17 @@
-local _, KeystoneCompanion = ...
-local styles = KeystoneCompanion.constants.styles;
-local pathUtil = KeystoneCompanion.utils.path;
-local mixTables = KeystoneCompanion.widgets.Base.mixTables
+local lib = LibStub("RasuGUI")
+if lib.Widgets.RoundedFrame then return end
+
+local styles = lib.styles
+local mixTables = lib.Widgets.Base.mixTables
+local getPath = lib.Widgets.Base.getAddonPath
 
 local borderTextures = {
-  [1] = pathUtil.getTexturePath('rounded-frame/border-1px.tga');
-  [2] = pathUtil.getTexturePath('rounded-frame/border-2px.tga');
-  [4] = pathUtil.getTexturePath('rounded-frame/border-4px.tga');
-  [6] = pathUtil.getTexturePath('rounded-frame/border-6px.tga');
-  [8] = pathUtil.getTexturePath('rounded-frame/border-8px.tga');
-  [10] = pathUtil.getTexturePath('rounded-frame/border-10px.tga');
+  [1] = getPath('assets/textures/rounded-frame/border-1px.tga');
+  [2] = getPath('assets/textures/rounded-frame/border-2px.tga');
+  [4] = getPath('assets/textures/rounded-frame/border-4px.tga');
+  [6] = getPath('assets/textures/rounded-frame/border-6px.tga');
+  [8] = getPath('assets/textures/rounded-frame/border-8px.tga');
+  [10] = getPath('assets/textures/rounded-frame/border-10px.tga');
 }
 
 ---@param frame Texture
@@ -54,7 +56,7 @@ local function createRoundedFrame(parent, options)
     frame:SetSize(options.width, options.height)
 
     frame.Background = frame:CreateTexture(nil, "BACKGROUND")
-    applySlice(frame.Background, pathUtil.getTexturePath('rounded-frame/base.tga'))
+    applySlice(frame.Background, getPath('assets/textures/rounded-frame/base.tga'))
     frame.Background:SetVertexColor(options.background_color:GetRGBA())
     frame.Background:SetAllPoints()
 
@@ -75,6 +77,6 @@ end
 
 ---@class RoundedFrameAPI
 ---@field CreateFrame fun(parent:Frame, options:RoundedFrameOptions): Frame
-KeystoneCompanion.widgets.RoundedFrame = {
+lib.Widgets.RoundedFrame = {
     CreateFrame = createRoundedFrame
 }

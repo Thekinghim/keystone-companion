@@ -1,7 +1,9 @@
-local _, KeystoneCompanion = ...
-local styles = KeystoneCompanion.constants.styles;
-local RoundedFrame = KeystoneCompanion.widgets.RoundedFrame;
-local mixTables = KeystoneCompanion.widgets.Base.mixTables
+local lib = LibStub("RasuGUI")
+if lib.Widgets.ProgressBar then return end
+
+local styles = lib.styles
+local RoundedFrame = lib.Widgets.RoundedFrame
+local mixTables = lib.Widgets.Base.mixTables
 
 ---@class ProgressBarOptions
 ---@field fill_direction FillDirections?
@@ -125,6 +127,6 @@ end
 
 ---@class ProgressBarAPI
 ---@field CreateFrame fun(parent:Frame, options:ProgressBarOptions) : ProgressBar
-KeystoneCompanion.widgets.ProgressBar = {
+lib.Widgets.ProgressBar = {
     CreateFrame = createBar,
 }
