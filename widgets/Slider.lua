@@ -59,7 +59,7 @@ local function createSlider(parent, options)
     slider.callback = options.callback
     slider.label = label
 
-    slider:SetScript("OnValueChanged", function (self)
+    slider:SetScript("OnValueChanged", function(self)
         value:SetText(tostring(self:GetValue()))
     end)
 

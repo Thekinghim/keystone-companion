@@ -34,42 +34,42 @@ KeystoneCompanion.constants.dungeonTeleports = {
 
   [2451] = {
     name = 'Uldaman: Legacy of Tyr',
-    spell = { id = 393222, name = 'Path of the Watcher\'s Legacy'}
+    spell = { id = 393222, name = 'Path of the Watcher\'s Legacy' }
   },
 
   [2515] = {
     name = 'The Azure Vault',
-    spell = { id = 393279, name = 'Path of Arcane Secrets'}
+    spell = { id = 393279, name = 'Path of Arcane Secrets' }
   },
 
   [2516] = {
     name = 'The Nokhud Offensive',
-    spell = { id = 393262, name = 'Path of the Windswept Plains'}
+    spell = { id = 393262, name = 'Path of the Windswept Plains' }
   },
 
   [2519] = {
     name = 'Neltharus',
-    spell = { id = 393276, name = 'Path of the Obsidian Hoard'}
+    spell = { id = 393276, name = 'Path of the Obsidian Hoard' }
   },
 
   [2520] = {
     name = 'Brackenhide Hollow',
-    spell = { id = 393267, name = 'Path of the Rotting Woods'}
+    spell = { id = 393267, name = 'Path of the Rotting Woods' }
   },
 
   [2521] = {
     name = 'Ruby Life Pools',
-    spell = { id = 393256, name = 'Path of the Clutch Defender'}
+    spell = { id = 393256, name = 'Path of the Clutch Defender' }
   },
 
   [2526] = {
     name = 'Algeth\'ar Academy',
-    spell = { id = 393273, name = 'Path of the Draconic Diploma'}
+    spell = { id = 393273, name = 'Path of the Draconic Diploma' }
   },
 
   [2527] = {
     name = 'Halls of Infusion',
-    spell = { id = 393283, name = 'Path of the Titanic Reservoir'}
+    spell = { id = 393283, name = 'Path of the Titanic Reservoir' }
   },
 
   [2579] = {

@@ -1,7 +1,10 @@
 local KeystoneCompanion = select(2, ...)
 local styles = KeystoneCompanion.constants.styles
 local aTalents = KeystoneCompanion.constants.affixTalents
-local CreateRoundedFrame = KeystoneCompanion.widgets.RoundedFrame.CreateFrame
+local widgets = KeystoneCompanion.widgets
+local createRoundedFrame = widgets.RoundedFrame.CreateFrame
+local createRoundedButton = widgets.RoundedButton.CreateFrame
+local createScrollable = widgets.ScrollableFrame.CreateFrame
 local getTexturePath = KeystoneCompanion.utils.path.getTexturePath
 
 local addonTitle = styles.COLORS.TEXT_HIGHLIGHT:WrapTextInColorCode("Keystone Companion")
@@ -9,95 +12,8 @@ local infoIcon = {
     file = getTexturePath("icons/info"),
     fileStr = string.format("|T%s:16|t", getTexturePath("icons/info")),
 }
-local buttonDefault = CreateColorFromHexString("FF17191C")
-local buttonHover = CreateColorFromHexString("FF36373B")
-local function createTooltip(frame, tooltipText)
-    frame:HookScript("OnEnter", function(self)
-        GameTooltip:SetOwner(self, "ANCHOR_CURSOR_RIGHT")
-        GameTooltip:ClearLines()
-        GameTooltip:AddLine(tooltipText, styles.COLORS.TEXT_PRIMARY:GetRGBA())
-        GameTooltip:Show()
-    end)
-    frame:HookScript("OnLeave", function()
-        GameTooltip:Hide()
-    end)
-end
-local function createRoundedButton(parent, points, width, height, isDisabled, text, tooltip)
-    ---@class roundedButton : RoundedFrame
-    local button = CreateRoundedFrame(parent, {
-        width = width,
-        height = height,
-        points = points,
-    })
-    local label = button:CreateFontString()
-    label:SetFontObject(styles.FONT_OBJECTS.BOLD)
-    label:SetPoint("CENTER")
-    label:SetText(text)
-    button:EnableMouse(true)
-    button.disabled = isDisabled
-    button.label = label
-    button.Background:SetVertexColor(buttonDefault:GetRGBA())
-    button:SetScript("OnEnter", function(self)
-        if not self.disabled then
-            self.Background:SetVertexColor(buttonHover:GetRGBA())
-        end
-    end)
-    button:SetScript("OnLeave", function(self)
-        self.Background:SetVertexColor(buttonDefault:GetRGBA())
-    end)
-    if tooltip then
-        createTooltip(button, tooltip)
-    end
-    return button
-end
-local function createScrollable(options)
-    local scrollBox = CreateFrame("Frame", nil, options.parent, "WowScrollBoxList")
-    local scrollBar = CreateFrame("EventFrame", nil, options.parent, "MinimalScrollBar")
-    scrollBar:SetPoint("TOPLEFT", scrollBox, "TOPRIGHT", 5, 0)
-    scrollBar:SetPoint("BOTTOMLEFT", scrollBox, "BOTTOMRIGHT")
-    scrollBar:SetHideIfUnscrollable(true)
 
-    local scrollView = nil
-    if options.type == "LIST" then
-        scrollView = CreateScrollBoxListLinearView()
-        scrollView:SetElementInitializer(options.template or "BackdropTemplate", options.initializer)
-        ScrollUtil.InitScrollBoxListWithScrollBar(scrollBox, scrollBar, scrollView)
-    elseif options.type == "GRID" then
-        local fillWidth = (options.parent:GetWidth() - (options.elementsPerRow - 1) * options.elementPadding) /
-            options.elementsPerRow
-        scrollView = CreateScrollBoxListGridView(options.elementsPerRow, 0, 0, 0, 0, options.elementPadding,
-            options.elementPadding);
-        scrollView:SetElementInitializer(options.template or "BackdropTemplate", function(button, elementData)
-            button:SetSize(options.fillWidth and fillWidth or options.elementHeight, options.elementHeight)
-            options.initializer(button, elementData)
-        end)
-        ScrollUtil.InitScrollBoxListWithScrollBar(scrollBox, scrollBar, scrollView);
-    end
-    if options.extentCalculator then
-        scrollView:SetElementExtentCalculator(options.extentCalculator)
-    else
-        scrollView:SetElementExtent(options.elementHeight)
-    end
-    -- Sadly this seems to be broken for Grids rn from blizzards side
-    ScrollUtil.AddManagedScrollBarVisibilityBehavior(scrollBox, scrollBar, options.anchors.withScrollBar,
-        options.anchors.withoutScrollBar);
-
-    function scrollView:UpdateContentData(data)
-        local scrollPercent = scrollBox:GetScrollPercentage()
-        self:Flush()
-        local dataProvider = CreateDataProvider()
-        self:SetDataProvider(dataProvider)
-        if not data then return end
-        for _, part in ipairs(data) do
-            dataProvider:Insert(part)
-        end
-        scrollBox:SetScrollPercentage(scrollPercent or 1)
-    end
-
-    return scrollView, scrollBox, scrollBar
-end
-
-local talentCheckFrame = CreateRoundedFrame(UIParent, { border_size = 2, width = 300, height = 200 })
+local talentCheckFrame = createRoundedFrame(UIParent, { border_size = 2, width = 300, height = 200 })
 talentCheckFrame:EnableMouse(true)
 talentCheckFrame:SetMovable(true)
 talentCheckFrame:SetScript("OnMouseDown", function(self)
@@ -115,8 +31,7 @@ moreInfo:SetFontObject(styles.FONT_OBJECTS.NORMAL)
 moreInfo:SetPoint("TOP", 0, -30)
 moreInfo:SetText(infoIcon.fileStr .. "Hover over Icons for more Info.")
 
-local iconView, iconBox = createScrollable({
-    parent = talentCheckFrame,
+local iconBox, iconView = createScrollable(talentCheckFrame, {
     anchors = {
         withScrollBar = {
             CreateAnchor("TOPLEFT", 12, -54),
@@ -145,13 +60,20 @@ local iconView, iconBox = createScrollable({
         end
         frame.icon:SetDesaturated(not elementData.talented)
         frame.icon:SetTexture(elementData.texture)
-        createTooltip(frame, elementData.tooltipText)
+        widgets.Base.AddTooltip(frame, elementData.tooltipText)
     end,
 })
 
-local okayButton = createRoundedButton(talentCheckFrame,
-    { { "TOPLEFT", iconBox, "BOTTOMLEFT", 0, -12 }, { "TOPRIGHT", iconBox, "BOTTOMRIGHT", 0, -12 } }, 0, 25,
-    false, OKAY)
+local okayButton = createRoundedButton(talentCheckFrame, {
+    points = {
+        { "TOPLEFT",  iconBox, "BOTTOMLEFT",  0, -12 },
+        { "TOPRIGHT", iconBox, "BOTTOMRIGHT", 0, -12 }
+    },
+    height = 25,
+    font_text = OKAY,
+    frame_strata = "FULLSCREEN_DIALOG",
+    tooltip_text = "Close"
+})
 okayButton:SetScript("OnMouseDown", function()
     talentCheckFrame:Hide()
 end)

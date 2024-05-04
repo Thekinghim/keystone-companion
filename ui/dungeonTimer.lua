@@ -120,8 +120,13 @@ local function loadTimerFrame()
 
     function timerFrame:SaveAnchors()
         local point, _, relativePoint, offsetX, offsetY = self:GetPoint();
-        db.settings.timerSettings.anchor = { point = point, relativePoint = relativePoint, offsetX = offsetX, offsetY =
-        offsetY }
+        db.settings.timerSettings.anchor = {
+            point = point,
+            relativePoint = relativePoint,
+            offsetX = offsetX,
+            offsetY =
+                offsetY
+        }
     end
 
     function timerFrame:SetActivated(state)

@@ -1,5 +1,9 @@
 local _, KeystoneCompanion = ...
 
+local rasuGUI = LibStub("RasuGUI")
+KeystoneCompanion.RasuGUI = rasuGUI
+KeystoneCompanion.widgets = rasuGUI.Widgets
+
 KeystoneCompanionDB = {
   settings = {
     DevMode = false,

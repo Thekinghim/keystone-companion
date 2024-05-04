@@ -13,7 +13,7 @@ end
 KeystoneCompanion.inventory.self = KeystoneCompanion.inventory:NewEmptyInventory();
 
 function KeystoneCompanion.inventory:GetInventoryString()
-  if(#self.self.items == 0) then
+  if (#self.self.items == 0) then
     self:ScanInventory();
   end
 
@@ -23,20 +23,20 @@ function KeystoneCompanion.inventory:GetInventoryString()
   return inventoryString;
 end
 
-local ToArray = function (itemData) 
+local ToArray = function(itemData)
   local array = {};
-  for k,v in pairs(itemData) do table.insert(array, { itemID = k, count = v}) end
+  for k, v in pairs(itemData) do table.insert(array, { itemID = k, count = v }) end
   return array;
 end
 
-local ScanItem = function (itemCache, bagIndex, bagSlot)
+local ScanItem = function(itemCache, bagIndex, bagSlot)
   local itemInfo = C_Container.GetContainerItemInfo(bagIndex, bagSlot);
-  if(itemInfo == nil) then return end
+  if (itemInfo == nil) then return end
 
   local itemCategory = KeystoneCompanion.constants.itemLookup[itemInfo.itemID];
-  if(itemCategory == nil) then return end
+  if (itemCategory == nil) then return end
 
-  if(itemCache[itemCategory][itemInfo.itemID] == nil) then 
+  if (itemCache[itemCategory][itemInfo.itemID] == nil) then
     itemCache[itemCategory][itemInfo.itemID] = itemInfo.stackCount;
   else
     itemCache[itemCategory][itemInfo.itemID] = itemCache[itemCategory][itemInfo.itemID] + itemInfo.stackCount
@@ -68,7 +68,7 @@ function KeystoneCompanion.inventory:ScanInventory()
   }
 
   local keystoneMapId = C_MythicPlus.GetOwnedKeystoneMapID();
-  if(keystoneMapId == nil) then
+  if (keystoneMapId == nil) then
     self.self.keystone = { mapId = nil, level = nil };
   else
     local keystoneLevel = C_MythicPlus.GetOwnedKeystoneLevel();
@@ -76,8 +76,8 @@ function KeystoneCompanion.inventory:ScanInventory()
   end
 
   self.self.knownTeleports = {};
-  for instanceId, dungeonTeleportInfo in pairs(KeystoneCompanion.constants.dungeonTeleports) do 
-    if(IsSpellKnown(dungeonTeleportInfo.spell.id, false)) then
+  for instanceId, dungeonTeleportInfo in pairs(KeystoneCompanion.constants.dungeonTeleports) do
+    if (IsSpellKnown(dungeonTeleportInfo.spell.id, false)) then
       table.insert(self.self.knownTeleports, instanceId)
     end
   end
@@ -103,9 +103,9 @@ function KeystoneCompanion.inventory:LoadString(sender, inventoryString)
 end
 
 function KeystoneCompanion.inventory:LoadFromDetailsInfo(sender, level, mapID)
-  if(self[sender] == nil) then self[sender] = self:NewEmptyInventory() end
+  if (self[sender] == nil) then self[sender] = self:NewEmptyInventory() end
   self[sender].keystone = { mapID = mapID > 0 and mapID or nil, level = level > 0 and level or nil };
-  if(KeystoneCompanion.UI.Frame:IsShown()) then
+  if (KeystoneCompanion.UI.Frame:IsShown()) then
     KeystoneCompanion.UI.Rerender();
   end
 end
