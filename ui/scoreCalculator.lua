@@ -258,8 +258,8 @@ end
 
 local function createScrollable(options)
     local scrollBox = CreateFrame("Frame", nil, options.parent, "WowScrollBoxList")
-    scrollBox:SetPoint(unpack(options.anchors[1]))
     scrollBox:SetPoint(unpack(options.anchors[2]))
+    scrollBox:SetPoint(unpack(options.anchors[1]))
 
     local scrollBar = CreateFrame("EventFrame", nil, options.parent, "MinimalScrollBar")
     scrollBar:SetPoint("TOPLEFT", scrollBox, "TOPRIGHT", 5, 0)
