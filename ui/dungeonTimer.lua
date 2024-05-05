@@ -98,21 +98,13 @@ local function loadTimerFrame()
 
     function timerFrame:ToggleMoveable(forceState)
         local makeMovable = false
-        if not self:GetScript("OnMouseDown") then
+        if not self:GetScript("OnDragStart") then
             makeMovable = true
         end
         if forceState ~= nil then
             makeMovable = forceState
         end
-        self:SetScript("OnMouseDown", makeMovable and function()
-            self:StartMoving()
-        end or nil)
-        self:SetScript("OnMouseUp", makeMovable and function()
-            self:SaveAnchors()
-            self:StopMovingOrSizing()
-        end or nil)
-        self:SetMovable(makeMovable)
-        self:EnableMouse(makeMovable)
+        self:MakeMovable(not makeMovable, self.SaveAnchors)
 
         self:Show()
         if not makeMovable and (not C_ChallengeMode.IsChallengeModeActive() or not db.settings.timerSettings.active) then

@@ -7,15 +7,7 @@ local UI = CreateRoundedFrame(UIParent, {
   width = 438, height = 566, border_size = 1, frame_strata = "DIALOG"
 });
 KeystoneCompanion.UI = { Frame = UI };
-
-UI:Hide();
-UI:SetMovable(true);
-UI:EnableMouse(true);
-UI:SetSize(470, 566);
-UI:RegisterForDrag('LeftButton');
-UI:SetScript('OnDragStart', UI.StartMoving)
-UI:SetScript('OnDragStop', function(self)
-  self:StopMovingOrSizing();
+UI:MakeMovable(false, function(self)
   local point, relativeTo, relativePoint, offsetX, offsetY = self:GetPoint();
   KeystoneCompanionDB.UI = KeystoneCompanionDB.UI or {};
   KeystoneCompanionDB.UI = {
@@ -27,6 +19,9 @@ UI:SetScript('OnDragStop', function(self)
         offsetY
   }
 end)
+
+UI:Hide();
+UI:SetSize(470, 566);
 
 UI.Top = CreateFrame('Frame', 'KeystoneCompanionTop', UI);
 UI.Top:SetSize(431, 56)
@@ -679,7 +674,7 @@ function KeystoneCompanion.UI.Rerender()
   local topRow = UI['player1'];
   KeystoneCompanion.UI.RerenderPlayerRow(topRow, UnitName('player'), ownData);
 
-  local numPartyMembers = not IsInRaid() and GetNumGroupMembers(LE_PARTY_CATEGORY_HOME) or GetNumSubgroupMembers() + 1;
+  local numPartyMembers = IsInRaid() and GetNumSubgroupMembers()+1 or GetNumGroupMembers(LE_PARTY_CATEGORY_HOME);
   for i = 2, 5 do
     UI['player' .. i]:Hide();
   end

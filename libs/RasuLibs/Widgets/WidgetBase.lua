@@ -63,3 +63,23 @@ function lib.Widgets.BaseMixin:AddTooltip(tooltipText)
     end)
     self.hasTooltip = true
 end
+
+---@param self Frame
+function lib.Widgets.BaseMixin:MakeMovable(deactivate, onStop, onStart)
+    local isActive = not deactivate
+    self:SetMovable(isActive)
+    self:EnableMouse(isActive)
+    self:RegisterForDrag('LeftButton')
+    self:SetScript('OnDragStart', isActive and function (frame, ...)
+        frame:StartMoving()
+        if onStart then
+            onStart(frame, ...)
+        end
+    end or nil)
+    self:SetScript('OnDragStop', isActive and function (frame, ...)
+        frame:StopMovingOrSizing()
+        if onStop then
+            onStop(frame, ...)
+        end
+    end or nil)
+end

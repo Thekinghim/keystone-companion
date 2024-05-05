@@ -15,14 +15,7 @@ local infoIcon = {
 
 local talentCheckFrame = createRoundedFrame(UIParent,
     { border_size = 2, width = 300, height = 200, frame_strata = "FULLSCREEN" })
-talentCheckFrame:EnableMouse(true)
-talentCheckFrame:SetMovable(true)
-talentCheckFrame:SetScript("OnMouseDown", function(self)
-    self:StartMoving()
-end)
-talentCheckFrame:SetScript("OnMouseUp", function(self)
-    self:StopMovingOrSizing()
-end)
+talentCheckFrame:MakeMovable()
 local title = talentCheckFrame:CreateFontString()
 title:SetFont(styles.FONTS.BOLD, 16, "")
 title:SetPoint("TOP", 0, -12)
