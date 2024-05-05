@@ -679,7 +679,7 @@ function KeystoneCompanion.UI.Rerender()
   local topRow = UI['player1'];
   KeystoneCompanion.UI.RerenderPlayerRow(topRow, UnitName('player'), ownData);
 
-  local numPartyMembers = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME);
+  local numPartyMembers = not IsInRaid() and GetNumGroupMembers(LE_PARTY_CATEGORY_HOME) or GetNumSubgroupMembers() + 1;
   for i = 2, 5 do
     UI['player' .. i]:Hide();
   end
