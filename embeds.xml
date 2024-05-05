@@ -6,18 +6,15 @@
     <Script file="init.lua"/>
     <Include file="constants/embeds.xml" />
     <Include file="utils/embeds.xml" />
-    <Include file="widgets/embeds.xml" />
     
     <Script file="dev.lua"/>
     <Script file="inventory.lua"/>
     <Script file="communication.lua"/>
-
-    <Include file="widgets/embeds.xml" />
     
     <Include file="ui/embeds.xml" />
 
     <Script file="main.lua"/>
 
-    <Script file="scoreCalculator.lua"/>
     <Script file="itemTooltip.lua"/>
+    <Script file="autoSocket.lua"/>
 </Ui>

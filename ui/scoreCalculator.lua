@@ -106,6 +106,7 @@ local calculatorFrame = KeystoneCompanion.widgets.RoundedFrame.CreateFrame(UIPar
     width = 600,
     border_size = 2,
 })
+calculatorFrame:SetFrameStrata("FULLSCREEN")
 calculatorFrame:Hide()
 calculatorFrame:EnableMouse(true)
 calculatorFrame:SetMovable(true)
@@ -258,8 +259,8 @@ end
 
 local function createScrollable(options)
     local scrollBox = CreateFrame("Frame", nil, options.parent, "WowScrollBoxList")
-    scrollBox:SetPoint(unpack(options.anchors[1]))
     scrollBox:SetPoint(unpack(options.anchors[2]))
+    scrollBox:SetPoint(unpack(options.anchors[1]))
 
     local scrollBar = CreateFrame("EventFrame", nil, options.parent, "MinimalScrollBar")
     scrollBar:SetPoint("TOPLEFT", scrollBox, "TOPRIGHT", 5, 0)

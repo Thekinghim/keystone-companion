@@ -6,6 +6,7 @@ local fillColor = CreateColorFromHexString("FF009901")
 local dungeonNameFixes = {
     [464] = "DotI: Upper", -- Dawn of the Infinite: Murozond's Rise
     [463] = "DotI: Lower", -- Dawn of the Infinite: Galakrond's Fall
+    [403] = "Uldaman", -- Uldaman: Legacy of Tyr
 }
 local timerFrame
 
@@ -24,6 +25,7 @@ local function loadTimerFrame()
         background_color = CreateColorFromHexString("99131315")
     })
     KeystoneCompanion.DungeonTimerFrame = timerFrame
+    timerFrame:SetClampedToScreen(true)
     timerFrame:Hide()
     timerFrame.currentPull = {}
     local bossFrames = {}
@@ -120,8 +122,13 @@ local function loadTimerFrame()
 
     function timerFrame:SaveAnchors()
         local point, _, relativePoint, offsetX, offsetY = self:GetPoint();
-        db.settings.timerSettings.anchor = { point = point, relativePoint = relativePoint, offsetX = offsetX, offsetY =
-        offsetY }
+        db.settings.timerSettings.anchor = {
+            point = point,
+            relativePoint = relativePoint,
+            offsetX = offsetX,
+            offsetY =
+                offsetY
+        }
     end
 
     function timerFrame:SetActivated(state)
@@ -323,11 +330,11 @@ local function loadTimerFrame()
         self:SetScript("OnUpdate", nil)
         for _, frame in ipairs(bossFrames) do
             frame.name:SetText("")
-            frame.name:SetTextColor()
+            frame.name:SetTextColor(styles.COLORS.TEXT_PRIMARY:GetRGBA())
             frame.bestDiff:SetText("")
-            frame.bestDiff:SetTextColor()
+            frame.bestDiff:SetTextColor(styles.COLORS.TEXT_PRIMARY:GetRGBA())
             frame.time:SetText("")
-            frame.time:SetTextColor()
+            frame.time:SetTextColor(styles.COLORS.TEXT_PRIMARY:GetRGBA())
             frame.dead = false
             frame.used = false
             frame:Hide()

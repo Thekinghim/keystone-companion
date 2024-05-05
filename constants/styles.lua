@@ -4,17 +4,17 @@ local ASSETS_PATH = 'Interface/Addons/' .. addonName .. '/assets/';
 
 local styles = {
   COLORS = {
-    BACKGROUND = CreateColorFromHexString("FF131315");
-    BORDER = CreateColorFromHexString("FFFF8000");
+    BACKGROUND = CreateColorFromHexString("FF131315"),
+    BORDER = CreateColorFromHexString("FFFF8000"),
 
-    TEXT_PRIMARY = CreateColorFromHexString("FFFFFFFF");
-    TEXT_SECONDARY = CreateColorFromHexString("FFA1A1A1");
+    TEXT_PRIMARY = CreateColorFromHexString("FFFFFFFF"),
+    TEXT_SECONDARY = CreateColorFromHexString("FFA1A1A1"),
     TEXT_HIGHLIGHT = CreateColorFromHexString("FFFF7C0A"),
-  
-    GREEN_DARK = CreateColorFromHexString("FF009901");
-    GREEN_LIGHT = CreateColorFromHexString("FF02FF03");
 
-    RED_LIGHT = CreateColorFromHexString("FFFF0000");
+    GREEN_DARK = CreateColorFromHexString("FF009901"),
+    GREEN_LIGHT = CreateColorFromHexString("FF02FF03"),
+
+    RED_LIGHT = CreateColorFromHexString("FFFF0000"),
 
     YELLOW_LIGHT = CreateColorFromHexString("FFF4ED03")
   },

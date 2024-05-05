@@ -1,6 +1,6 @@
 local _, KeystoneCompanion = ...
 
-KeystoneCompanion.communication = { prefix = "keystonecomp", messageTypes = {LOGON = "LOGON", QUERY = "QUERY", UPDATE = "UPDATE"}, handlers = {}}
+KeystoneCompanion.communication = { prefix = "keystonecomp", messageTypes = { LOGON = "LOGON", QUERY = "QUERY", UPDATE = "UPDATE" }, handlers = {} }
 local LibDeflate = LibStub:GetLibrary("LibDeflate");
 local LIB_OPEN_RAID_COMM_PREFIX = 'LRS';
 local LIB_OPEN_RAID_KEYSTONE_PREFIX = 'K';
@@ -10,9 +10,9 @@ local devPrint = KeystoneCompanion.dev.print;
 function KeystoneCompanion.communication.SendMessage(...)
   local messageType, data = select(1, ...)
   local message = messageType .. '::';
-  if(data ~= nil and strlen(data) > 0) then message = message .. data end
+  if (data ~= nil and strlen(data) > 0) then message = message .. data end
 
-  if(UnitInParty('player') == false and KeystoneCompanion.isDev()) then
+  if (UnitInParty('player') == false and KeystoneCompanion.isDev()) then
     C_ChatInfo.SendAddonMessage(KeystoneCompanion.communication.prefix, message, "WHISPER", UnitName('player'))
   else
     C_ChatInfo.SendAddonMessage(KeystoneCompanion.communication.prefix, message, "PARTY")
@@ -25,30 +25,29 @@ function KeystoneCompanion.communication:RegisterMessageHandler(messageType, cal
 end
 
 function KeystoneCompanion.communication:RequestKeystoneInfoFromLibOpenRaid()
-  local payload = LibDeflate:CompressDeflate(LIB_OPEN_RAID_KEYSTONE_REQUEST_PREFIX, {level = 9})
+  local payload = LibDeflate:CompressDeflate(LIB_OPEN_RAID_KEYSTONE_REQUEST_PREFIX, { level = 9 })
   local encodedPayload = LibDeflate:EncodeForWoWAddonChannel(payload);
   C_ChatInfo.SendAddonMessage(LIB_OPEN_RAID_COMM_PREFIX, encodedPayload, "PARTY");
 end
 
 function KeystoneCompanion.communication:OnLibOpenRaidMessageReceived(text, sender)
-  if(sender == UnitName("player")) then return end;
+  if (sender == UnitName("player")) then return end;
 
   local compressedData = LibDeflate:DecodeForWoWAddonChannel(text);
   local data = LibDeflate:DecompressDeflate(compressedData);
 
-  if(not data or type(data) ~= 'string' or string.len(data) == 0) then return end;
-  if(data:sub(1, 1) ~= LIB_OPEN_RAID_KEYSTONE_PREFIX) then return end;
-  
+  if (not data or type(data) ~= 'string' or string.len(data) == 0) then return end;
+  if (data:sub(1, 1) ~= LIB_OPEN_RAID_KEYSTONE_PREFIX) then return end;
+
   devPrint('received details! keystone info from ' .. sender);
   local keystoneInfo = { strsplit(',', data) }
   KeystoneCompanion.inventory:LoadFromDetailsInfo(sender, tonumber(keystoneInfo[2]), tonumber(keystoneInfo[3]));
-  
 end
 
 function KeystoneCompanion.communication:OnMessageReceived(prefix, text, channel, sender)
   sender = Ambiguate(sender, 'short')
 
-  if(prefix == LIB_OPEN_RAID_COMM_PREFIX) then
+  if (prefix == LIB_OPEN_RAID_COMM_PREFIX) then
     self:OnLibOpenRaidMessageReceived(text, sender)
     return;
   end
@@ -63,7 +62,7 @@ function KeystoneCompanion.communication:OnMessageReceived(prefix, text, channel
   if (handlers == nil) then return end
 
   local messageData = '';
-  if(strlen(text) > prefixSeparatorIndex + 1) then
+  if (strlen(text) > prefixSeparatorIndex + 1) then
     messageData = string.sub(text, prefixSeparatorIndex + 2);
   end
 

@@ -1,4 +1,8 @@
-local _, KeystoneCompanion = ...
+local addonName, KeystoneCompanion = ...
+
+local rasuGUI = LibStub("RasuGUI")
+KeystoneCompanion.RasuGUI = rasuGUI
+KeystoneCompanion.widgets = rasuGUI.Widgets
 
 KeystoneCompanionDB = {
   settings = {
@@ -7,7 +11,7 @@ KeystoneCompanionDB = {
   }
 }
 
-KeystoneCompanion.version = '2.3.4';
+KeystoneCompanion.version = C_AddOns.GetAddOnMetadata(addonName, "Version");
 KeystoneCompanion.buildType = 'release';
 KeystoneCompanion.isDev = function() return KeystoneCompanionDB.settings.DevMode end;
 KeystoneCompanion.print = function(msg) print("|cffddca2eKeystoneCompanion|r: " .. msg) end;

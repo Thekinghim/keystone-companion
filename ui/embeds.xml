@@ -8,4 +8,6 @@
     <Script file="bestDungeons.lua"/>
     <Script file="dungeonTimer.lua"/>
     <Script file="talentCheck.lua"/>
+    <Script file="scoreCalculator.lua"/>
+    <script file="SettingsPanel.lua"/>
 </Ui>
