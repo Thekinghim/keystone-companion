@@ -23,11 +23,12 @@ KeystoneCompanionDB = {
 }
 
 Private.version = C_AddOns.GetAddOnMetadata(addonName, "Version");
-Private.buildType = 'release';
+Private.buildType = 'alpha';
 Private.isDev = function() return KeystoneCompanionDB.settings.DevMode end;
 Private.print = function(msg) print("|cffddca2eKeystoneCompanion|r: " .. msg) end;
 Private.colorise = function(color, msg) return "|cff" .. color .. msg .. "|r" end;
 
+---@class KeystoneCompanion : RasuAddonBase
 KeystoneCompanion = LibStub("RasuAddon"):CreateAddon(
   "Keystone Companion",
   "KeystoneCompanionDB",
@@ -37,7 +38,6 @@ KeystoneCompanion = LibStub("RasuAddon"):CreateAddon(
 )
 
 function KeystoneCompanion:OnInitialize()
-  print("Init")
 end
-
+KeystoneCompanion.Private = Private
 Private.Addon = KeystoneCompanion

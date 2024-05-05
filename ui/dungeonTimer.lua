@@ -2,11 +2,10 @@ local addonName, KeystoneCompanion = ...
 local widgets = KeystoneCompanion.widgets
 local styles = KeystoneCompanion.constants.styles;
 local getTexturePath = KeystoneCompanion.utils.path.getTexturePath;
-local fillColor = CreateColorFromHexString("FF009901")
 local dungeonNameFixes = {
     [464] = "DotI: Upper", -- Dawn of the Infinite: Murozond's Rise
     [463] = "DotI: Lower", -- Dawn of the Infinite: Galakrond's Fall
-    [403] = "Uldaman", -- Uldaman: Legacy of Tyr
+    [403] = "Uldaman",     -- Uldaman: Legacy of Tyr
 }
 local timerFrame
 
@@ -87,9 +86,9 @@ local function loadTimerFrame()
         end
         boss:Show()
         boss.used = true
-        boss.name:SetText("Hymdall")
-        boss.bestDiff:SetText("+/- 0")
-        boss.time:SetText("6:29")
+        boss.name:SetText("")
+        boss.bestDiff:SetText("")
+        boss.time:SetText("")
         boss:ClearAllPoints()
         boss:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 0, -4)
         boss:SetPoint("TOPRIGHT", anchor, "BOTTOMRIGHT", 0, -4)
@@ -118,8 +117,7 @@ local function loadTimerFrame()
             point = point,
             relativePoint = relativePoint,
             offsetX = offsetX,
-            offsetY =
-                offsetY
+            offsetY = offsetY
         }
     end
 
@@ -196,16 +194,28 @@ local function loadTimerFrame()
             return
         end
         if event == "CHALLENGE_MODE_START" then
+            self:ReleaseFrame()
             self:FillFrame()
             self:SetScript("OnUpdate", timerFrame.UpdateFrame)
         elseif event == "CHALLENGE_MODE_COMPLETED" then
             saveBestTimes(self.runData.mapID, self.runData.week, self.runData.level, self:GetBossTimes())
-            self:ReleaseFrame()
+            print("MAP ID", self.runData.mapID)
+            print("RUN WEEK", self.runData.week)
+            print("RUN LEVEL", self.runData.level)
+            print("BOSS TIMES")
+            DevTools_Dump(self:GetBossTimes())
+            self.last = 0
+            self:SetScript("OnUpdate", nil)
         elseif event == "PLAYER_ENTERING_WORLD" then
+            local isLogin, isReload = ...
+            if isLogin or isReload then
+                self:LoadSettings()
+            else
+                self:ReleaseFrame()
+            end
             if C_ChallengeMode.IsChallengeModeActive() then
                 self:OnEvent("CHALLENGE_MODE_START")
             end
-            self:LoadSettings()
         elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
             local _, se, _, _, _, _, _, destGUID = ...
             if se == "UNIT_DIED" then
@@ -266,6 +276,7 @@ local function loadTimerFrame()
     function timerFrame:GetBossTimes()
         local times = {}
         for index, boss in pairs(self.bosses) do
+            print(string.format("Boss %d died %s", index, boss.dead))
             times[index] = boss.dead
         end
         return times
@@ -318,8 +329,8 @@ local function loadTimerFrame()
 
     function timerFrame:ReleaseFrame()
         self.last = 0
-        self:Hide()
         self:SetScript("OnUpdate", nil)
+        self:Hide()
         for _, frame in ipairs(bossFrames) do
             frame.name:SetText("")
             frame.name:SetTextColor(styles.COLORS.TEXT_PRIMARY:GetRGBA())
@@ -449,7 +460,7 @@ local function loadTimerFrame()
     local timeBar = widgets.ProgressBar.CreateFrame(timerFrame, {
         height = 25,
         background_color = barColor,
-        foreground_color = fillColor,
+        foreground_color = styles.COLORS.GREEN_DARK,
         border_size = 0,
         points = {
             { "TOPLEFT",  headerBar, "BOTTOMLEFT",  0, -12 },
@@ -494,7 +505,7 @@ local function loadTimerFrame()
     local countBar = widgets.ProgressBar.CreateFrame(timerFrame, {
         height = 33,
         background_color = barColor,
-        foreground_color = fillColor,
+        foreground_color = styles.COLORS.GREEN_DARK,
         border_size = 2,
     })
     countBar.Background.Border:ClearAllPoints()
