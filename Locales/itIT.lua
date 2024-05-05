@@ -3,70 +3,66 @@ Private.Locales = Private.Locales or {}
 
 Private.Locales["itIT"] = {
     -- ui/bestDungeons.lua
-    ["WEEKLY BEST"] = "WEEKLY BEST",
+    ["WEEKLY BEST"] = "TOP SETTIMANA",
 
     -- ui/dungeonTimer.lua
-    ["M+ Count"] = "M+ Count",
+    ["M+ Count"] = "Conteggio M+",
 
     -- ui/main.lua
-    ["Player name"] = "Player name",
-    ["Food"] = "Food",
-    ["Runes"] = "Runes",
-    ["Potions"] = "Potions",
-    ["Flasks"] = "Flasks",
-    ["Weapon"] = "Weapon",
-    ["Join us on Discord"] = "Join us on Discord",
-    ["Copy below URL into your browser."] = "Copy below URL into your browser.",
-    ["Mythic+ score"] = "Mythic+ score",
-    ["Item level"] = "Item level",
-    ["Item level in bags"] = "Item level in bags",
-    ["You do not have this teleport"] = "You do not have this teleport",
-    ["Teleport not usable"] = "Teleport not usable",
-    ["Click to teleport"] = "Click to teleport",
+    ["Player name"] = "Nome Giocatore",
+    ["Food"] = "Cibo",
+    ["Runes"] = "Rune",
+    ["Potions"] = "Pozioni",
+    ["Flasks"] = "Flasche",
+    ["Weapon"] = "Arma",
+    ["Join us on Discord"] = "Unisciti a noi su Discord",
+    ["Copy below URL into your browser."] = "Copia l'URL seguente nel tuo browser.",
+    ["Mythic+ score"] = "Punteggio M+",
+    ["Item level"] = "Livello Oggetto",
+    ["Item level in bags"] = "Livello Oggetto nelle borse",
+    ["You do not have this teleport"] = "Non hai questo teletrasporto",
+    ["Teleport not usable"] = "Teletrasporto non utilizzabile",
+    ["Click to teleport"] = "Clic per teletrasportarsi",
 
     -- ui/scoreCalculator.lua
-    ["Tyrannical"] = "Tyrannical",
-    ["Fortified"] = "Fortified",
-    ["Target Score"] = "Target Score",
-    ["Max. Key Level"] = "Max. Key Level",
-    ["Only this Week"] = "Only this Week",
-    ["Calculate"] = "Calculate",
-    ["NAME"] = "NAME",
-    ["LEVEL"] = "LEVEL",
+    ["Target Score"] = "Punteggio obiettivo",
+    ["Max. Key Level"] = "Max. Livello Chiave",
+    ["Only this Week"] = "Solo questa settimana",
+    ["Calculate"] = "Calcolare",
+    ["NAME"] = "NOME",
+    ["LEVEL"] = "LIVELLO",
     ["AFFIX"] = "AFFIX",
-    ["NEEDED"] = "NEEDED",
-    ["LIMIT"] = "LIMIT",
-    ["GAIN"] = "GAIN",
-    ["Not Possible!"] = "Not Possible!",
+    ["NEEDED"] = "NECESSARIO",
+    ["LIMIT"] = "LIMITE",
+    ["GAIN"] = "GUADAGNO",
+    ["Not Possible!"] = "Non Possibile!",
 
     -- ui/settings.lua
-    ["Activate M+ Timer"] = "Activate M+ Timer",
-    ["Movable M+ Timer"] = "Movable M+ Timer",
-    ["M+ Timer Scale"] = "M+ Timer Scale",
+    ["Show UI button on minimap"] = "Mostra il pulsante UI sulla minimappa",
+    ["Activate M+ Timer"] = "Attiva M+ Timer",
+    ["Movable M+ Timer"] = "Muovi M+ Timer",
+    ["M+ Timer Scale"] = "M+ Timer Scala",
     ["M+ Timer Alpha"] = "M+ Timer Alpha",
 
     -- ui/talentCheck.lua
-    ["Talent Check"] = "Talent Check",
-    ["Hover over Icons for more Info."] = "Hover over Icons for more Info.",
-    ["Reason for Recommendation:"] = "Reason for Recommendation:",
-    ["Affix for Recommendation:"] = "Affix for Recommendation:",
-    ["Recommendation Specs:"] = "Recommendation Specs:",
-    ["Is talented:"] = "Is talented:",
-    ["It appears that there are no talent recommendations for this affix yet. You might want to submit something through the Discord."] = "It appears that there are no talent recommendations for this affix yet. You might want to submit something through the Discord.",
-
-    -- itemTooltip.lua
-    ["Adventurer"] = "Adventurer",
-    ["Champion"] = "Champion",
-    ["Explorer"] = "Explorer",
-    ["Hero"] = "Hero",
-    ["Myth"] = "Myth",
-    ["Veteran"] = "Veteran",
+    ["Talent Check"] = "Controllo Talenti",
+    ["Hover over Icons for more Info."] = "Passa il mouse sopra le icone per maggiori informazioni.",
+    ["Reason for Recommendation:"] = "Motivo della raccomandazione:",
+    ["Affix for Recommendation:"] = "Raccomandazione Affix",
+    ["Recommendation Specs:"] = "Raccomandazione Specs:",
+    ["Is talented:"] = "è talentata:",
+    ["It appears that there are no talent recommendations for this affix yet. You might want to submit something through the Discord."] =
+    "Sembra che non ci siano ancora consigli sui talenti per questo affisso. Potresti voler inviare qualcosa tramite Discord.",
 
     -- main.lua
-    ["Click to open an overview of your party's keystones and dungeon items."] = "Click to open an overview of your party's keystones and dungeon items.",
-    ["You're running an"] = "You're running an",
-    ["build of the addon. Features may be broken or only half finished in alpha versions"] = "build of the addon. Features may be broken or only half finished in alpha versions",
-    ["version of the addon. Thank you for helping test, and please report any issues on the Github so they can be fixed before release. :)"] = "version of the addon. Thank you for helping test, and please report any issues on the Github so they can be fixed before release. :)",
+    ["Click to open an overview of your party's keystones and dungeon items."] =
+    "Fai clic per aprire una panoramica delle chiavi di volta e degli oggetti del dungeon del tuo gruppo.",
+    ["You're running an"] = "Stai eseguendo un",
+    ["build of the addon. Features may be broken or only half finished in alpha versions!"] =
+    "build del addon. Le funzionalità potrebbero essere interrotte o completate solo a metà nelle versioni alpha",
+    ["version of the addon. Thank you for helping test, and please report any issues on the Github so they can be fixed before release. :)"] =
+    "versione del addon. Grazie per aver aiutato il test e segnala eventuali problemi su Github in modo che possano essere risolti prima del rilascio. :) :)",
     ["type"] = "type",
-    ["to open the KeystoneCompanion UI, or click the minimap button."] = "to open the KeystoneCompanion UI, or click the minimap button.",
+    ["to open the KeystoneCompanion UI, or click the minimap button."] =
+    "per aprire l'interfaccia utente di KeystoneCompanion o fare clic sul pulsante della minimappa.",
 }

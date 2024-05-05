@@ -19,7 +19,7 @@ UI.Settings.Minimap.Checkbox = CreateFrame("CheckButton", "KeystoneCompanionSett
   .Minimap, "ChatConfigCheckButtonTemplate")
 UI.Settings.Minimap.Checkbox:SetPoint("LEFT", UI.Settings.Minimap, "LEFT");
 UI.Settings.Minimap.Checkbox:SetSize(25, 25)
-UI.Settings.Minimap.Checkbox.Text:SetText("Show UI button on minimap")
+UI.Settings.Minimap.Checkbox.Text:SetText(loc["Show UI button on minimap"])
 UI.Settings.Minimap.Checkbox:HookScript("OnClick", function()
   if (KeystoneCompanionDB.settings.MinimapButton) then
     LibDBIcon:Hide("Keystone Companion")

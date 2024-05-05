@@ -38,6 +38,7 @@ Private.Locales["enUS"] = {
     ["Not Possible!"] = "Not Possible!",
 
     -- ui/settings.lua
+    ["Show UI button on minimap"] = "Show UI button on minimap",
     ["Activate M+ Timer"] = "Activate M+ Timer",
     ["Movable M+ Timer"] = "Movable M+ Timer",
     ["M+ Timer Scale"] = "M+ Timer Scale",
@@ -50,13 +51,18 @@ Private.Locales["enUS"] = {
     ["Affix for Recommendation:"] = "Affix for Recommendation:",
     ["Recommendation Specs:"] = "Recommendation Specs:",
     ["Is talented:"] = "Is talented:",
-    ["It appears that there are no talent recommendations for this affix yet. You might want to submit something through the Discord."] = "It appears that there are no talent recommendations for this affix yet. You might want to submit something through the Discord.",
+    ["It appears that there are no talent recommendations for this affix yet. You might want to submit something through the Discord."] =
+    "It appears that there are no talent recommendations for this affix yet. You might want to submit something through the Discord.",
 
     -- main.lua
-    ["Click to open an overview of your party's keystones and dungeon items."] = "Click to open an overview of your party's keystones and dungeon items.",
+    ["Click to open an overview of your party's keystones and dungeon items."] =
+    "Click to open an overview of your party's keystones and dungeon items.",
     ["You're running an"] = "You're running an",
-    ["build of the addon. Features may be broken or only half finished in alpha versions!"] = "build of the addon. Features may be broken or only half finished in alpha versions!",
-    ["version of the addon. Thank you for helping test, and please report any issues on the Github so they can be fixed before release. :)"] = "version of the addon. Thank you for helping test, and please report any issues on the Github so they can be fixed before release. :)",
+    ["build of the addon. Features may be broken or only half finished in alpha versions!"] =
+    "build of the addon. Features may be broken or only half finished in alpha versions!",
+    ["version of the addon. Thank you for helping test, and please report any issues on the Github so they can be fixed before release. :)"] =
+    "version of the addon. Thank you for helping test, and please report any issues on the Github so they can be fixed before release. :)",
     ["type"] = "type",
-    ["to open the KeystoneCompanion UI, or click the minimap button."] = "to open the KeystoneCompanion UI, or click the minimap button.",
+    ["to open the KeystoneCompanion UI, or click the minimap button."] =
+    "to open the KeystoneCompanion UI, or click the minimap button.",
 }

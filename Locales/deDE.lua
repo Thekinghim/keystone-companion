@@ -38,6 +38,7 @@ Private.Locales["deDE"] = {
     ["Not Possible!"] = "Nicht möglich!",
 
     -- ui/settings.lua
+    ["Show UI button on minimap"] = "Minimap Knopf anzeigen",
     ["Activate M+ Timer"] = "M+ Timer aktivieren",
     ["Movable M+ Timer"] = "M+ Timer bewegen",
     ["M+ Timer Scale"] = "M+ Timer Skalierung",
@@ -50,13 +51,18 @@ Private.Locales["deDE"] = {
     ["Affix for Recommendation:"] = "Affix für die Empfehlung:",
     ["Recommendation Specs:"] = "Specs für die Empfehlung:",
     ["Is talented:"] = "Ist vorhanden:",
-    ["It appears that there are no talent recommendations for this affix yet. You might want to submit something through the Discord."] = "Es scheint, als gäbe es noch keine Talentempfehlungen für diesen Affix. Du könntest etwas über den Discord einreichen.",
+    ["It appears that there are no talent recommendations for this affix yet. You might want to submit something through the Discord."] =
+    "Es scheint, als gäbe es noch keine Talentempfehlungen für diesen Affix. Du könntest etwas über den Discord einreichen.",
 
     -- main.lua
-    ["Click to open an overview of your party's keystones and dungeon items."] = "Klicken, um eine Übersicht über die Schlüsselsteine und Dungeon Items eurer Gruppe zu öffnen.",
+    ["Click to open an overview of your party's keystones and dungeon items."] =
+    "Klicken, um eine Übersicht über die Schlüsselsteine und Dungeon Items eurer Gruppe zu öffnen.",
     ["You're running an"] = "Sie benutzen eine",
-    ["build of the addon. Features may be broken or only half finished in alpha versions!"] = "Version des Addons. Funktionen können in Alphaversionen fehlerhaft oder nur halbfertig sein!",
-    ["version of the addon. Thank you for helping test, and please report any issues on the Github so they can be fixed before release. :)"] = "Version des Addons. Vielen Dank für Ihre Hilfe beim Testen, und bitte melden Sie alle Probleme auf Github, damit sie vor der Veröffentlichung behoben werden können :)",
+    ["build of the addon. Features may be broken or only half finished in alpha versions!"] =
+    "Version des Addons. Funktionen können in Alphaversionen fehlerhaft oder nur halbfertig sein!",
+    ["version of the addon. Thank you for helping test, and please report any issues on the Github so they can be fixed before release. :)"] =
+    "Version des Addons. Vielen Dank für Ihre Hilfe beim Testen, und bitte melden Sie alle Probleme auf Github, damit sie vor der Veröffentlichung behoben werden können :)",
     ["type"] = "gib",
-    ["to open the KeystoneCompanion UI, or click the minimap button."] = "ein um die KeystoneCompanion UI anzuzeigen, oder klick das minimap Symbol.",
+    ["to open the KeystoneCompanion UI, or click the minimap button."] =
+    "ein um die KeystoneCompanion UI anzuzeigen, oder klick das minimap Symbol.",
 }
