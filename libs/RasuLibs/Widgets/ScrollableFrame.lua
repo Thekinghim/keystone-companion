@@ -45,6 +45,7 @@ local function createScrollable(parent, options)
     ---@field GetScrollPercentage fun(self:ScrollBoxFrame)
     ---@field SetScrollPercentage fun(self:ScrollBoxFrame, percentage:number)
     local scrollBox = CreateFrame("Frame", nil, parent, "WowScrollBoxList")
+    Mixin(scrollBox, lib.Widgets.BaseMixin)
     scrollBox:SetSize(options.width, options.height)
 
     ---@class ScrollBar : EventFrame

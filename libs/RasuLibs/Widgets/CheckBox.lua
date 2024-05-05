@@ -28,6 +28,7 @@ local function createCheckBox(parent, options)
     options = mixTables(defaultOptions, options)
     ---@class CheckBox:CheckButton
     local checkBox = CreateFrame("CheckButton", nil, parent)
+    Mixin(checkBox, lib.Widgets.BaseMixin)
     local check = checkBox:CreateTexture()
     local checkDisable = checkBox:CreateTexture()
     check:SetAtlas("checkmark-minimal")

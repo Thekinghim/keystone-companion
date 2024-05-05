@@ -49,6 +49,7 @@ local function createRoundedFrame(parent, options)
 
     ---@class RoundedFrame:Frame
     local frame = CreateFrame("Frame", nil, parent)
+    Mixin(frame, lib.Widgets.BaseMixin)
     for _, point in ipairs(options.points) do
         frame:SetPoint(unpack(point))
     end

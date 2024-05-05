@@ -44,7 +44,7 @@ local defaultOptions = {
 local function createButton(parent, options)
     parent = parent or UIParent
     options = mixTables(defaultOptions, options)
-    ---@class RoundedButton:Frame
+    ---@class RoundedButton : Frame,RasuGUIBaseMixin
     ---@field disabled boolean
     ---@field label FontString
     ---@field Background Texture
@@ -52,6 +52,7 @@ local function createButton(parent, options)
     ---@field SetDisabled fun(self:RoundedButton, is_disabled:boolean)
     ---@field UpdateColor fun(self:RoundedButton, isMouseOver:boolean|?)
     local frame = CreateRoundedFrame(parent, options)
+    Mixin(frame, lib.Widgets.BaseMixin)
     for _, point in ipairs(options.points) do
         frame:SetPoint(unpack(point))
     end
@@ -103,7 +104,7 @@ local function createButton(parent, options)
     end)
 
     function frame:UpdateTooltipText(text)
-        lib.Widgets.Base.AddTooltip(self, text)
+        self:AddTooltip(text)
     end
 
     if options.tooltip_text then

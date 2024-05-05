@@ -61,7 +61,7 @@ local iconBox, iconView = createScrollable(talentCheckFrame, {
         end
         frame.icon:SetDesaturated(not elementData.talented)
         frame.icon:SetTexture(elementData.texture)
-        widgets.Base.AddTooltip(frame, elementData.tooltipText)
+        widgets.BaseMixin.AddTooltip(frame, elementData.tooltipText)
     end,
 })
 

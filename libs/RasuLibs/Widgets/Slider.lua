@@ -36,6 +36,7 @@ local function createSlider(parent, options)
     options = mixTables(defaultOptions, options)
     ---@class ModernSlider:Slider
     local slider = CreateFrame("Slider", nil, parent, "MinimalSliderTemplate")
+    Mixin(slider, lib.Widgets.BaseMixin)
 
     for _, point in ipairs(options.points) do
         slider:SetPoint(unpack(point))
