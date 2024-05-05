@@ -27,7 +27,7 @@ local AddonBase = {
     PrefixColor = CreateColorFromHexString("FFFFCA2E"),
     Version = "",
     Name = "",
-    Events = {},
+    EventCallbacks = {},
     Commands = {},
     Loc = {},
     DB = {},
@@ -70,20 +70,53 @@ function lib:GetAddon(name)
 end
 
 ---@param event string
----@param func string|function
-function AddonBase:RegisterEvent(event, func)
-    self.EventsFrame:RegisterEvent(event)
-    if func and type(func) == "function" then
-        self.Events[event] = func
-    else
-        self.Events[event] = self[event]
+---@param name string
+---@param callbackFunc function
+---@param args table|?
+---@return string
+function AddonBase:RegisterEventCallback(event, name, callbackFunc, args)
+    if not self.EventCallbacks[event] then
+        self.EventCallbacks[event] = {}
+    end
+    if self.EventCallbacks[event][name] then
+        error("This callback name is already taken!", 3)
+    end
+    self.EventCallbacks[event][name] = {
+        func = callbackFunc,
+        args = args,
+    }
+    return name
+end
+
+---@param event string
+---@param name string
+---@return table|nil
+function AddonBase:GetEventCallback(event, name)
+    if not self.EventCallbacks[event] then return end
+    return self.EventCallbacks[event][name]
+end
+
+---@param event string
+---@param name string
+function AddonBase:UnregisterEventCallback(event, name)
+    if self:GetEventCallback(event, name) then
+        wipe(self.EventCallbacks[event][name])
     end
 end
 
 ---@param event string
+---@param callbackName string
+---@param func string|function
+function AddonBase:RegisterEvent(event, callbackName, func, ...)
+    self.EventsFrame:RegisterEvent(event)
+    if not callbackName then return end
+    local callbackFunc = type(func) == "function" and func or self[event]
+    ---@cast callbackFunc function
+    self:RegisterEventCallback(event, callbackName, callbackFunc, {...})
+end
+
+---@param event string
 function AddonBase:UnregisterEvent(event)
-    if not self.Events[event] then return end
-    self.Events[event] = nil
     self.EventsFrame:UnregisterEvent(event)
 end
 
@@ -180,9 +213,10 @@ function AddonBase:OnEvent(event, ...)
     elseif event == "PLAYER_LOGOUT" then
         self:DisableAddon()
     end
-    if self.Events[event] then
-        for _, eventFunc in pairs(self.Events[event]) do
-            eventFunc(self, event, ...)
+    if self.EventCallbacks[event] then
+        for _, callbackEntry in pairs(self.EventCallbacks[event]) do
+            local args = callbackEntry.args or {}
+            callbackEntry.func(self, event, unpack(args))
         end
     end
 end
