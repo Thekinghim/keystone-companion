@@ -1,8 +1,19 @@
-local addonName, KeystoneCompanion = ...
+local addonName, Private = ...
 
 local rasuGUI = LibStub("RasuGUI")
-KeystoneCompanion.RasuGUI = rasuGUI
-KeystoneCompanion.widgets = rasuGUI.Widgets
+Private.RasuGUI = rasuGUI
+Private.widgets = rasuGUI.Widgets
+
+local defaultDB = {
+  settings = {
+    DevMode = false,
+    MinimapButton = true
+  }
+}
+
+local locale = {
+  enUS = { ["TestLocale"] = "TestLocale" }
+}
 
 KeystoneCompanionDB = {
   settings = {
@@ -11,10 +22,22 @@ KeystoneCompanionDB = {
   }
 }
 
-KeystoneCompanion.version = C_AddOns.GetAddOnMetadata(addonName, "Version");
-KeystoneCompanion.buildType = 'release';
-KeystoneCompanion.isDev = function() return KeystoneCompanionDB.settings.DevMode end;
-KeystoneCompanion.print = function(msg) print("|cffddca2eKeystoneCompanion|r: " .. msg) end;
-KeystoneCompanion.colorise = function(color, msg) return "|cff" .. color .. msg .. "|r" end;
+Private.version = C_AddOns.GetAddOnMetadata(addonName, "Version");
+Private.buildType = 'release';
+Private.isDev = function() return KeystoneCompanionDB.settings.DevMode end;
+Private.print = function(msg) print("|cffddca2eKeystoneCompanion|r: " .. msg) end;
+Private.colorise = function(color, msg) return "|cff" .. color .. msg .. "|r" end;
 
-_G.KeystoneCompanion = KeystoneCompanion;
+KeystoneCompanion = LibStub("RasuAddon"):CreateAddon(
+  "Keystone Companion",
+  "KeystoneCompanionDB",
+  defaultDB,
+  locale,
+  "enUS"
+)
+
+function KeystoneCompanion:OnInitialize()
+  print("Init")
+end
+
+Private.Addon = KeystoneCompanion
