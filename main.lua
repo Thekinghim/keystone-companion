@@ -1,4 +1,5 @@
 local addonName, KeystoneCompanion = ...;
+local loc = KeystoneCompanion.Addon.Loc
 local getTexturePath = KeystoneCompanion.utils.path.getTexturePath;
 
 KeystoneCompanion.loaded = false;
@@ -24,7 +25,7 @@ local dataBrokerObj = LibDataBroker:NewDataObject('Keystone Companion', {
   OnClick = function() ToggleUI() end,
   OnTooltipShow = function(tooltip)
     tooltip:AddLine("Keystone Companion", 1, 1, 1)
-    tooltip:AddLine("Click to open an overview of your party's keystones and dungeon items.", nil, nil, nil, true)
+    tooltip:AddLine(loc["Click to open an overview of your party's keystones and dungeon items."], nil, nil, nil, true)
   end
 });
 
@@ -173,12 +174,12 @@ function SlashCmdList.KEYSTONECOMPANION(msg, editBox)
 end
 
 if (KeystoneCompanion.buildType == 'alpha') then
-  print('You\'re running an ' ..
-  colorise('ff0000', 'Alpha') .. ' build of the addon. Features may be broken or only half finished in alpha versions!')
+  print(loc["You're running an"] ..
+  colorise('ff0000', ' Alpha ') .. loc["build of the addon. Features may be broken or only half finished in alpha versions!"])
 elseif (KeystoneCompanion.buildType == 'beta') then
-  print('You\'re running a ' ..
-  colorise('ddca2e', 'Beta') ..
-  ' version of the addon. Thank you for helping test, and please report any issues on the Github so they can be fixed before release. :)')
+  print(loc["You're running an"] ..
+  colorise('ddca2e', ' Beta ') ..
+  loc["version of the addon. Thank you for helping test, and please report any issues on the Github so they can be fixed before release. :)"])
 end
 
-print('type ' .. colorise('ddca2e', '/kc') .. ' to open the KeystoneCompanion UI, or click the minimap button.')
+print(loc["type"] .. colorise('ddca2e', ' /kc ') .. loc["to open the KeystoneCompanion UI, or click the minimap button."])

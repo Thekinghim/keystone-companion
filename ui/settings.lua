@@ -3,6 +3,7 @@ local UI = KeystoneCompanion.UI;
 local styles = KeystoneCompanion.constants.styles;
 local widgets = KeystoneCompanion.widgets;
 local getTexturePath = KeystoneCompanion.utils.path.getTexturePath;
+local loc = KeystoneCompanion.Addon.Loc
 local LibDBIcon = LibStub:GetLibrary("LibDBIcon-1.0")
 
 UI.Settings = CreateFrame('Frame', 'KeystoneCompanionSettings', UI.Frame);
@@ -43,13 +44,13 @@ UI.Settings.Timer.Activate = widgets.CheckBox.CreateFrame(UI.Settings, {
   points = { { "TOPLEFT", 77, -30 } },
   defaultState = true,
   isDisabled = false,
-  text = "Activate M+ Timer",
+  text = loc["Activate M+ Timer"],
   fontObject = styles.FONT_OBJECTS.BOLD,
 })
 UI.Settings.Timer.Unlock = widgets.CheckBox.CreateFrame(UI.Settings, {
   size = 25,
   points = { { "TOPLEFT", 77, -60 } },
-  text = "Movable M+ Timer",
+  text = loc["Movable M+ Timer"],
 })
 UI.Settings.Timer.Scale = widgets.Slider.CreateFrame(UI.Settings, {
   width = 200,
@@ -57,7 +58,7 @@ UI.Settings.Timer.Scale = widgets.Slider.CreateFrame(UI.Settings, {
   points = { { "TOPLEFT", 77, -110 } },
   minValue = 50,
   maxValue = 200,
-  text = "M+ Timer Scale",
+  text = loc["M+ Timer Scale"],
 })
 UI.Settings.Timer.Alpha = widgets.Slider.CreateFrame(UI.Settings, {
   width = 200,
@@ -65,7 +66,7 @@ UI.Settings.Timer.Alpha = widgets.Slider.CreateFrame(UI.Settings, {
   points = { { "TOPLEFT", 77, -165 } },
   minValue = 0,
   maxValue = 100,
-  text = "M+ Timer Alpha",
+  text = loc["M+ Timer Alpha"],
 })
 
 UI.SettingsButton = CreateFrame('Frame', 'KeystoneCompanionCloseButton', UI.Frame.Top);

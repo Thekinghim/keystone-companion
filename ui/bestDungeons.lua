@@ -4,6 +4,7 @@ local getTexturePath = KeystoneCompanion.utils.path.getTexturePath;
 local styles = KeystoneCompanion.constants.styles;
 local customIconMixin = { customMixin = true }
 local screenWidth = GetScreenWidth()
+local loc = KeystoneCompanion.Addon.Loc
 
 local shortDungeonNames = {
     -- Season 3 Dragonflight Dungeons
@@ -144,7 +145,7 @@ local function createWeeklyBest()
     title:SetPoint("TOP", 0, -10)
     title:SetFontObject(styles.FONT_OBJECTS.BOLD)
     title:SetTextColor(styles.COLORS.TEXT_HIGHLIGHT:GetRGBA())
-    title:SetText("WEEKLY BEST")
+    title:SetText(loc["WEEKLY BEST"])
 
     local divider = weeklyBest:CreateTexture()
     divider:SetPoint("TOPLEFT", title, "BOTTOMLEFT", -11, -4)
@@ -178,12 +179,12 @@ local function createWeeklyBest()
         key:SetPoint("LEFT", 4, 0)
         key:SetFontObject(styles.FONT_OBJECTS.BOLD)
         key:SetTextColor(keyColor:GetRGBA())
-        key:SetText("BRH +25")
+        key:SetText("")
 
         local score = row:CreateFontString()
         score:SetPoint("RIGHT", -4, 0)
         score:SetFontObject(styles.FONT_OBJECTS.BOLD)
-        score:SetText(styles.COLORS.TEXT_HIGHLIGHT:WrapTextInColorCode("390"))
+        score:SetText(styles.COLORS.TEXT_HIGHLIGHT:WrapTextInColorCode(""))
 
         function row:UpdateKey(dungeon, level, scoreNum)
             if not scoreNum then return end

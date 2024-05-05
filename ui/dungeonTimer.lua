@@ -2,6 +2,7 @@ local addonName, KeystoneCompanion = ...
 local widgets = KeystoneCompanion.widgets
 local styles = KeystoneCompanion.constants.styles;
 local getTexturePath = KeystoneCompanion.utils.path.getTexturePath;
+local loc = KeystoneCompanion.Addon.Loc
 local dungeonNameFixes = {
     [464] = "DotI: Upper", -- Dawn of the Infinite: Murozond's Rise
     [463] = "DotI: Lower", -- Dawn of the Infinite: Galakrond's Fall
@@ -551,7 +552,7 @@ eventFrame:SetScript("OnEvent", function(_, ...)
                 local npcID = select(6, strsplit("-", guid))
                 if not npcID then return end
                 local count = MDT:GetEnemyForces(tonumber(npcID))
-                tooltip:AddDoubleLine("M+ Count", count)
+                tooltip:AddDoubleLine(KeystoneCompanion.Addon.Loc["M+ Count"], count)
             end)
             eventFrame:UnregisterEvent("ADDON_LOADED")
         end

@@ -73,7 +73,7 @@ UI.Title.AddonName = UI.Title:CreateFontString('AddonName', 'OVERLAY')
 UI.Title.AddonName:SetSize(220, 24);
 UI.Title.AddonName:SetFontObject(styles.FONT_OBJECTS.HEADING)
 UI.Title.AddonName:SetPoint('TOPLEFT', UI.Title, 'TOPLEFT', 50, -16);
-UI.Title.AddonName:SetText('Keystone Companion')
+UI.Title.AddonName:SetText("Keystone Companion")
 
 UI.Party = CreateFrame('Frame', 'KeystoneCompanionParty', UI);
 UI.Party:SetSize(438, 461);
@@ -96,42 +96,42 @@ UI.Party.Header.PlayerName:SetSize(80, 12);
 UI.Party.Header.PlayerName:SetFontObject(styles.FONT_OBJECTS.BOLD);
 UI.Party.Header.PlayerName:SetJustifyH('LEFT');
 UI.Party.Header.PlayerName:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 10, 0);
-UI.Party.Header.PlayerName:SetText('Player name');
+UI.Party.Header.PlayerName:SetText(KeystoneCompanion.Addon.Loc["Player name"]);
 
 UI.Party.Header.Food = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderFood', 'OVERLAY')
 UI.Party.Header.Food:SetSize(67, 12);
 UI.Party.Header.Food:SetFontObject(styles.FONT_OBJECTS.BOLD);
 UI.Party.Header.Food:SetJustifyH('LEFT');
 UI.Party.Header.Food:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 128, 0);
-UI.Party.Header.Food:SetText('Food');
+UI.Party.Header.Food:SetText(KeystoneCompanion.Addon.Loc["Food"]);
 
 UI.Party.Header.Rune = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderRune', 'OVERLAY')
 UI.Party.Header.Rune:SetSize(67, 12);
 UI.Party.Header.Rune:SetFontObject(styles.FONT_OBJECTS.BOLD);
 UI.Party.Header.Rune:SetJustifyH('LEFT');
 UI.Party.Header.Rune:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 195, 0);
-UI.Party.Header.Rune:SetText('Runes');
+UI.Party.Header.Rune:SetText(KeystoneCompanion.Addon.Loc["Runes"]);
 
 UI.Party.Header.Potions = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderPotions', 'OVERLAY')
 UI.Party.Header.Potions:SetSize(67, 12);
 UI.Party.Header.Potions:SetFontObject(styles.FONT_OBJECTS.BOLD);
 UI.Party.Header.Potions:SetJustifyH('LEFT');
 UI.Party.Header.Potions:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 262, 0);
-UI.Party.Header.Potions:SetText('Potions');
+UI.Party.Header.Potions:SetText(KeystoneCompanion.Addon.Loc["Potions"]);
 
 UI.Party.Header.Flasks = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderFlasks', 'OVERLAY')
 UI.Party.Header.Flasks:SetSize(67, 12)
 UI.Party.Header.Flasks:SetFontObject(styles.FONT_OBJECTS.BOLD);
 UI.Party.Header.Flasks:SetJustifyH('LEFT');
 UI.Party.Header.Flasks:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 329, 0);
-UI.Party.Header.Flasks:SetText('Flasks')
+UI.Party.Header.Flasks:SetText(KeystoneCompanion.Addon.Loc["Flasks"])
 
 UI.Party.Header.Weapon = UI.Party.Header:CreateFontString('KeystoneCompanionHeaderWeapon', 'OVERLAY')
 UI.Party.Header.Weapon:SetSize(67, 12)
 UI.Party.Header.Weapon:SetFontObject(styles.FONT_OBJECTS.BOLD);
 UI.Party.Header.Weapon:SetJustifyH('LEFT');
 UI.Party.Header.Weapon:SetPoint('TOPLEFT', UI.Party.Header, 'TOPLEFT', 392, 0);
-UI.Party.Header.Weapon:SetText('Weapon')
+UI.Party.Header.Weapon:SetText(KeystoneCompanion.Addon.Loc["Weapon"])
 
 UI.Footer = CreateFrame('Frame', 'KeystoneCompanionFooter', UI);
 UI.Footer:SetSize(411, 15);
@@ -175,14 +175,14 @@ UI.GitHub:SetScript("OnLeave", function()
 end)
 
 UI.Discord = CreateFrame('Frame', 'KeystoneCompanionFooterDiscord', UI.Footer);
-UI.Discord:SetSize(112, 15);
+UI.Discord:SetSize(150, 15);
 UI.Discord:SetPoint('RIGHT', UI.Footer, 'RIGHT', -70, 0);
 UI.Discord.Label = UI.Discord:CreateFontString('KeystoneCompanionFooterDiscordLabel', 'OVERLAY')
-UI.Discord.Label:SetSize(100, 13)
-UI.Discord.Label:SetPoint('LEFT', UI.Discord, 'LEFT');
+UI.Discord.Label:SetPoint('LEFT');
+UI.Discord.Label:SetPoint('RIGHT', -15, 0);
 UI.Discord.Label:SetFontObject(styles.FONT_OBJECTS.NORMAL)
 UI.Discord.Label:SetTextColor(161 / 255, 161 / 255, 161 / 255, 1)
-UI.Discord.Label:SetText('Join us on Discord');
+UI.Discord.Label:SetText(KeystoneCompanion.Addon.Loc["Join us on Discord"]);
 UI.Discord.Icon = CreateFrame('Frame', "KeystoneCompanionDiscordIcon", UI.Discord);
 UI.Discord.Icon:SetSize(13, 13);
 UI.Discord.Icon:SetPoint("RIGHT", UI.Discord, "RIGHT");
@@ -215,7 +215,7 @@ UI.CopyFrame.Label = UI.CopyFrame:CreateFontString("KeystoneCompanionCopyFrameLa
 UI.CopyFrame.Label:SetPoint("TOPLEFT", UI.CopyFrame, "TOPLEFT", 5, -5);
 UI.CopyFrame.Label:SetPoint("BOTTOMRIGHT", UI.CopyFrame, "BOTTOMRIGHT", -5, 35);
 UI.CopyFrame.Label:SetFont(styles.FONTS.NORMAL, 12);
-UI.CopyFrame.Label:SetText('Copy below URL into your browser.')
+UI.CopyFrame.Label:SetText(KeystoneCompanion.Addon.Loc["Copy below URL into your browser."])
 UI.CopyFrame:Hide();
 
 UI.EditBox = CreateFrame("EditBox", 'KeystoneCompanionCopyFrameEditBox', UI.CopyFrame, 'InputBoxTemplate');
@@ -268,13 +268,13 @@ local function createPlayerTooltip(self) -- changed it so that the function can 
 
   if (playerData.mythicPlusScore ~= nil and playerData.mythicPlusScore > 0) then
     local scoreColor = C_ChallengeMode.GetDungeonScoreRarityColor(playerData.mythicPlusScore)
-    UI.Tooltip:AddDoubleLine('Mythic+ score', playerData.mythicPlusScore, nil, nil, nil, scoreColor:GetRGB())
+    UI.Tooltip:AddDoubleLine(KeystoneCompanion.Addon.Loc["Mythic+ score"], playerData.mythicPlusScore, nil, nil, nil, scoreColor:GetRGB())
   end
 
   if (playerData.itemLevel ~= nil and playerData.itemLevel.equipped ~= nil) then
-    UI.Tooltip:AddDoubleLine('Item level', math.floor(playerData.itemLevel.equipped), nil, nil, nil, 1, 1, 1)
+    UI.Tooltip:AddDoubleLine(KeystoneCompanion.Addon.Loc["Item level"], math.floor(playerData.itemLevel.equipped), nil, nil, nil, 1, 1, 1)
     if (playerData.itemLevel.equipped ~= playerData.itemLevel.overall) then
-      UI.Tooltip:AddDoubleLine('Item level in bags', math.floor(playerData.itemLevel.overall), nil, nil, nil, 1, 1, 1)
+      UI.Tooltip:AddDoubleLine(KeystoneCompanion.Addon.Loc["Item level in bags"], math.floor(playerData.itemLevel.overall), nil, nil, nil, 1, 1, 1)
     end
   end
 
@@ -325,11 +325,11 @@ local createDungeonTooltip = function(self)
   UI.Tooltip:AddLine('Keystone level ' .. (playerData.keystone.level or 12))
   UI.Tooltip:AddLine(' ')
   if (not spellKnown) then
-    UI.Tooltip:AddLine('You do not have this teleport', 1, 0, 0, true);
+    UI.Tooltip:AddLine(KeystoneCompanion.Addon.Loc["You do not have this teleport"], 1, 0, 0, true);
   elseif (not spellUsable) then
-    UI.Tooltip:AddLine('Teleport not usable', 0.62, 0.62, 0.62, true);
+    UI.Tooltip:AddLine(KeystoneCompanion.Addon.Loc["Teleport not usable"], 0.62, 0.62, 0.62, true);
   else
-    UI.Tooltip:AddLine('Click to teleport');
+    UI.Tooltip:AddLine(KeystoneCompanion.Addon.Loc["Click to teleport"]);
   end
   UI.Tooltip:Show();
 end

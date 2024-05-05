@@ -6,6 +6,7 @@ local createRoundedFrame = widgets.RoundedFrame.CreateFrame
 local createRoundedButton = widgets.RoundedButton.CreateFrame
 local createScrollable = widgets.ScrollableFrame.CreateFrame
 local getTexturePath = KeystoneCompanion.utils.path.getTexturePath
+local loc = KeystoneCompanion.Addon.Loc
 
 local addonTitle = styles.COLORS.TEXT_HIGHLIGHT:WrapTextInColorCode("Keystone Companion")
 local infoIcon = {
@@ -19,11 +20,11 @@ talentCheckFrame:MakeMovable()
 local title = talentCheckFrame:CreateFontString()
 title:SetFont(styles.FONTS.BOLD, 16, "")
 title:SetPoint("TOP", 0, -12)
-title:SetText(addonTitle .. ": Talent Check")
+title:SetText(addonTitle .. ": " .. loc["Talent Check"])
 local moreInfo = talentCheckFrame:CreateFontString()
 moreInfo:SetFontObject(styles.FONT_OBJECTS.NORMAL)
 moreInfo:SetPoint("TOP", 0, -30)
-moreInfo:SetText(infoIcon.fileStr .. "Hover over Icons for more Info.")
+moreInfo:SetText(infoIcon.fileStr .. loc["Hover over Icons for more Info."])
 
 local iconBox, iconView = createScrollable(talentCheckFrame, {
     anchors = {
@@ -66,7 +67,7 @@ local okayButton = createRoundedButton(talentCheckFrame, {
     height = 25,
     font_text = OKAY,
     frame_strata = "FULLSCREEN_DIALOG",
-    tooltip_text = "Close"
+    tooltip_text = CLOSE
 })
 okayButton:SetScript("OnMouseDown", function()
     talentCheckFrame:Hide()
@@ -103,7 +104,13 @@ local function getIconAndTooltip(specs, reason, spellID, affixID, isTalented)
         local affixName, _, affixIcon = C_ChallengeMode.GetAffixInfo(affixID)
         local description = GetSpellDescription(spellID)
         local tooltipText = string.format(
-            "%s%s%s|r\n%s\n\n%sReason for Recommendation:|r\n%s\n\n%sAffix for Recommendation:|r\n|T%s:12|t %s\n\n%sRecommendation Specs:|r",
+            "%s%s%s|r\n%s\n\n%s" ..
+            loc["Reason for Recommendation:"] ..
+            "|r\n%s\n\n%s" ..
+            loc["Affix for Recommendation:"] ..
+            "|r\n|T%s:12|t %s\n\n%s" ..
+            loc["Recommendation Specs:"] ..
+            "|r",
             secondaryMarkup, highlightMarkup, name,
             description, highlightMarkup, reason, highlightMarkup, affixIcon, affixName, highlightMarkup)
         for _, specID in ipairs(specs) do
@@ -112,7 +119,8 @@ local function getIconAndTooltip(specs, reason, spellID, affixID, isTalented)
         end
         local tMarkup = isTalented and positiveMarkup or negativeMarkup
         local tText = isTalented and YES or NO
-        tooltipText = string.format("%s\n\n%sIs talented: %s%s", tooltipText, highlightMarkup, tMarkup, tText)
+        tooltipText = string.format("%s\n\n%s" .. loc["Is talented:"] .. " %s%s", tooltipText, highlightMarkup, tMarkup,
+            tText)
 
         return icon, tooltipText
     end
@@ -126,7 +134,10 @@ local function isRecommendedForSpec(specs, specID)
 end
 
 local noRecommendation = string.format(
-    "%s%sKeystone Companion|r\n\nIt appears that there are no talent recommendations for this affix yet. You might want to submit something through the Discord.\n\n%s%s|r",
+    "%s%sKeystone Companion|r\n\n" ..
+    loc
+    ["It appears that there are no talent recommendations for this affix yet. You might want to submit something through the Discord."] ..
+    "\n\n%s%s|r",
     secondaryMarkup, highlightMarkup, highlightMarkup, "https://discord.gg/KhFhC6kZ78")
 
 local function updateTalentCheck(showFrame)

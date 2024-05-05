@@ -2,6 +2,7 @@ local _, KeystoneCompanion = ...
 local styles = KeystoneCompanion.constants.styles;
 local getTexturePath = KeystoneCompanion.utils.path.getTexturePath
 local mythicPlusMaps = C_ChallengeMode.GetMapTable()
+local loc = KeystoneCompanion.Addon.Loc
 
 local const = {
     THRESHOLD = 0.4,
@@ -341,11 +342,11 @@ closeButton:SetScript("OnMouseDown", function()
 end)
 
 local targetScore = createEditBox(calculatorFrame, { "TOPLEFT", topBar, "BOTTOMLEFT", 15, -15 }, 100, 20, true, 4,
-    "Target Score")
+    loc["Target Score"])
 local maxKeyLevel = createEditBox(calculatorFrame, { "TOPLEFT", targetScore, "BOTTOMLEFT", 0, -5 }, 100, 20, true, 2,
-    "Max. Key Level")
+    loc["Max. Key Level"])
 local onlyCurrentWeekCB = createCheckBox(calculatorFrame, { "TOPLEFT", maxKeyLevel, "BOTTOMLEFT", -7, -5 }, 20, true,
-    false, "Only this Week")
+    false, loc["Only this Week"])
 local dungeonToggles = {}
 for dungeonIndex, mapID in ipairs(mythicPlusMaps) do
     local dungeonName, _, _, dungeonTexture = C_ChallengeMode.GetMapUIInfo(mapID)
@@ -357,7 +358,7 @@ for dungeonIndex, mapID in ipairs(mythicPlusMaps) do
 end
 
 local calculateButton = createRoundedButton(calculatorFrame, { "TOPLEFT", dungeonToggles[1], "BOTTOMLEFT", 0, -5 }, 200,
-    30, false, "Calculate")
+    30, false, loc["Calculate"])
 calculateButton:SetPoint("TOPRIGHT", dungeonToggles[#dungeonToggles], "BOTTOMRIGHT", 0, -5)
 calculateButton:SetScript("OnMouseDown", function(self)
     local disabledDungeons = {}
@@ -411,32 +412,32 @@ local scrollView = createScrollable({
             local name = header:CreateFontString()
             name:SetFontObject(styles.FONT_OBJECTS.BOLD)
             name:SetPoint("LEFT")
-            name:SetText("NAME")
+            name:SetText(loc["NAME"])
 
             local level = header:CreateFontString()
             level:SetFontObject(styles.FONT_OBJECTS.BOLD)
             level:SetPoint("LEFT", 175, 0)
-            level:SetText("LEVEL")
+            level:SetText(loc["LEVEL"])
 
             local affix = header:CreateFontString()
             affix:SetFontObject(styles.FONT_OBJECTS.BOLD)
             affix:SetPoint("LEFT", 250, 0)
-            affix:SetText("AFFIX")
+            affix:SetText(loc["AFFIX"])
 
             local completion = header:CreateFontString()
             completion:SetFontObject(styles.FONT_OBJECTS.BOLD)
             completion:SetPoint("RIGHT", -125, 0)
-            completion:SetText("NEEDED")
+            completion:SetText(loc["NEEDED"])
 
             local timeLimit = header:CreateFontString()
             timeLimit:SetFontObject(styles.FONT_OBJECTS.BOLD)
             timeLimit:SetPoint("RIGHT", -75, 0)
-            timeLimit:SetText("LIMIT")
+            timeLimit:SetText(loc["LIMIT"])
 
             local gain = header:CreateFontString()
             gain:SetFontObject(styles.FONT_OBJECTS.BOLD)
             gain:SetPoint("RIGHT")
-            gain:SetText("GAIN")
+            gain:SetText(loc["GAIN"])
 
             local divider = header:CreateTexture()
             divider:SetPoint("TOPLEFT", header, "BOTTOMLEFT")
@@ -498,7 +499,7 @@ local scrollView = createScrollable({
             rowAnchor = row
 
             if rowData.impossible then
-                row.name:SetText("|cFFe74c3cNot Possible!|r")
+                row.name:SetText("|cFFe74c3c"..loc["Not Possible!"])
                 row.level:SetText("")
                 row.affix:SetText("")
                 row.timeLimit:SetText("")

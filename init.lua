@@ -11,9 +11,7 @@ local defaultDB = {
   }
 }
 
-local locale = {
-  enUS = { ["TestLocale"] = "TestLocale" }
-}
+local locale = Private.Locales
 
 KeystoneCompanionDB = {
   settings = {
@@ -28,6 +26,7 @@ Private.isDev = function() return KeystoneCompanionDB.settings.DevMode end;
 Private.print = function(msg) print("|cffddca2eKeystoneCompanion|r: " .. msg) end;
 Private.colorise = function(color, msg) return "|cff" .. color .. msg .. "|r" end;
 
+function GetLocale() return "deDE" end
 ---@class KeystoneCompanion : RasuAddonBase
 KeystoneCompanion = LibStub("RasuAddon"):CreateAddon(
   "Keystone Companion",
