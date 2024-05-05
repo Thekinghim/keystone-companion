@@ -199,10 +199,10 @@ local function loadTimerFrame()
             self:SetScript("OnUpdate", timerFrame.UpdateFrame)
         elseif event == "CHALLENGE_MODE_COMPLETED" then
             saveBestTimes(self.runData.mapID, self.runData.week, self.runData.level, self:GetBossTimes())
-            print("MAP ID", self.runData.mapID)
-            print("RUN WEEK", self.runData.week)
-            print("RUN LEVEL", self.runData.level)
-            print("BOSS TIMES")
+            KeystoneCompanion.AddDebugEntry("MAP ID", self.runData.mapID)
+            KeystoneCompanion.AddDebugEntry("RUN WEEK", self.runData.week)
+            KeystoneCompanion.AddDebugEntry("RUN LEVEL", self.runData.level)
+            KeystoneCompanion.AddDebugEntry("BOSS TIMES")
             DevTools_Dump(self:GetBossTimes())
             self.last = 0
             self:SetScript("OnUpdate", nil)
@@ -276,7 +276,7 @@ local function loadTimerFrame()
     function timerFrame:GetBossTimes()
         local times = {}
         for index, boss in pairs(self.bosses) do
-            print(string.format("Boss %d died %s", index, boss.dead))
+            KeystoneCompanion.AddDebugEntry(string.format("Boss %d died %s", index, boss.dead))
             times[index] = boss.dead
         end
         return times

@@ -38,6 +38,12 @@ KeystoneCompanion = LibStub("RasuAddon"):CreateAddon(
 )
 
 function KeystoneCompanion:OnInitialize()
+  KeystoneCompanionDebug = KeystoneCompanionDebug or {}
+end
+function Private.AddDebugEntry(entry)
+  local time = time()
+  tinsert(KeystoneCompanionDebug, {time = time, entry = entry})
+  print(string.format("New Debug Print: %s", entry))
 end
 KeystoneCompanion.Private = Private
 Private.Addon = KeystoneCompanion
