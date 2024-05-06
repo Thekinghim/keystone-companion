@@ -2,6 +2,7 @@ local _, Private = ...
 Private.Locales = Private.Locales or {}
 
 Private.Locales["itIT"] = {
+    --isEditing = true,
     -- ui/bestDungeons.lua
     ["WEEKLY BEST"] = "TOP SETTIMANA",
 

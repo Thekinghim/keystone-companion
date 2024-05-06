@@ -17,6 +17,11 @@ local defaultDB = {
   }
 }
 
+for lang, langInfo in pairs(Private.Locales) do
+  if langInfo.isEditing then
+    function GetLocale() return lang end
+  end
+end
 ---@class KeystoneCompanion : RasuAddonBase
 KeystoneCompanion = LibStub("RasuAddon"):CreateAddon(
   addonName,

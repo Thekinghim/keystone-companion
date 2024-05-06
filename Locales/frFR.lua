@@ -1,7 +1,7 @@
 local _, Private = ...
 Private.Locales = Private.Locales or {}
 
-Private.Locales["enUS"] = {
+Private.Locales["frFR"] = {
     --isEditing = true,
     -- ui/bestDungeons.lua
     ["WEEKLY BEST"] = "WEEKLY BEST",
