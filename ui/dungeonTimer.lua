@@ -1,4 +1,4 @@
-local addonName, Private = ...
+local _, Private = ...
 local widgets = Private.widgets
 local styles = Private.constants.styles
 local getTexturePath = Private.utils.path.getTexturePath
@@ -9,17 +9,27 @@ local dungeonNameFixes = {
     [463] = "DotI: Lower", -- Dawn of the Infinite: Galakrond's Fall
     [403] = "Uldaman",     -- Uldaman: Legacy of Tyr
 }
-local timerFrame
 
-local function loadTimerFrame()
-    local db = addon.DB
+function KeystoneCompanion:TimerInit()
+    local db = self.DB
     local uiSettings = Private.UI.Settings.Timer
     if not db.bestTimes then
         db.bestTimes = {}
     end
     local mdt = MDT
 
-    timerFrame = widgets.RoundedFrame.CreateFrame(UIParent, {
+    -- Creates a Tooltip hook to show MDT count on Unit Tooltips
+    TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tooltip, data)
+        if not mdt then return end
+        local guid = data.guid
+        if not guid then return end
+        local npcID = select(6, strsplit("-", guid))
+        if not npcID then return end
+        local count = mdt:GetEnemyForces(tonumber(npcID))
+        tooltip:AddDoubleLine(loc["M+ Count"], count)
+    end)
+
+    local timerFrame = widgets.RoundedFrame.CreateFrame(UIParent, {
         width = 352,
         height = 265,
         border_size = 1,
@@ -189,7 +199,7 @@ local function loadTimerFrame()
 
     function timerFrame:OnEvent(event, ...)
         if not db.settings.timerSettings then
-            timerFrame:LoadSettings()
+            self:LoadSettings()
         end
         if not db.settings.timerSettings.active and event ~= "PLAYER_ENTERING_WORLD" then
             self:ReleaseFrame()
@@ -198,7 +208,7 @@ local function loadTimerFrame()
         if event == "CHALLENGE_MODE_START" then
             self:ReleaseFrame()
             self:FillFrame()
-            self:SetScript("OnUpdate", timerFrame.UpdateFrame)
+            self:SetScript("OnUpdate", self.UpdateFrame)
         elseif event == "CHALLENGE_MODE_COMPLETED" then
             saveBestTimes(self.runData.mapID, self.runData.week, self.runData.level, self:GetBossTimes())
             Private.AddDebugEntry("MAP ID", self.runData.mapID)
@@ -526,35 +536,18 @@ local function loadTimerFrame()
     countNumber:SetJustifyH("RIGHT")
     countNumber:SetPoint("RIGHT", countBar, "RIGHT", -8, 0)
     timerFrame.countNumber = countNumber
-end
 
-local function onEvent(_, ...)
-    if timerFrame then
-        timerFrame:OnEvent(...)
-    else
-        -- Saved Variables is only available after ADDON_LOADED that's why the frame gets created after
-        local loadedAddon = select(2, ...)
-        if loadedAddon == addonName then
-            loadTimerFrame()
-            -- Creates a Tooltip hook to show MDT count on Unit Tooltips
-            TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tooltip, data)
-                if not MDT then return end
-                local guid = data.guid
-                if not guid then return end
-                local npcID = select(6, strsplit("-", guid))
-                if not npcID then return end
-                local count = MDT:GetEnemyForces(tonumber(npcID))
-                tooltip:AddDoubleLine(loc["M+ Count"], count)
-            end)
+    local function onEvent(_, ...)
+        if timerFrame then
+            timerFrame:OnEvent(...)
         end
     end
-end
 
-addon:RegisterEvent("ADDON_LOADED", "ui/dungeronTimer.lua", onEvent)
-addon:RegisterEvent("PLAYER_ENTERING_WORLD", "ui/dungeronTimer.lua", onEvent)
-addon:RegisterEvent("CHALLENGE_MODE_START", "ui/dungeronTimer.lua", onEvent)
-addon:RegisterEvent("CHALLENGE_MODE_COMPLETED", "ui/dungeronTimer.lua", onEvent)
-addon:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "ui/dungeronTimer.lua", onEvent)
-addon:RegisterEvent("UNIT_THREAT_LIST_UPDATE", "ui/dungeronTimer.lua", onEvent)
-addon:RegisterEvent("PLAYER_REGEN_ENABLED", "ui/dungeronTimer.lua", onEvent)
-addon:RegisterEvent("PLAYER_DEAD", "ui/dungeronTimer.lua", onEvent)
+    self:RegisterEvent("PLAYER_ENTERING_WORLD", "ui/dungeronTimer.lua", onEvent)
+    self:RegisterEvent("CHALLENGE_MODE_START", "ui/dungeronTimer.lua", onEvent)
+    self:RegisterEvent("CHALLENGE_MODE_COMPLETED", "ui/dungeronTimer.lua", onEvent)
+    self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "ui/dungeronTimer.lua", onEvent)
+    self:RegisterEvent("UNIT_THREAT_LIST_UPDATE", "ui/dungeronTimer.lua", onEvent)
+    self:RegisterEvent("PLAYER_REGEN_ENABLED", "ui/dungeronTimer.lua", onEvent)
+    self:RegisterEvent("PLAYER_DEAD", "ui/dungeronTimer.lua", onEvent)
+end

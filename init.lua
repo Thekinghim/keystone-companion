@@ -45,6 +45,7 @@ KeystoneCompanion.colorise = function(color, msg)
 end
 function KeystoneCompanion:OnInitialize()
   KeystoneCompanionDebug = KeystoneCompanionDebug or {}
+  self:TimerInit() -- ui/dungeonTimer.lua
 end
 
 function Private.AddDebugEntry(entry)
