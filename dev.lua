@@ -10,5 +10,8 @@ end
 function addon:devPrint(...)
   if (self:isDev()) then
     self:Print("|cffff0000(Dev) |r", ...)
+    if EventTrace then
+      EventTrace:LogEvent(self.Name, ...)
+    end
   end
 end

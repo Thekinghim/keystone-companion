@@ -209,6 +209,18 @@ function AddonBase:FPrint(message, ...)
     self:Print(... and string.format(message, ...) or message or "")
 end
 
+---@param ... table
+---@return table
+function AddonBase:MergeTables(...)
+    local mergedTable = {}
+    for _, tbl in ipairs({...}) do
+        for _, value in pairs(tbl) do
+            tinsert(mergedTable, value)
+        end
+    end
+    return mergedTable
+end
+
 ---@param event string
 ---@param ... any
 function AddonBase:OnEvent(event, ...)
@@ -223,14 +235,15 @@ function AddonBase:OnEvent(event, ...)
         self:DisableAddon()
     end
     if self.EventCallbacks[event] then
+        local cleuArgs = {}
+        if event == "COMBAT_LOG_EVENT_UNFILTERED" then
+            cleuArgs = {CombatLogGetCurrentEventInfo()}
+        end
         for entryName, callbackEntry in pairs(self.EventCallbacks[event]) do
-            local args = callbackEntry.args or {}
-            for _, arg in ipairs({...}) do
-                tinsert(args, arg)
-            end
-            callbackEntry.func(self, event, unpack(args))
+            local callbackArgs = self:MergeTables(callbackEntry.args, {...}, cleuArgs)
+            callbackEntry.func(self, event, unpack(callbackArgs))
             if self.devPrint then
-                self:devPrint(event, entryName, unpack(args))
+                self:devPrint(event, entryName, unpack(callbackArgs))
             end
         end
     end
