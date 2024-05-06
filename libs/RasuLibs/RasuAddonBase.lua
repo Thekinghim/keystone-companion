@@ -77,17 +77,26 @@ end
 ---@param name string
 ---@param callbackFunc function
 ---@param args table|?
+---@param cleuSubEvents table|?
 ---@return string
-function AddonBase:RegisterEventCallback(event, name, callbackFunc, args)
+function AddonBase:RegisterEventCallback(event, name, callbackFunc, args, cleuSubEvents)
     if not self.EventCallbacks[event] then
         self.EventCallbacks[event] = {}
     end
     if self.EventCallbacks[event][name] then
         error("This callback name is already taken!", 3)
     end
+    local subEvents
+    if cleuSubEvents then
+        subEvents = {}
+        for _, subEventName in ipairs(cleuSubEvents) do
+            subEvents[subEventName] = true
+        end
+    end
     self.EventCallbacks[event][name] = {
         func = callbackFunc,
-        args = args,
+        args = args or {},
+        subEvents = subEvents,
     }
     return name
 end
@@ -110,13 +119,15 @@ end
 
 ---@param event string
 ---@param callbackName string
----@param func string|function
-function AddonBase:RegisterEvent(event, callbackName, func, ...)
+---@param func string|function|?
+---@param args table|?
+---@param cleuSubEvents table|?
+function AddonBase:RegisterEvent(event, callbackName, func, args, cleuSubEvents)
     self.EventsFrame:RegisterEvent(event)
     if not callbackName then return end
-    local callbackFunc = type(func) == "function" and func or self[event]
+    local callbackFunc = type(func) == "function" and func or type(func) == "string" and self[func] or self[event]
     ---@cast callbackFunc function
-    self:RegisterEventCallback(event, callbackName, callbackFunc, { ... })
+    self:RegisterEventCallback(event, callbackName, callbackFunc, args, cleuSubEvents)
 end
 
 ---@param event string
@@ -197,7 +208,7 @@ end
 ---@param ... string
 function AddonBase:Print(...)
     local args = ""
-    for _, val in ipairs({...}) do
+    for _, val in ipairs({ ... }) do
         args = args .. " " .. tostring(val)
     end
     print(string.format("%s: %s", self.PrefixColor:WrapTextInColorCode(self.DisplayName), args))
@@ -213,7 +224,7 @@ end
 ---@return table
 function AddonBase:MergeTables(...)
     local mergedTable = {}
-    for _, tbl in ipairs({...}) do
+    for _, tbl in pairs({ ... }) do
         for _, value in pairs(tbl) do
             tinsert(mergedTable, value)
         end
@@ -237,10 +248,15 @@ function AddonBase:OnEvent(event, ...)
     if self.EventCallbacks[event] then
         local cleuArgs = {}
         if event == "COMBAT_LOG_EVENT_UNFILTERED" then
-            cleuArgs = {CombatLogGetCurrentEventInfo()}
+            cleuArgs = { CombatLogGetCurrentEventInfo() }
         end
         for entryName, callbackEntry in pairs(self.EventCallbacks[event]) do
-            local callbackArgs = self:MergeTables(callbackEntry.args, {...}, cleuArgs)
+            if event == "COMBAT_LOG_EVENT_UNFILTERED" and callbackEntry.subEvents then
+                if not callbackEntry.subEvents[cleuArgs[2]] then
+                    return
+                end
+            end
+            local callbackArgs = self:MergeTables(callbackEntry.args, { ... }, cleuArgs)
             callbackEntry.func(self, event, unpack(callbackArgs))
             if self.devPrint then
                 self:devPrint(event, entryName, unpack(callbackArgs))
