@@ -32,19 +32,19 @@ moreInfo:SetText(infoIcon.fileStr .. loc["Hover over Icons for more Info."])
 
 local iconBox, iconView = createScrollable(talentCheckFrame, {
     anchors = {
-        withScrollBar = {
+        with_scroll_bar = {
             CreateAnchor("TOPLEFT", 12, -54),
             CreateAnchor("BOTTOMRIGHT", -37, 49)
         },
-        withoutScrollBar = {
+        without_scroll_bar = {
             CreateAnchor("TOPLEFT", 25, -54),
             CreateAnchor("BOTTOMRIGHT", -25, 49)
         },
     },
     type = "GRID",
-    elementHeight = 45,
-    elementsPerRow = 5,
-    elementPadding = 5,
+    element_height = 45,
+    elements_per_row = 5,
+    element_padding = 5,
     initializer = function(frame, elementData)
         if not frame.initialized then
             local icon = frame:CreateTexture()
