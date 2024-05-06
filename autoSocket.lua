@@ -1,6 +1,7 @@
-local f = CreateFrame("Frame")
-f:RegisterEvent("CHALLENGE_MODE_KEYSTONE_RECEPTABLE_OPEN")
-f:SetScript("OnEvent", function()
+local _, Private = ...
+local addon = Private.Addon
+
+addon:RegisterEvent("CHALLENGE_MODE_KEYSTONE_RECEPTABLE_OPEN", "autoSocket.lua", function()
    for bagIndex = 0, NUM_BAG_SLOTS do
       for slotIndex = 1, C_Container.GetContainerNumSlots(bagIndex) do
          local itemID = C_Container.GetContainerItemID(bagIndex, slotIndex)

@@ -1,24 +1,21 @@
-local _, KeystoneCompanion = ...;
+local _, Private = ...;
 
-local LibSerialize = LibStub:GetLibrary("LibSerialize");
-local LibDeflate = LibStub:GetLibrary("LibDeflate");
+Private.inventory = {};
 
-KeystoneCompanion.inventory = {};
-
-function KeystoneCompanion.inventory:NewEmptyInventory()
+function Private.inventory:NewEmptyInventory()
   return { items = {}, keystone = { mapID = nil, level = nil }, itemLevel = { overall = nil, equipped = nil }, mythicPlusScore = nil, knownTeleports = {} };
 end
 
-KeystoneCompanion.inventory.self = KeystoneCompanion.inventory:NewEmptyInventory();
+Private.inventory.self = Private.inventory:NewEmptyInventory();
 
-function KeystoneCompanion.inventory:GetInventoryString()
+function Private.inventory:GetInventoryString()
   if (#self.self.items == 0) then
     self:ScanInventory();
   end
 
-  local serialisedInventory = LibSerialize:Serialize(self.self);
-  local compressedInventory = LibDeflate:CompressDeflate(serialisedInventory);
-  local inventoryString = LibDeflate:EncodeForWoWAddonChannel(compressedInventory);
+  local serialisedInventory = Private.LibSerialize:Serialize(self.self);
+  local compressedInventory = Private.LibDeflate:CompressDeflate(serialisedInventory);
+  local inventoryString = Private.LibDeflate:EncodeForWoWAddonChannel(compressedInventory);
   return inventoryString;
 end
 
@@ -32,7 +29,7 @@ local ScanItem = function(itemCache, bagIndex, bagSlot)
   local itemInfo = C_Container.GetContainerItemInfo(bagIndex, bagSlot);
   if (itemInfo == nil) then return end
 
-  local itemCategory = KeystoneCompanion.constants.itemLookup[itemInfo.itemID];
+  local itemCategory = Private.constants.itemLookup[itemInfo.itemID];
   if (itemCategory == nil) then return end
 
   if (itemCache[itemCategory][itemInfo.itemID] == nil) then
@@ -47,7 +44,7 @@ local ScanBag = function(itemCache, bagIndex)
   for bagSlot = 1, bagSize do ScanItem(itemCache, bagIndex, bagSlot) end
 end
 
-function KeystoneCompanion.inventory:ScanInventory()
+function Private.inventory:ScanInventory()
   local itemCache = {
     Food = {},
     Rune = {},
@@ -75,7 +72,7 @@ function KeystoneCompanion.inventory:ScanInventory()
   end
 
   self.self.knownTeleports = {};
-  for instanceId, dungeonTeleportSpellId in pairs(KeystoneCompanion.constants.dungeonTeleports) do
+  for instanceId, dungeonTeleportSpellId in pairs(Private.constants.dungeonTeleports) do
     if (IsSpellKnown(dungeonTeleportSpellId, false)) then
       table.insert(self.self.knownTeleports, instanceId)
     end
@@ -86,10 +83,10 @@ function KeystoneCompanion.inventory:ScanInventory()
   self.self.itemLevel = { overall = overall, equipped = equipped };
 end
 
-function KeystoneCompanion.inventory:LoadString(sender, inventoryString)
-  local decodedString = LibDeflate:DecodeForWoWAddonChannel(inventoryString);
-  local uncompressedString = LibDeflate:DecompressDeflate(decodedString);
-  local success, inventory = LibSerialize:Deserialize(uncompressedString);
+function Private.inventory:LoadString(sender, inventoryString)
+  local decodedString = Private.LibDeflate:DecodeForWoWAddonChannel(inventoryString);
+  local uncompressedString = Private.LibDeflate:DecompressDeflate(decodedString);
+  local success, inventory = Private.LibSerialize:Deserialize(uncompressedString);
   if (not success) then return end;
 
   self[sender] = inventory;
@@ -101,10 +98,10 @@ function KeystoneCompanion.inventory:LoadString(sender, inventoryString)
   end
 end
 
-function KeystoneCompanion.inventory:LoadFromDetailsInfo(sender, level, mapID)
+function Private.inventory:LoadFromDetailsInfo(sender, level, mapID)
   if (self[sender] == nil) then self[sender] = self:NewEmptyInventory() end
   self[sender].keystone = { mapID = mapID > 0 and mapID or nil, level = level > 0 and level or nil };
-  if (KeystoneCompanion.UI.Frame:IsShown()) then
-    KeystoneCompanion.UI.Rerender();
+  if (Private.UI.Frame:IsShown()) then
+    Private.UI.Rerender();
   end
 end

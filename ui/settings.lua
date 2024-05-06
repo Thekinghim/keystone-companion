@@ -1,9 +1,10 @@
-local _, KeystoneCompanion = ...;
-local UI = KeystoneCompanion.UI;
-local styles = KeystoneCompanion.constants.styles;
-local widgets = KeystoneCompanion.widgets;
-local getTexturePath = KeystoneCompanion.utils.path.getTexturePath;
-local loc = KeystoneCompanion.Addon.Loc
+local _, Private = ...;
+local UI = Private.UI;
+local styles = Private.constants.styles;
+local widgets = Private.widgets;
+local getTexturePath = Private.utils.path.getTexturePath;
+local addon = Private.Addon
+local loc = Private.Addon.Loc
 local LibDBIcon = LibStub:GetLibrary("LibDBIcon-1.0")
 
 UI.Settings = CreateFrame('Frame', 'KeystoneCompanionSettings', UI.Frame);
@@ -21,17 +22,17 @@ UI.Settings.Minimap.Checkbox:SetPoint("LEFT", UI.Settings.Minimap, "LEFT");
 UI.Settings.Minimap.Checkbox:SetSize(25, 25)
 UI.Settings.Minimap.Checkbox.Text:SetText(loc["Show UI button on minimap"])
 UI.Settings.Minimap.Checkbox:HookScript("OnClick", function()
-  if (KeystoneCompanionDB.settings.MinimapButton) then
+  if (addon.DB.settings.MinimapButton) then
     LibDBIcon:Hide("Keystone Companion")
-    KeystoneCompanionDB.settings.MinimapButton = false;
+    addon.DB.settings.MinimapButton = false;
   else
     LibDBIcon:Show("Keystone Companion")
-    KeystoneCompanionDB.settings.MinimapButton = true;
+    addon.DB.settings.MinimapButton = true;
   end
 end)
 
 function RerenderSettings()
-  if (KeystoneCompanionDB.settings.MinimapButton ~= false) then
+  if (addon.DB.settings.MinimapButton ~= false) then
     UI.Settings.Minimap.Checkbox:SetChecked(true);
   else
     UI.Settings.Minimap.Checkbox:SetChecked(false);

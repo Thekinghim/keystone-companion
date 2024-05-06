@@ -1,10 +1,10 @@
-local KeystoneCompanion = select(2, ...)
-local CreateRoundedFrame = KeystoneCompanion.widgets.RoundedFrame.CreateFrame;
-local getTexturePath = KeystoneCompanion.utils.path.getTexturePath;
-local styles = KeystoneCompanion.constants.styles;
+local Private = select(2, ...)
+local CreateRoundedFrame = Private.widgets.RoundedFrame.CreateFrame
+local styles = Private.constants.styles
 local customIconMixin = { customMixin = true }
 local screenWidth = GetScreenWidth()
-local loc = KeystoneCompanion.Addon.Loc
+local addon = Private.Addon
+local loc = addon.Loc
 
 local shortDungeonNames = {
     -- Season 3 Dragonflight Dungeons
@@ -218,19 +218,18 @@ local function updateWeeklyBest()
     weeklyBest:SetHeight(min(8, #runs) * (weeklyBest.heightPerRow + 2) + 48)
 end
 
-local eventFrame = CreateFrame("Frame")
-eventFrame:RegisterEvent("ADDON_LOADED")
-eventFrame:RegisterEvent("CHALLENGE_MODE_MAPS_UPDATE")
-eventFrame:SetScript("OnEvent", function(_, event, addon)
-    if event == "ADDON_LOADED" and addon == "Blizzard_ChallengesUI" then
+
+local function onEvent(_, event, loadedAddon)
+    if event == "ADDON_LOADED" and loadedAddon == "Blizzard_ChallengesUI" then
         ChallengesFrame:HookScript("OnShow", function(self)
             applyMixin(self)
         end)
-        eventFrame:UnregisterEvent("ADDON_LOADED")
-        eventFrame:SetScript("OnEvent", nil)
         createWeeklyBest()
         updateWeeklyBest()
     elseif event == "CHALLENGE_MODE_MAPS_UPDATE" then
         updateWeeklyBest()
     end
-end)
+end
+
+addon:RegisterEvent("ADDON_LOADED", "ui/bestDungeons.lua", onEvent)
+addon:RegisterEvent("CHALLENGE_MODE_MAPS_UPDATE", "ui/bestDungeons.lua", onEvent)

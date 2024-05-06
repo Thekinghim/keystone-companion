@@ -1,12 +1,16 @@
-local KeystoneCompanion = select(2, ...)
-local styles = KeystoneCompanion.constants.styles
-local aTalents = KeystoneCompanion.constants.affixTalents
-local widgets = KeystoneCompanion.widgets
+local Private = select(2, ...)
+local getTexturePath = Private.utils.path.getTexturePath
+
+local addon = Private.Addon
+local loc = addon.Loc
+
+local styles = Private.constants.styles
+local aTalents = Private.constants.affixTalents
+
+local widgets = Private.widgets
 local createRoundedFrame = widgets.RoundedFrame.CreateFrame
 local createRoundedButton = widgets.RoundedButton.CreateFrame
 local createScrollable = widgets.ScrollableFrame.CreateFrame
-local getTexturePath = KeystoneCompanion.utils.path.getTexturePath
-local loc = KeystoneCompanion.Addon.Loc
 
 local addonTitle = styles.COLORS.TEXT_HIGHLIGHT:WrapTextInColorCode("Keystone Companion")
 local infoIcon = {
@@ -167,7 +171,7 @@ local function updateTalentCheck(showFrame)
 end
 talentCheckFrame:Hide()
 
-KeystoneCompanion.TestTalentsCheck = function()
+Private.TestTalentsCheck = function()
     local originalFunc = C_MythicPlus.GetCurrentAffixes
     ---@diagnostic disable-next-line: duplicate-set-field
     function C_MythicPlus.GetCurrentAffixes()
@@ -220,7 +224,5 @@ local function onEvent(_, event)
     end
 end
 
-local eventFrame = CreateFrame("Frame", nil, UIParent)
-eventFrame:RegisterEvent("READY_CHECK")
-eventFrame:RegisterEvent("TRAIT_CONFIG_UPDATED")
-eventFrame:SetScript("OnEvent", onEvent)
+addon:RegisterEvent("READY_CHECK", "ui/talentCheck.lua", onEvent)
+addon:RegisterEvent("TRAIT_CONFIG_UPDATED", "ui/talentCheck.lua", onEvent)

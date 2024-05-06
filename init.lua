@@ -4,6 +4,7 @@ local rasuGUI = LibStub("RasuGUI")
 
 Private.RasuGUI = rasuGUI
 Private.widgets = rasuGUI.Widgets
+Private.LibDeflate = LibStub:GetLibrary("LibDeflate");
 Private.LibSerialize = LibStub:GetLibrary("LibSerialize")
 Private.LibDataBroker = LibStub:GetLibrary("LibDataBroker-1.1")
 Private.LibDBIcon = LibStub:GetLibrary("LibDBIcon-1.0")

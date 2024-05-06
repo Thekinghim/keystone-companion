@@ -1,8 +1,9 @@
-local addonName, KeystoneCompanion = ...
-local widgets = KeystoneCompanion.widgets
-local styles = KeystoneCompanion.constants.styles;
-local getTexturePath = KeystoneCompanion.utils.path.getTexturePath;
-local loc = KeystoneCompanion.Addon.Loc
+local addonName, Private = ...
+local widgets = Private.widgets
+local styles = Private.constants.styles
+local getTexturePath = Private.utils.path.getTexturePath
+local addon = Private.Addon
+local loc = addon.Loc
 local dungeonNameFixes = {
     [464] = "DotI: Upper", -- Dawn of the Infinite: Murozond's Rise
     [463] = "DotI: Lower", -- Dawn of the Infinite: Galakrond's Fall
@@ -11,8 +12,8 @@ local dungeonNameFixes = {
 local timerFrame
 
 local function loadTimerFrame()
-    local db = KeystoneCompanionDB
-    local uiSettings = KeystoneCompanion.UI.Settings.Timer
+    local db = addon.DB
+    local uiSettings = Private.UI.Settings.Timer
     if not db.bestTimes then
         db.bestTimes = {}
     end
@@ -24,7 +25,7 @@ local function loadTimerFrame()
         border_size = 1,
         background_color = CreateColorFromHexString("99131315")
     })
-    KeystoneCompanion.DungeonTimerFrame = timerFrame
+    Private.DungeonTimerFrame = timerFrame
     timerFrame:SetClampedToScreen(true)
     timerFrame:Hide()
     timerFrame.currentPull = {}
@@ -200,10 +201,10 @@ local function loadTimerFrame()
             self:SetScript("OnUpdate", timerFrame.UpdateFrame)
         elseif event == "CHALLENGE_MODE_COMPLETED" then
             saveBestTimes(self.runData.mapID, self.runData.week, self.runData.level, self:GetBossTimes())
-            KeystoneCompanion.AddDebugEntry("MAP ID", self.runData.mapID)
-            KeystoneCompanion.AddDebugEntry("RUN WEEK", self.runData.week)
-            KeystoneCompanion.AddDebugEntry("RUN LEVEL", self.runData.level)
-            KeystoneCompanion.AddDebugEntry("BOSS TIMES")
+            Private.AddDebugEntry("MAP ID", self.runData.mapID)
+            Private.AddDebugEntry("RUN WEEK", self.runData.week)
+            Private.AddDebugEntry("RUN LEVEL", self.runData.level)
+            Private.AddDebugEntry("BOSS TIMES")
             DevTools_Dump(self:GetBossTimes())
             self.last = 0
             self:SetScript("OnUpdate", nil)
@@ -277,7 +278,7 @@ local function loadTimerFrame()
     function timerFrame:GetBossTimes()
         local times = {}
         for index, boss in pairs(self.bosses) do
-            KeystoneCompanion.AddDebugEntry(string.format("Boss %d died %s", index, boss.dead))
+            Private.AddDebugEntry(string.format("Boss %d died %s", index, boss.dead))
             times[index] = boss.dead
         end
         return times
@@ -527,16 +528,7 @@ local function loadTimerFrame()
     timerFrame.countNumber = countNumber
 end
 
-local eventFrame = CreateFrame("Frame")
-eventFrame:RegisterEvent("ADDON_LOADED")
-eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-eventFrame:RegisterEvent("CHALLENGE_MODE_START")
-eventFrame:RegisterEvent("CHALLENGE_MODE_COMPLETED")
-eventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-eventFrame:RegisterEvent("UNIT_THREAT_LIST_UPDATE")
-eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
-eventFrame:RegisterEvent("PLAYER_DEAD")
-eventFrame:SetScript("OnEvent", function(_, ...)
+local function onEvent(_, ...)
     if timerFrame then
         timerFrame:OnEvent(...)
     else
@@ -552,9 +544,17 @@ eventFrame:SetScript("OnEvent", function(_, ...)
                 local npcID = select(6, strsplit("-", guid))
                 if not npcID then return end
                 local count = MDT:GetEnemyForces(tonumber(npcID))
-                tooltip:AddDoubleLine(KeystoneCompanion.Addon.Loc["M+ Count"], count)
+                tooltip:AddDoubleLine(loc["M+ Count"], count)
             end)
-            eventFrame:UnregisterEvent("ADDON_LOADED")
         end
     end
-end)
+end
+
+addon:RegisterEvent("ADDON_LOADED", "ui/dungeronTimer.lua", onEvent)
+addon:RegisterEvent("PLAYER_ENTERING_WORLD", "ui/dungeronTimer.lua", onEvent)
+addon:RegisterEvent("CHALLENGE_MODE_START", "ui/dungeronTimer.lua", onEvent)
+addon:RegisterEvent("CHALLENGE_MODE_COMPLETED", "ui/dungeronTimer.lua", onEvent)
+addon:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "ui/dungeronTimer.lua", onEvent)
+addon:RegisterEvent("UNIT_THREAT_LIST_UPDATE", "ui/dungeronTimer.lua", onEvent)
+addon:RegisterEvent("PLAYER_REGEN_ENABLED", "ui/dungeronTimer.lua", onEvent)
+addon:RegisterEvent("PLAYER_DEAD", "ui/dungeronTimer.lua", onEvent)

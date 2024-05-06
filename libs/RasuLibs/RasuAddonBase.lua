@@ -196,7 +196,10 @@ end
 
 ---@param ... string
 function AddonBase:Print(...)
-    local args = table.concat({ ... } or {}, " ")
+    local args = ""
+    for _, val in ipairs({...}) do
+        args = args .. " " .. tostring(val)
+    end
     print(string.format("%s: %s", self.PrefixColor:WrapTextInColorCode(self.DisplayName), args))
 end
 
@@ -222,6 +225,9 @@ function AddonBase:OnEvent(event, ...)
     if self.EventCallbacks[event] then
         for entryName, callbackEntry in pairs(self.EventCallbacks[event]) do
             local args = callbackEntry.args or {}
+            for _, arg in ipairs({...}) do
+                tinsert(args, arg)
+            end
             callbackEntry.func(self, event, unpack(args))
             if self.devPrint then
                 self:devPrint(event, entryName, unpack(args))

@@ -1,8 +1,9 @@
-local _, KeystoneCompanion = ...
-local styles = KeystoneCompanion.constants.styles;
-local getTexturePath = KeystoneCompanion.utils.path.getTexturePath
+local _, Private = ...
+local styles = Private.constants.styles;
+local getTexturePath = Private.utils.path.getTexturePath
 local mythicPlusMaps = C_ChallengeMode.GetMapTable()
-local loc = KeystoneCompanion.Addon.Loc
+local addon = Private.Addon
+local loc = addon.Loc
 
 local const = {
     THRESHOLD = 0.4,
@@ -102,7 +103,7 @@ local function getWeeks()
     return const.AFFIX[affix], affix == 10 and const.AFFIX[9] or const.AFFIX[10]
 end
 
-local calculatorFrame = KeystoneCompanion.widgets.RoundedFrame.CreateFrame(UIParent, {
+local calculatorFrame = Private.widgets.RoundedFrame.CreateFrame(UIParent, {
     height = 400,
     width = 600,
     border_size = 2,
@@ -585,7 +586,7 @@ end
 
 calculateButton.ShowResults = printScoreTable
 
-local UI = KeystoneCompanion.UI
+local UI = Private.UI
 local function createCalcButton(parent, offsetX, offsetY)
     local calcButton = CreateFrame('Frame', nil, parent)
     calcButton:SetSize(25, 25)
