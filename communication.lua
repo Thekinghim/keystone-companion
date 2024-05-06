@@ -12,7 +12,7 @@ function KeystoneCompanion.communication.SendMessage(...)
   local message = messageType .. '::';
   if (data ~= nil and strlen(data) > 0) then message = message .. data end
 
-  if (UnitInParty('player') == false and KeystoneCompanion.isDev()) then
+  if (UnitInParty('player') == false and KeystoneCompanion.Addon:isDev()) then
     C_ChatInfo.SendAddonMessage(KeystoneCompanion.communication.prefix, message, "WHISPER", UnitName('player'))
   else
     C_ChatInfo.SendAddonMessage(KeystoneCompanion.communication.prefix, message, "PARTY")

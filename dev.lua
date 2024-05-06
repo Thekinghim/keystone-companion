@@ -1,13 +1,13 @@
-local _, KeystoneCompanion = ...
-KeystoneCompanion.dev = {};
+local _, Private = ...
+Private.dev = {};
 
-function KeystoneCompanion.dev.CloneInventory(from, to)
-  KeystoneCompanion.inventory[to] = KeystoneCompanion.inventory[from];
-  KeystoneCompanion.UI.Rerender();
+function Private.dev.CloneInventory(from, to)
+  Private.inventory[to] = Private.inventory[from];
+  Private.UI.Rerender();
 end
 
-function KeystoneCompanion.dev.print(...)
-  if (KeystoneCompanion.isDev()) then
+function Private.dev.print(...)
+  if (Private.Addon:isDev()) then
     print('|cffddca2eKeystoneCompanion|r|cffff0000Dev|r: ' .. ...)
   end
 end

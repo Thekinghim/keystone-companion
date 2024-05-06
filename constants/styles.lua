@@ -14,7 +14,7 @@ local styles = {
     GREEN_DARK = CreateColorFromHexString("FF009901"),
     GREEN_LIGHT = CreateColorFromHexString("FF02FF03"),
 
-    RED_LIGHT = CreateColorFromHexString("FFFF0000"),
+    RED_LIGHT = CreateColorFromHexString("FFE74C3C"),
 
     YELLOW_LIGHT = CreateColorFromHexString("FFF4ED03")
   },

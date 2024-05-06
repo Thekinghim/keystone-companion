@@ -144,7 +144,7 @@ UI.AddonVersion:SetFontObject(styles.FONT_OBJECTS.NORMAL)
 UI.AddonVersion:SetPoint('LEFT', UI.Footer, 'LEFT', 8, 0)
 UI.AddonVersion:SetTextColor(89 / 255, 89 / 255, 91 / 255, 1);
 UI.AddonVersion:SetJustifyH('LEFT');
-UI.AddonVersion:SetText('V' .. KeystoneCompanion.version)
+UI.AddonVersion:SetText('V' .. KeystoneCompanion.Addon.Version)
 
 UI.GitHub = CreateFrame('Frame', 'KeystoneCompanionFooterGitHub', UI.Footer);
 UI.GitHub:SetSize(58, 15);
@@ -179,10 +179,11 @@ UI.Discord:SetSize(150, 15);
 UI.Discord:SetPoint('RIGHT', UI.Footer, 'RIGHT', -70, 0);
 UI.Discord.Label = UI.Discord:CreateFontString('KeystoneCompanionFooterDiscordLabel', 'OVERLAY')
 UI.Discord.Label:SetPoint('LEFT');
-UI.Discord.Label:SetPoint('RIGHT', -15, 0);
+UI.Discord.Label:SetPoint('RIGHT', -17, 0);
 UI.Discord.Label:SetFontObject(styles.FONT_OBJECTS.NORMAL)
 UI.Discord.Label:SetTextColor(161 / 255, 161 / 255, 161 / 255, 1)
 UI.Discord.Label:SetText(KeystoneCompanion.Addon.Loc["Join us on Discord"]);
+UI.Discord.Label:SetJustifyH("RIGHT")
 UI.Discord.Icon = CreateFrame('Frame', "KeystoneCompanionDiscordIcon", UI.Discord);
 UI.Discord.Icon:SetSize(13, 13);
 UI.Discord.Icon:SetPoint("RIGHT", UI.Discord, "RIGHT");

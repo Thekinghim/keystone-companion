@@ -3,7 +3,8 @@ local loc = KeystoneCompanion.Addon.Loc
 local getTexturePath = KeystoneCompanion.utils.path.getTexturePath;
 
 KeystoneCompanion.loaded = false;
-local print, colorise, devPrint = KeystoneCompanion.print, KeystoneCompanion.colorise, KeystoneCompanion.dev.print
+local addon = KeystoneCompanion.Addon
+local devPrint = KeystoneCompanion.dev.print
 local LibSerialize = LibStub:GetLibrary("LibSerialize");
 local LibDataBroker = LibStub:GetLibrary("LibDataBroker-1.1");
 local LibDBIcon = LibStub:GetLibrary("LibDBIcon-1.0")
@@ -58,7 +59,7 @@ KeystoneCompanion.EventFrame:SetScript('OnEvent', function(self, event, ...)
       KeystoneCompanion.UI.Frame:SetPoint('CENTER', UIParent, 'CENTER')
     end
 
-    if (UnitInParty("player") or KeystoneCompanion.isDev()) then
+    if (UnitInParty("player") or addon:isDev()) then
       devPrint('world loaded and player in party - Sending LOGON and UPDATE messages')
       KeystoneCompanion.communication.SendMessage(KeystoneCompanion.communication.messageTypes.LOGON)
       KeystoneCompanion.communication.SendMessage(KeystoneCompanion.communication.messageTypes.UPDATE,
@@ -69,7 +70,7 @@ KeystoneCompanion.EventFrame:SetScript('OnEvent', function(self, event, ...)
     KeystoneCompanion.inventory:ScanInventory();
     KeystoneCompanion.loaded = true
 
-    if (KeystoneCompanion.isDev()) then
+    if (addon:isDev()) then
       KeystoneCompanion.UI.Frame:Show();
       KeystoneCompanion.UI.Rerender();
     end
@@ -131,7 +132,7 @@ KeystoneCompanion.communication:RegisterMessageHandler(KeystoneCompanion.communi
 KeystoneCompanion.communication:RegisterMessageHandler(KeystoneCompanion.communication.messageTypes.UPDATE,
   function(sender, _, data)
     devPrint('received UPDATE message from ' .. sender)
-    if (sender == UnitName('player') and not KeystoneCompanion.isDev()) then return end
+    if (sender == UnitName('player') and not addon:isDev()) then return end
     KeystoneCompanion.inventory:LoadString(sender, data)
 
     if (KeystoneCompanion.UI.Frame:IsShown()) then
@@ -139,11 +140,7 @@ KeystoneCompanion.communication:RegisterMessageHandler(KeystoneCompanion.communi
     end
   end)
 
-SLASH_KEYSTONECOMPANION1, SLASH_KEYSTONECOMPANION2 = '/keystonecompanion', '/kc';
-function SlashCmdList.KEYSTONECOMPANION(msg, editBox)
-  local args = {}
-  for word in msg:gmatch('%S+') do args[#args + 1] = word end
-
+KeystoneCompanion.Addon:RegisterCommand({"keystonecompanion", "kc"}, function (self, args)
   if (#args == 0) then
     ToggleUI();
   end
@@ -151,35 +148,35 @@ function SlashCmdList.KEYSTONECOMPANION(msg, editBox)
   if (args[1] == 'dev') then
     if (args[2] == 'on' or args[2] == 'enable') then
       KeystoneCompanionDB.settings.DevMode = true;
-      print('Developer mode ' .. colorise('38ee45', 'enabled'));
+      self:Print('Developer mode ' .. self.colorise('38ee45', 'enabled'));
     elseif (args[2] == 'off' or args[2] == 'disable') then
       KeystoneCompanionDB.settings.DevMode = false;
-      print('Developer mode ' .. colorise('00ffff', 'disabled'));
+      self:Print('Developer mode ' .. self.colorise('00ffff', 'disabled'));
     else
-      print('/kc dev [enable|on|disable|off]')
+      self:Print('/kc dev [enable|on|disable|off]')
     end
   elseif (args[1] == 'minimap') then
     if (args[2] == 'on' or args[2] == 'enable') then
       KeystoneCompanionDB.settings.MinimapButton = true;
-      print('Minimap button ' .. colorise('38ee45', 'enabled'));
+      self:Print('Minimap button ' .. self.colorise('38ee45', 'enabled'));
       LibDBIcon:Show('Keystone Companion')
     elseif (args[2] == 'off' or args[2] == 'disable') then
       KeystoneCompanionDB.settings.MinimapButton = false;
-      print('Minimap button ' .. colorise('00ffff', 'disabled'));
+      self:Print('Minimap button ' .. self.colorise('00ffff', 'disabled'));
       LibDBIcon:Hide('Keystone Companion')
     else
-      print('/kc minimap [enable|on|disable|off]')
+      self:Print('/kc minimap [enable|on|disable|off]')
     end
   end
-end
+end)
 
-if (KeystoneCompanion.buildType == 'alpha') then
-  print(loc["You're running an"] ..
-  colorise('ff0000', ' Alpha ') .. loc["build of the addon. Features may be broken or only half finished in alpha versions!"])
-elseif (KeystoneCompanion.buildType == 'beta') then
-  print(loc["You're running an"] ..
-  colorise('ddca2e', ' Beta ') ..
+if (KeystoneCompanion.Addon.buildType == "alpha") then
+  addon:Print(loc["You're running an"] ..
+  addon.colorise('ff0000', ' Alpha ') .. loc["build of the addon. Features may be broken or only half finished in alpha versions!"])
+elseif (KeystoneCompanion.Addon.buildType == "alpha") then
+  addon:Print(loc["You're running an"] ..
+  addon.colorise('ddca2e', ' Beta ') ..
   loc["version of the addon. Thank you for helping test, and please report any issues on the Github so they can be fixed before release. :)"])
 end
 
-print(loc["type"] .. colorise('ddca2e', ' /kc ') .. loc["to open the KeystoneCompanion UI, or click the minimap button."])
+addon:Print(loc["type"] .. addon.colorise('ddca2e', ' /kc ') .. loc["to open the KeystoneCompanion UI, or click the minimap button."])

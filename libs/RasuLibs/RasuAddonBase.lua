@@ -1,6 +1,6 @@
 ---@class RasuAddon
 ---@field RegisteredAddons table<string, RasuAddonBase>
----@field CreateAddon fun(self:RasuAddon, name:string, db:string|table|?, defaultDB:table|?, loc:table|?, defaultLoc:string|?) : RasuAddonBase
+---@field CreateAddon fun(self:RasuAddon, name:string, displayName:string, db:string|table|?, defaultDB:table|?, loc:table|?, defaultLoc:string|?) : RasuAddonBase
 ---@field GetAddon fun(self:RasuAddon, name:string) : RasuAddonBase|?
 local lib = LibStub:NewLibrary("RasuAddon", 1)
 
@@ -14,6 +14,7 @@ lib.RegisteredAddons = {}
 ---@field PrefixColor colorRGB
 ---@field Version string
 ---@field Name string
+---@field DisplayName string
 ---@field Events table
 ---@field Commands table
 ---@field Loc table|?
@@ -27,6 +28,7 @@ local AddonBase = {
     PrefixColor = CreateColorFromHexString("FFFFCA2E"),
     Version = "",
     Name = "",
+    DisplayName = "",
     EventCallbacks = {},
     Commands = {},
     Loc = {},
@@ -34,7 +36,7 @@ local AddonBase = {
     DefaultDB = {}
 }
 
-function lib:CreateAddon(name, db, defaultDB, loc, defaultLoc)
+function lib:CreateAddon(name, displayName, db, defaultDB, loc, defaultLoc)
     defaultLoc = defaultLoc or "enUS"
     if self.RegisteredAddons[name] then
         error("This addon name is already taken!", 2)
@@ -44,6 +46,7 @@ function lib:CreateAddon(name, db, defaultDB, loc, defaultLoc)
     self.RegisteredAddons[name] = addon
     addon.Version = C_AddOns.GetAddOnMetadata(name, "Version")
     addon.Name = name
+    addon.DisplayName = displayName or name
     addon.DB = db
     addon.DefaultDB = defaultDB
     if loc and (loc[GetLocale()] or defaultLoc) then
@@ -113,7 +116,7 @@ function AddonBase:RegisterEvent(event, callbackName, func, ...)
     if not callbackName then return end
     local callbackFunc = type(func) == "function" and func or self[event]
     ---@cast callbackFunc function
-    self:RegisterEventCallback(event, callbackName, callbackFunc, {...})
+    self:RegisterEventCallback(event, callbackName, callbackFunc, { ... })
 end
 
 ---@param event string
@@ -132,21 +135,23 @@ local function msgToArgs(msg)
     return args
 end
 
----@param command string
----@param func string|fun(args:table)
-function AddonBase:RegisterCommand(command, func)
-    local name = "RASU_" .. command:upper()
+---@param commands table
+---@param func string|fun(self:RasuBaseMixin, args:table)
+function AddonBase:RegisterCommand(commands, func)
+    local name = "RASU_" .. commands[1]:upper()
     if type(func) == "string" then
         SlashCmdList[name] = function(msg)
             self[func](self, msgToArgs(msg))
         end
     else
         SlashCmdList[name] = function(msg)
-            func(msgToArgs(msg))
+            func(self, msgToArgs(msg))
         end
     end
-    _G["SLASH_" .. name .. "1"] = "/" .. command:lower()
-    self.Commands[command] = name
+    for index, command in ipairs(commands) do
+        _G["SLASH_" .. name .. index] = "/" .. command:lower()
+    end
+    self.Commands[commands[1]] = name
 end
 
 ---@param command string
@@ -186,13 +191,13 @@ end
 ---@param message string
 ---@param ... string
 function AddonBase:ThrowError(message, ...)
-    error(string.format("%s: %s", self.PrefixColor:WrapTextInColorCode(self.Name), message, ... or ""), 2)
+    error(string.format("%s: %s", self.PrefixColor:WrapTextInColorCode(self.DisplayName), message, ... or ""), 2)
 end
 
 ---@param ... string
 function AddonBase:Print(...)
     local args = table.concat({ ... } or {}, " ")
-    print(string.format("%s: %s", self.PrefixColor:WrapTextInColorCode(self.Name), args))
+    print(string.format("%s: %s", self.PrefixColor:WrapTextInColorCode(self.DisplayName), args))
 end
 
 ---@param message string
