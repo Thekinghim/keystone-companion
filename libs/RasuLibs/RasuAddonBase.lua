@@ -220,9 +220,12 @@ function AddonBase:OnEvent(event, ...)
         self:DisableAddon()
     end
     if self.EventCallbacks[event] then
-        for _, callbackEntry in pairs(self.EventCallbacks[event]) do
+        for entryName, callbackEntry in pairs(self.EventCallbacks[event]) do
             local args = callbackEntry.args or {}
             callbackEntry.func(self, event, unpack(args))
+            if self.devPrint then
+                self:devPrint(event, entryName, unpack(args))
+            end
         end
     end
 end

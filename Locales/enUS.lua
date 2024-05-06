@@ -57,6 +57,10 @@ Private.Locales["enUS"] = {
     -- main.lua
     ["Click to open an overview of your party's keystones and dungeon items."] =
     "Click to open an overview of your party's keystones and dungeon items.",
+    ["enabled"] = "enabled",
+    ["disabled"] = "disabled",
+    ["Developer mode"] = "Developer mode",
+    ["Minimap button"] = "Minimap button",
     ["You're running an"] = "You're running an",
     ["build of the addon. Features may be broken or only half finished in alpha versions!"] =
     "build of the addon. Features may be broken or only half finished in alpha versions!",

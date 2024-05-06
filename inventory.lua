@@ -2,7 +2,6 @@ local _, KeystoneCompanion = ...;
 
 local LibSerialize = LibStub:GetLibrary("LibSerialize");
 local LibDeflate = LibStub:GetLibrary("LibDeflate");
-local print, devPrint = KeystoneCompanion.print, KeystoneCompanion.dev.print
 
 KeystoneCompanion.inventory = {};
 

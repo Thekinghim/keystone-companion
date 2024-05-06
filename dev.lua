@@ -1,13 +1,14 @@
 local _, Private = ...
-Private.dev = {};
+local addon = Private.Addon
+addon.dev = {};
 
-function Private.dev.CloneInventory(from, to)
+function addon.dev.CloneInventory(from, to)
   Private.inventory[to] = Private.inventory[from];
   Private.UI.Rerender();
 end
 
-function Private.dev.print(...)
-  if (Private.Addon:isDev()) then
-    print('|cffddca2eKeystoneCompanion|r|cffff0000Dev|r: ' .. ...)
+function addon:devPrint(...)
+  if (self:isDev()) then
+    self:Print("|cffff0000(Dev) |r", ...)
   end
 end

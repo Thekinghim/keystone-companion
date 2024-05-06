@@ -5,7 +5,7 @@ local LibDeflate = LibStub:GetLibrary("LibDeflate");
 local LIB_OPEN_RAID_COMM_PREFIX = 'LRS';
 local LIB_OPEN_RAID_KEYSTONE_PREFIX = 'K';
 local LIB_OPEN_RAID_KEYSTONE_REQUEST_PREFIX = 'J'
-local devPrint = KeystoneCompanion.dev.print;
+local addon = KeystoneCompanion.Addon;
 
 function KeystoneCompanion.communication.SendMessage(...)
   local messageType, data = select(1, ...)
@@ -39,7 +39,7 @@ function KeystoneCompanion.communication:OnLibOpenRaidMessageReceived(text, send
   if (not data or type(data) ~= 'string' or string.len(data) == 0) then return end;
   if (data:sub(1, 1) ~= LIB_OPEN_RAID_KEYSTONE_PREFIX) then return end;
 
-  devPrint('received details! keystone info from ' .. sender);
+  addon:devPrint('received details! keystone info from ' .. sender);
   local keystoneInfo = { strsplit(',', data) }
   KeystoneCompanion.inventory:LoadFromDetailsInfo(sender, tonumber(keystoneInfo[2]), tonumber(keystoneInfo[3]));
 end

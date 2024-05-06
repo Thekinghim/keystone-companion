@@ -57,6 +57,10 @@ Private.Locales["deDE"] = {
     -- main.lua
     ["Click to open an overview of your party's keystones and dungeon items."] =
     "Klicken, um eine Übersicht über die Schlüsselsteine und Dungeon Items eurer Gruppe zu öffnen.",
+    ["enabled"] = "aktiviert",
+    ["disabled"] = "deaktiviert",
+    ["Developer mode"] = "Entwicklermodus",
+    ["Minimap button"] = "Minimap-Symbol",
     ["You're running an"] = "Sie benutzen eine",
     ["build of the addon. Features may be broken or only half finished in alpha versions!"] =
     "Version des Addons. Funktionen können in Alphaversionen fehlerhaft oder nur halbfertig sein!",
