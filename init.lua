@@ -30,7 +30,7 @@ KeystoneCompanion = LibStub("RasuAddon"):CreateAddon(
   locale
 )
 
-KeystoneCompanion.buildType = "alpha"
+KeystoneCompanion.buildType = C_AddOns.GetAddOnMetadata(addonName, "X-Build-Type"):lower()
 
 function KeystoneCompanion:isDev()
   return self.DB.settings.DevMode
@@ -43,14 +43,8 @@ KeystoneCompanion.colorise = function(color, msg)
   return string.format("|cff%s%s|r", color, msg)
 end
 function KeystoneCompanion:OnInitialize()
-  KeystoneCompanionDebug = KeystoneCompanionDebug or {}
+  KeystoneCompanionDebug = KeystoneCompanionDebug or {messages = {}}
   self:TimerInit() -- ui/dungeonTimer.lua
-end
-
-function Private.AddDebugEntry(entry)
-  local time = time()
-  tinsert(KeystoneCompanionDebug, { time = time, entry = entry })
-  print(string.format("New Debug Print: %s", entry))
 end
 
 KeystoneCompanion.Private = Private

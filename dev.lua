@@ -13,5 +13,10 @@ function addon:devPrint(...)
     if EventTrace then
       EventTrace:LogEvent(self.Name, ...)
     end
+
+    if KeystoneCompanionDebug then
+      if not KeystoneCompanionDebug.messages then KeystoneCompanionDebug.messages = {} end
+      tinsert(KeystoneCompanionDebug.messages, { time = time(), entry = { ... } })
+    end
   end
 end
