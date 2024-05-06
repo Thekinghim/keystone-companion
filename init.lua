@@ -25,7 +25,6 @@ end
 ---@class KeystoneCompanion : RasuAddonBase
 KeystoneCompanion = LibStub("RasuAddon"):CreateAddon(
   addonName,
-  "Keystone Companion",
   "KeystoneCompanionDB",
   defaultDB,
   locale

@@ -5,6 +5,12 @@ local mythicPlusMaps = C_ChallengeMode.GetMapTable()
 local addon = Private.Addon
 local loc = addon.Loc
 
+local widgets = Private.widgets
+local createRoundedFrame = widgets.RoundedFrame.CreateFrame
+local createRoundedButton = widgets.RoundedButton.CreateFrame
+local createScrollable = widgets.ScrollableFrame.CreateFrame
+local createCheckBox = widgets.CheckBox.CreateFrame
+
 local const = {
     THRESHOLD = 0.4,
     MAX_ADDITION = 5,
@@ -103,12 +109,12 @@ local function getWeeks()
     return const.AFFIX[affix], affix == 10 and const.AFFIX[9] or const.AFFIX[10]
 end
 
-local calculatorFrame = Private.widgets.RoundedFrame.CreateFrame(UIParent, {
+local calculatorFrame = createRoundedFrame(UIParent, {
     height = 400,
     width = 600,
     border_size = 2,
+    frame_strata = "FULLSCREEN"
 })
-calculatorFrame:SetFrameStrata("FULLSCREEN")
 calculatorFrame:Hide()
 calculatorFrame:MakeMovable()
 local function createTooltip(frame, tooltipText)
@@ -139,69 +145,9 @@ local function createEditBox(parent, point, width, height, isNumeric, maxLetters
     end
     return editBox
 end
-local function createCheckBox(parent, point, size, state, isDisabled, text, tooltip)
-    local checkBox = CreateFrame("CheckButton", nil, parent)
-    local check = checkBox:CreateTexture()
-    local checkDisable = checkBox:CreateTexture()
-    check:SetAtlas("checkmark-minimal")
-    checkDisable:SetAtlas("checkmark-minimal-disabled")
-    checkBox:SetDisabledCheckedTexture(checkDisable)
-    checkBox:SetCheckedTexture(check)
-    checkBox:SetSize(size, size)
-    checkBox:SetPoint(unpack(point))
-    checkBox:SetNormalAtlas("checkbox-minimal")
-    checkBox:SetPushedAtlas("checkbox-minimal")
-    checkBox:SetChecked(state)
-    checkBox:SetEnabled(not isDisabled)
-    local label = checkBox:CreateFontString()
-    label:SetFontObject(styles.FONT_OBJECTS.BOLD)
-    label:SetJustifyH("LEFT")
-    label:SetPoint("LEFT", checkBox, "RIGHT", 8, 0)
-    label:SetText(text)
-    if tooltip then
-        createTooltip(checkBox, tooltip)
-        createTooltip(label, tooltip)
-    end
-    return checkBox
-end
 
--- Add these to styles Constants
+---- Add these to styles Constants
 local buttonDefault = CreateColorFromHexString("FF17191C")
-local buttonHover = CreateColorFromHexString("FF36373B")
-
-local function createRoundedButton(parent, point, width, height, isDisabled, text, tooltip)
-    ---@class roundedButton : Frame
-    local button = CreateFrame("Frame", nil, parent)
-    button:SetPoint(unpack(point))
-    button:SetSize(width, height)
-    local mask = button:CreateMaskTexture()
-    mask:SetAllPoints(button)
-    mask:SetTexture(getTexturePath('masks/rounded-button-big'))
-    local texture = button:CreateTexture()
-    texture:SetAllPoints(button)
-    texture:SetColorTexture(buttonDefault:GetRGBA())
-    texture:AddMaskTexture(mask)
-    local label = button:CreateFontString()
-    label:SetFontObject(styles.FONT_OBJECTS.BOLD)
-    label:SetPoint("CENTER")
-    label:SetText(text)
-    button.disabled = isDisabled
-    button.texture = texture
-    button.label = label
-    button:SetScript("OnEnter", function(self)
-        if not self.disabled then
-            self.texture:SetColorTexture(buttonHover:GetRGBA())
-        end
-    end)
-    button:SetScript("OnLeave", function(self)
-        self.texture:SetColorTexture(buttonDefault:GetRGBA())
-    end)
-    if tooltip then
-        createTooltip(button, tooltip)
-    end
-
-    return button
-end
 
 local function createToggleTexture(parent, point, size, state, texture, useAtlas, tooltip)
     local toggleTexture = parent:CreateTexture()
@@ -233,70 +179,6 @@ local function createToggleTexture(parent, point, size, state, texture, useAtlas
         createTooltip(toggleTexture, tooltip)
     end
     return toggleTexture
-end
-
---[[
-        local options = {
-            parent = UIParent, -- Parent Frame
-            anchors = { -- Anchors for the frame
-                {"TOPLEFT"},
-                {"BOTTOMRIGHT"}
-            },
-            type = "LIST", -- Type is either List or Grid
-            initializer = function () end, -- Initializer function to create the elements
-            extentCalculator = function () end, -- needed for elements without fixed height
-            elementExtent= 25, -- Height of the elements if fixed
-            elementsPerRow = 1, -- Number of elements per row (GRID)
-            elementPadding = 0, -- Padding between elements (GRID)
-            template = 0, -- Template that is used for the elements
-        }
-    ]]
-
-local function createScrollable(options)
-    local scrollBox = CreateFrame("Frame", nil, options.parent, "WowScrollBoxList")
-    scrollBox:SetPoint(unpack(options.anchors[2]))
-    scrollBox:SetPoint(unpack(options.anchors[1]))
-
-    local scrollBar = CreateFrame("EventFrame", nil, options.parent, "MinimalScrollBar")
-    scrollBar:SetPoint("TOPLEFT", scrollBox, "TOPRIGHT", 5, 0)
-    scrollBar:SetPoint("BOTTOMLEFT", scrollBox, "BOTTOMRIGHT")
-    scrollBar:SetHideIfUnscrollable(true)
-
-    local scrollView = nil
-    if options.type == "LIST" then
-        scrollView = CreateScrollBoxListLinearView()
-        scrollView:SetElementInitializer(options.template or "BackdropTemplate", options.initializer)
-        ScrollUtil.InitScrollBoxListWithScrollBar(scrollBox, scrollBar, scrollView)
-    elseif options.type == "GRID" then
-        local fillWidth = (options.parent:GetWidth() - (options.elementsPerRow - 1) * options.elementPadding) /
-            options.elementsPerRow
-        scrollView = CreateScrollBoxListGridView(options.elementsPerRow, 0, 0, 0, 0, options.elementPadding,
-            options.elementPadding);
-        scrollView:SetElementInitializer(options.template or "BackdropTemplate", function(button, elementData)
-            button:SetSize(fillWidth, options.elementHeight)
-            options.initializer(button, elementData)
-        end)
-        ScrollUtil.InitScrollBoxListWithScrollBar(scrollBox, scrollBar, scrollView);
-    end
-    if options.extentCalculator then
-        scrollView:SetElementExtentCalculator(options.extentCalculator)
-    else
-        scrollView:SetElementExtent(options.elementHeight)
-    end
-
-    function scrollView:UpdateContentData(data)
-        local scrollPercent = scrollBox:GetScrollPercentage()
-        self:Flush()
-        local dataProvider = CreateDataProvider()
-        self:SetDataProvider(dataProvider)
-        if not data then return end
-        for _, part in ipairs(data) do
-            dataProvider:Insert(part)
-        end
-        scrollBox:SetScrollPercentage(scrollPercent or 1)
-    end
-
-    return scrollView, scrollBox, scrollBar
 end
 
 local topBar = CreateFrame("Frame", nil, calculatorFrame)
@@ -346,8 +228,12 @@ local targetScore = createEditBox(calculatorFrame, { "TOPLEFT", topBar, "BOTTOML
     loc["Target Score"])
 local maxKeyLevel = createEditBox(calculatorFrame, { "TOPLEFT", targetScore, "BOTTOMLEFT", 0, -5 }, 100, 20, true, 2,
     loc["Max. Key Level"])
-local onlyCurrentWeekCB = createCheckBox(calculatorFrame, { "TOPLEFT", maxKeyLevel, "BOTTOMLEFT", -7, -5 }, 20, true,
-    false, loc["Only this Week"])
+local onlyCurrentWeekCB = createCheckBox(calculatorFrame, {
+    points = { { "TOPLEFT", maxKeyLevel, "BOTTOMLEFT", -7, -5 } },
+    default_state = true,
+    font_object = styles.FONT_OBJECTS.BOLD,
+    font_text = loc["Only this Week"],
+})
 local dungeonToggles = {}
 for dungeonIndex, mapID in ipairs(mythicPlusMaps) do
     local dungeonName, _, _, dungeonTexture = C_ChallengeMode.GetMapUIInfo(mapID)
@@ -358,9 +244,13 @@ for dungeonIndex, mapID in ipairs(mythicPlusMaps) do
     tinsert(dungeonToggles, toggleTexture)
 end
 
-local calculateButton = createRoundedButton(calculatorFrame, { "TOPLEFT", dungeonToggles[1], "BOTTOMLEFT", 0, -5 }, 200,
-    30, false, loc["Calculate"])
-calculateButton:SetPoint("TOPRIGHT", dungeonToggles[#dungeonToggles], "BOTTOMRIGHT", 0, -5)
+local calculateButton = createRoundedButton(calculatorFrame, {
+    height = 30,
+    points = { { "TOPLEFT", dungeonToggles[1], "BOTTOMLEFT", 0, -5 }, { "TOPRIGHT", dungeonToggles[#dungeonToggles], "BOTTOMRIGHT", 0, -5 } },
+    border_size = 0,
+    font_object = styles.FONT_OBJECTS.BOLD,
+    font_text = loc["Calculate"]
+})
 calculateButton:SetScript("OnMouseDown", function(self)
     local disabledDungeons = {}
     for _, toggle in ipairs(dungeonToggles) do
@@ -374,17 +264,22 @@ calculateButton:SetScript("OnMouseDown", function(self)
     self.ShowResults(maxKeyNumber, targetScoreNumber, onlyCurrentWeekState, disabledDungeons)
 end)
 
-local scrollView = createScrollable({
-    parent = calculatorFrame,
+local _, scrollView = createScrollable(calculatorFrame, {
+    frame_strata = "TOOLTIP",
     anchors = {
-        { "TOPRIGHT",   calculateButton, "BOTTOMRIGHT", 0, -5 },
-        { "BOTTOMLEFT", 15,              15 }
+        with_scroll_bar = {
+            CreateAnchor("TOPRIGHT", calculateButton, "BOTTOMRIGHT", 0, -5),
+            CreateAnchor("BOTTOMLEFT", 15, 15)
+        },
+        without_scroll_bar = {
+            CreateAnchor("TOPRIGHT", calculateButton, "BOTTOMRIGHT", 0, -5),
+            CreateAnchor("BOTTOMLEFT", 15, 15)
+        },
     },
-    type = "LIST",
-    elementHeight = 65,
-    elementPadding = 5,
-    elementsPerRow = 1,
-    extentCalculator = function(_, elementData)
+    element_height = 65,
+    element_padding = 5,
+    elements_per_row = 1,
+    extent_calculator = function(_, elementData)
         local rows = #elementData.rows
         return (rows * 35) + 50
     end,
@@ -500,7 +395,7 @@ local scrollView = createScrollable({
             rowAnchor = row
 
             if rowData.impossible then
-                row.name:SetText("|cFFe74c3c"..loc["Not Possible!"])
+                row.name:SetText("|cFFe74c3c" .. loc["Not Possible!"])
                 row.level:SetText("")
                 row.affix:SetText("")
                 row.timeLimit:SetText("")

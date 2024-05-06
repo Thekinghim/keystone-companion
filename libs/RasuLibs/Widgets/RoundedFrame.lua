@@ -45,10 +45,14 @@ local defaultOptions = {
 ---@return RoundedFrame
 local function createRoundedFrame(parent, options)
     parent = parent or UIParent
+    if not options.frame_strata then
+        options.frame_strata = parent:GetFrameStrata()
+    end
     options = mixTables(defaultOptions, options)
 
     ---@class RoundedFrame:Frame
     local frame = CreateFrame("Frame", nil, parent)
+    frame:SetFrameStrata(options.frame_strata)
     Mixin(frame, lib.Widgets.BaseMixin)
     for _, point in ipairs(options.points) do
         frame:SetPoint(unpack(point))
@@ -67,10 +71,6 @@ local function createRoundedFrame(parent, options)
         frame.Border:SetVertexColor(options.border_color:GetRGBA())
         frame.Border:SetPoint("TOPLEFT", -options.border_size, options.border_size)
         frame.Border:SetPoint("BOTTOMRIGHT", options.border_size, -options.border_size)
-    end
-
-    if options.frame_strata then
-        frame:SetFrameStrata(options.frame_strata)
     end
 
     return frame

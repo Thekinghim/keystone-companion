@@ -36,7 +36,7 @@ local AddonBase = {
     DefaultDB = {}
 }
 
-function lib:CreateAddon(name, displayName, db, defaultDB, loc, defaultLoc)
+function lib:CreateAddon(name, db, defaultDB, loc, defaultLoc)
     defaultLoc = defaultLoc or "enUS"
     if self.RegisteredAddons[name] then
         error("This addon name is already taken!", 2)
@@ -46,7 +46,7 @@ function lib:CreateAddon(name, displayName, db, defaultDB, loc, defaultLoc)
     self.RegisteredAddons[name] = addon
     addon.Version = C_AddOns.GetAddOnMetadata(name, "Version")
     addon.Name = name
-    addon.DisplayName = displayName or name
+    addon.DisplayName = C_AddOns.GetAddOnMetadata(name, "Title")
     addon.DB = db
     addon.DefaultDB = defaultDB
     if loc and (loc[GetLocale()] or defaultLoc) then

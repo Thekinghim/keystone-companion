@@ -43,15 +43,15 @@ UI.Settings.Timer = {}
 UI.Settings.Timer.Activate = widgets.CheckBox.CreateFrame(UI.Settings, {
   size = 25,
   points = { { "TOPLEFT", 77, -30 } },
-  defaultState = true,
-  isDisabled = false,
-  text = loc["Activate M+ Timer"],
-  fontObject = styles.FONT_OBJECTS.BOLD,
+  default_state = true,
+  is_disabled = false,
+  font_text = loc["Activate M+ Timer"],
+  font_object = styles.FONT_OBJECTS.BOLD,
 })
 UI.Settings.Timer.Unlock = widgets.CheckBox.CreateFrame(UI.Settings, {
   size = 25,
   points = { { "TOPLEFT", 77, -60 } },
-  text = loc["Movable M+ Timer"],
+  font_text = loc["Movable M+ Timer"],
 })
 UI.Settings.Timer.Scale = widgets.Slider.CreateFrame(UI.Settings, {
   width = 200,

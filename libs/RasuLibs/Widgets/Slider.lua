@@ -33,9 +33,13 @@ local defaultOptions = {
 ---@return ModernSlider
 local function createSlider(parent, options)
     parent = parent or UIParent
+    if not options.frame_strata then
+        options.frame_strata = parent:GetFrameStrata()
+    end
     options = mixTables(defaultOptions, options)
     ---@class ModernSlider:Slider
     local slider = CreateFrame("Slider", nil, parent, "MinimalSliderTemplate")
+    slider:SetFrameStrata(options.frame_strata)
     Mixin(slider, lib.Widgets.BaseMixin)
 
     for _, point in ipairs(options.points) do

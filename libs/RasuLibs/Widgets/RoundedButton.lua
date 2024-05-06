@@ -43,6 +43,9 @@ local defaultOptions = {
 ---@return RoundedButton
 local function createButton(parent, options)
     parent = parent or UIParent
+    if not options.frame_strata then
+        options.frame_strata = parent:GetFrameStrata()
+    end
     options = mixTables(defaultOptions, options)
     ---@class RoundedButton : Frame,RasuGUIBaseMixin
     ---@field disabled boolean
