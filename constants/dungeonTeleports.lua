@@ -2,78 +2,19 @@ local _, KeystoneCompanion = ...
 
 KeystoneCompanion.constants = KeystoneCompanion.constants or {};
 KeystoneCompanion.constants.dungeonTeleports = {
-  [643] = {
-    name = 'Throne of the Tides',
-    spell = { id = 424142, name = 'Path of the Tidehunter' },
-  },
-
-  [1279] = {
-    name = 'Everbloom',
-    spell = { id = 159901, name = 'Path of the verdant' },
-  },
-
-  [1466] = {
-    name = 'Darkheart Thicket',
-    spell = { id = 424163, name = 'Path of the Nightmare Lord' },
-  },
-
-  [1501] = {
-    name = 'Black Rook Hold',
-    spell = { id = 424153, name = 'Path of Ancient Horrors' },
-  },
-
-  [1763] = {
-    name = 'Atal\'Dazar',
-    spell = { id = 424187, name = 'Path of the Golden Tomb' },
-  },
-
-  [1862] = {
-    name = 'Waycrest Manor',
-    spell = { id = 424167, name = 'Path of Heart\'s Bane' },
-  },
-
-  [2451] = {
-    name = 'Uldaman: Legacy of Tyr',
-    spell = { id = 393222, name = 'Path of the Watcher\'s Legacy' }
-  },
-
-  [2515] = {
-    name = 'The Azure Vault',
-    spell = { id = 393279, name = 'Path of Arcane Secrets' }
-  },
-
-  [2516] = {
-    name = 'The Nokhud Offensive',
-    spell = { id = 393262, name = 'Path of the Windswept Plains' }
-  },
-
-  [2519] = {
-    name = 'Neltharus',
-    spell = { id = 393276, name = 'Path of the Obsidian Hoard' }
-  },
-
-  [2520] = {
-    name = 'Brackenhide Hollow',
-    spell = { id = 393267, name = 'Path of the Rotting Woods' }
-  },
-
-  [2521] = {
-    name = 'Ruby Life Pools',
-    spell = { id = 393256, name = 'Path of the Clutch Defender' }
-  },
-
-  [2526] = {
-    name = 'Algeth\'ar Academy',
-    spell = { id = 393273, name = 'Path of the Draconic Diploma' }
-  },
-
-  [2527] = {
-    name = 'Halls of Infusion',
-    spell = { id = 393283, name = 'Path of the Titanic Reservoir' }
-  },
-
-  [2579] = {
-    name = 'Dawn of the Infinites',
-    spell = { id = 424197, name = 'Path of Twisted Time' },
-  }
+  [643] = 424142,  -- Throne of the Tides : Path of the Tidehunter
+  [1279] = 159901, -- Everbloom : Path of the verdant
+  [1466] = 424163, -- Darkheart Thicket : Path of the Nightmare Lord
+  [1501] = 424153, -- Black Rook Hold : Path of Ancient Horrors
+  [1763] = 424187, -- Atal'Dazar : Path of the Golden Tomb
+  [1862] = 424167, -- Waycrest Manor : Path of Heart's Bane
+  [2451] = 393222, -- Uldaman: Legacy of Tyr : Path of the Watcher's Legacy
+  [2515] = 393279, -- The Azure Vault : Path of Arcane Secrets
+  [2516] = 393262, -- The Nokhud Offensive : Path of the Windswept Plains
+  [2519] = 393276, -- Neltharus : Path of the Obsidian Hoard
+  [2520] = 393267, -- Brackenhide Hollow : Path of the Rotting Woods
+  [2521] = 393256, -- Ruby Life Pools : Path of the Clutch Defender
+  [2526] = 393273, -- Algeth'ar Academy : Path of the Draconic Diploma
+  [2527] = 393283, -- Halls of Infusion : Path of the Titanic Reservoir
+  [2579] = 424197, -- Dawn of the Infinites : Path of Twisted Time
 }

@@ -31,8 +31,7 @@ KeystoneCompanion = LibStub("RasuAddon"):CreateAddon(
   "Keystone Companion",
   "KeystoneCompanionDB",
   defaultDB,
-  locale,
-  "enUS"
+  locale
 )
 
 function KeystoneCompanion:OnInitialize()

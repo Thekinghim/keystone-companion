@@ -76,8 +76,8 @@ function KeystoneCompanion.inventory:ScanInventory()
   end
 
   self.self.knownTeleports = {};
-  for instanceId, dungeonTeleportInfo in pairs(KeystoneCompanion.constants.dungeonTeleports) do
-    if (IsSpellKnown(dungeonTeleportInfo.spell.id, false)) then
+  for instanceId, dungeonTeleportSpellId in pairs(KeystoneCompanion.constants.dungeonTeleports) do
+    if (IsSpellKnown(dungeonTeleportSpellId, false)) then
       table.insert(self.self.knownTeleports, instanceId)
     end
   end

@@ -35,6 +35,7 @@ local AddonBase = {
 }
 
 function lib:CreateAddon(name, db, defaultDB, loc, defaultLoc)
+    defaultLoc = defaultLoc or "enUS"
     if self.RegisteredAddons[name] then
         error("This addon name is already taken!", 2)
     end

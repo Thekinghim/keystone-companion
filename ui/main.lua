@@ -311,8 +311,7 @@ local createDungeonTooltip = function(self)
   local playerData = KeystoneCompanion.inventory[playerName];
   if (playerData.keystone.mapID == nil) then return end;
 
-  local dungeonInfo = KeystoneCompanion.constants.dungeonTeleports[playerData.keystone.mapID];
-  local spellId = dungeonInfo.spell.id;
+  local spellId = KeystoneCompanion.constants.dungeonTeleports[playerData.keystone.mapID];
 
   local spellKnown = IsSpellKnown(spellId, false);
   local spellUsable = IsUsableSpell(spellId);
@@ -321,7 +320,7 @@ local createDungeonTooltip = function(self)
 
   UI.Tooltip:SetOwner(self, 'ANCHOR_NONE');
   UI.Tooltip:SetPoint('BOTTOMRIGHT', self, 'TOPLEFT');
-  UI.Tooltip:SetText(dungeonInfo.name, 0.64, 0.21, 0.93, 1, true);
+  UI.Tooltip:SetText(GetRealZoneText(playerData.keystone.mapID), 0.64, 0.21, 0.93, 1, true);
   UI.Tooltip:AddLine('Keystone level ' .. (playerData.keystone.level or 12))
   UI.Tooltip:AddLine(' ')
   if (not spellKnown) then
@@ -631,14 +630,14 @@ function KeystoneCompanion.UI.RerenderPlayerRow(row, playerName, playerData)
     row.DungeonIcon:Hide();
     row.KeystoneLevel:Hide();
   else
-    local dungeonInfo = KeystoneCompanion.constants.dungeonTeleports[playerData.keystone.mapID];
+    local spellId = KeystoneCompanion.constants.dungeonTeleports[playerData.keystone.mapID];
     row.DungeonIcon:SetAttribute('player', playerName);
-    row.DungeonIcon:SetAttribute('spell', dungeonInfo.spell.id);
-    row.DungeonIcon:SetNormalTexture(GetSpellTexture(dungeonInfo.spell.id));
+    row.DungeonIcon:SetAttribute('spell', spellId);
+    row.DungeonIcon:SetNormalTexture(GetSpellTexture(spellId));
     row.DungeonIcon:Show();
 
-    local spellKnown = IsSpellKnown(dungeonInfo.spell.id, false);
-    local spellUsable = IsUsableSpell(dungeonInfo.spell.id);
+    local spellKnown = IsSpellKnown(spellId, false);
+    local spellUsable = IsUsableSpell(spellId);
 
     if (spellKnown and spellUsable) then
       row.DungeonIcon:SetAlpha(1);
