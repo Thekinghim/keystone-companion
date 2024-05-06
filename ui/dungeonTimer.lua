@@ -26,7 +26,9 @@ function KeystoneCompanion:TimerInit()
         local npcID = select(6, strsplit("-", guid))
         if not npcID then return end
         local count = mdt:GetEnemyForces(tonumber(npcID))
-        tooltip:AddDoubleLine(loc["M+ Count"], count)
+        if count and count > 0 then
+            tooltip:AddDoubleLine(loc["M+ Count"], count)
+        end
     end)
 
     local timerFrame = widgets.RoundedFrame.CreateFrame(UIParent, {
@@ -546,7 +548,7 @@ function KeystoneCompanion:TimerInit()
     self:RegisterEvent("PLAYER_ENTERING_WORLD", "ui/dungeronTimer.lua", onEvent)
     self:RegisterEvent("CHALLENGE_MODE_START", "ui/dungeronTimer.lua", onEvent)
     self:RegisterEvent("CHALLENGE_MODE_COMPLETED", "ui/dungeronTimer.lua", onEvent)
-    self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "ui/dungeronTimer.lua", onEvent, nil, {"UNIT_DIED"})
+    self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "ui/dungeronTimer.lua", onEvent, nil, { "UNIT_DIED" })
     self:RegisterEvent("UNIT_THREAT_LIST_UPDATE", "ui/dungeronTimer.lua", onEvent)
     self:RegisterEvent("PLAYER_REGEN_ENABLED", "ui/dungeronTimer.lua", onEvent)
     self:RegisterEvent("PLAYER_DEAD", "ui/dungeronTimer.lua", onEvent)
