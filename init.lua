@@ -43,7 +43,19 @@ KeystoneCompanion.colorise = function(color, msg)
   return string.format("|cff%s%s|r", color, msg)
 end
 function KeystoneCompanion:OnInitialize()
-  KeystoneCompanionDebug = KeystoneCompanionDebug or {messages = {}}
+  KeystoneCompanionDebug = KeystoneCompanionDebug or { messages = {} }
+
+  -- This is needed for some M+ Related Functions
+  -- As the UI can not be loaded before entering the World we just run this in the first possible frame
+  RunNextFrame(function()
+    if not C_AddOns.IsAddOnLoaded("Blizzard_ChallengesUI") then
+      local hideAfter = not PVEFrame:IsVisible()
+      PVEFrame_ShowFrame("ChallengesFrame")
+      if hideAfter then HideUIPanel(PVEFrame) end
+    end
+    self:ScoreCalculatorInit()
+  end)
+
   self:TimerInit() -- ui/dungeonTimer.lua
 end
 
