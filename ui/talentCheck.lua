@@ -1,11 +1,16 @@
-local KeystoneCompanion = select(2, ...)
-local styles = KeystoneCompanion.constants.styles
-local aTalents = KeystoneCompanion.constants.affixTalents
-local widgets = KeystoneCompanion.widgets
+local Private = select(2, ...)
+local getTexturePath = Private.utils.path.getTexturePath
+
+local addon = Private.Addon
+local loc = addon.Loc
+
+local styles = Private.constants.styles
+local aTalents = Private.constants.affixTalents
+
+local widgets = Private.widgets
 local createRoundedFrame = widgets.RoundedFrame.CreateFrame
 local createRoundedButton = widgets.RoundedButton.CreateFrame
 local createScrollable = widgets.ScrollableFrame.CreateFrame
-local getTexturePath = KeystoneCompanion.utils.path.getTexturePath
 
 local addonTitle = styles.COLORS.TEXT_HIGHLIGHT:WrapTextInColorCode("Keystone Companion")
 local infoIcon = {
@@ -15,38 +20,31 @@ local infoIcon = {
 
 local talentCheckFrame = createRoundedFrame(UIParent,
     { border_size = 2, width = 300, height = 200, frame_strata = "FULLSCREEN" })
-talentCheckFrame:EnableMouse(true)
-talentCheckFrame:SetMovable(true)
-talentCheckFrame:SetScript("OnMouseDown", function(self)
-    self:StartMoving()
-end)
-talentCheckFrame:SetScript("OnMouseUp", function(self)
-    self:StopMovingOrSizing()
-end)
+talentCheckFrame:MakeMovable()
 local title = talentCheckFrame:CreateFontString()
 title:SetFont(styles.FONTS.BOLD, 16, "")
 title:SetPoint("TOP", 0, -12)
-title:SetText(addonTitle .. ": Talent Check")
+title:SetText(addonTitle .. ": " .. loc["Talent Check"])
 local moreInfo = talentCheckFrame:CreateFontString()
 moreInfo:SetFontObject(styles.FONT_OBJECTS.NORMAL)
 moreInfo:SetPoint("TOP", 0, -30)
-moreInfo:SetText(infoIcon.fileStr .. "Hover over Icons for more Info.")
+moreInfo:SetText(infoIcon.fileStr .. loc["Hover over Icons for more Info."])
 
 local iconBox, iconView = createScrollable(talentCheckFrame, {
     anchors = {
-        withScrollBar = {
+        with_scroll_bar = {
             CreateAnchor("TOPLEFT", 12, -54),
             CreateAnchor("BOTTOMRIGHT", -37, 49)
         },
-        withoutScrollBar = {
+        without_scroll_bar = {
             CreateAnchor("TOPLEFT", 25, -54),
             CreateAnchor("BOTTOMRIGHT", -25, 49)
         },
     },
     type = "GRID",
-    elementHeight = 45,
-    elementsPerRow = 5,
-    elementPadding = 5,
+    element_height = 45,
+    elements_per_row = 5,
+    element_padding = 5,
     initializer = function(frame, elementData)
         if not frame.initialized then
             local icon = frame:CreateTexture()
@@ -61,7 +59,7 @@ local iconBox, iconView = createScrollable(talentCheckFrame, {
         end
         frame.icon:SetDesaturated(not elementData.talented)
         frame.icon:SetTexture(elementData.texture)
-        widgets.Base.AddTooltip(frame, elementData.tooltipText)
+        widgets.BaseMixin.AddTooltip(frame, elementData.tooltipText)
     end,
 })
 
@@ -73,7 +71,7 @@ local okayButton = createRoundedButton(talentCheckFrame, {
     height = 25,
     font_text = OKAY,
     frame_strata = "FULLSCREEN_DIALOG",
-    tooltip_text = "Close"
+    tooltip_text = CLOSE
 })
 okayButton:SetScript("OnMouseDown", function()
     talentCheckFrame:Hide()
@@ -110,7 +108,13 @@ local function getIconAndTooltip(specs, reason, spellID, affixID, isTalented)
         local affixName, _, affixIcon = C_ChallengeMode.GetAffixInfo(affixID)
         local description = GetSpellDescription(spellID)
         local tooltipText = string.format(
-            "%s%s%s|r\n%s\n\n%sReason for Recommendation:|r\n%s\n\n%sAffix for Recommendation:|r\n|T%s:12|t %s\n\n%sRecommendation Specs:|r",
+            "%s%s%s|r\n%s\n\n%s" ..
+            loc["Reason for Recommendation:"] ..
+            "|r\n%s\n\n%s" ..
+            loc["Affix for Recommendation:"] ..
+            "|r\n|T%s:12|t %s\n\n%s" ..
+            loc["Recommendation Specs:"] ..
+            "|r",
             secondaryMarkup, highlightMarkup, name,
             description, highlightMarkup, reason, highlightMarkup, affixIcon, affixName, highlightMarkup)
         for _, specID in ipairs(specs) do
@@ -119,7 +123,8 @@ local function getIconAndTooltip(specs, reason, spellID, affixID, isTalented)
         end
         local tMarkup = isTalented and positiveMarkup or negativeMarkup
         local tText = isTalented and YES or NO
-        tooltipText = string.format("%s\n\n%sIs talented: %s%s", tooltipText, highlightMarkup, tMarkup, tText)
+        tooltipText = string.format("%s\n\n%s" .. loc["Is talented:"] .. " %s%s", tooltipText, highlightMarkup, tMarkup,
+            tText)
 
         return icon, tooltipText
     end
@@ -133,7 +138,10 @@ local function isRecommendedForSpec(specs, specID)
 end
 
 local noRecommendation = string.format(
-    "%s%sKeystone Companion|r\n\nIt appears that there are no talent recommendations for this affix yet. You might want to submit something through the Discord.\n\n%s%s|r",
+    "%s%sKeystone Companion|r\n\n" ..
+    loc
+    ["It appears that there are no talent recommendations for this affix yet. You might want to submit something through the Discord."] ..
+    "\n\n%s%s|r",
     secondaryMarkup, highlightMarkup, highlightMarkup, "https://discord.gg/KhFhC6kZ78")
 
 local function updateTalentCheck(showFrame)
@@ -163,7 +171,7 @@ local function updateTalentCheck(showFrame)
 end
 talentCheckFrame:Hide()
 
-KeystoneCompanion.TestTalentsCheck = function()
+Private.TestTalentsCheck = function()
     local originalFunc = C_MythicPlus.GetCurrentAffixes
     ---@diagnostic disable-next-line: duplicate-set-field
     function C_MythicPlus.GetCurrentAffixes()
@@ -216,7 +224,5 @@ local function onEvent(_, event)
     end
 end
 
-local eventFrame = CreateFrame("Frame", nil, UIParent)
-eventFrame:RegisterEvent("READY_CHECK")
-eventFrame:RegisterEvent("TRAIT_CONFIG_UPDATED")
-eventFrame:SetScript("OnEvent", onEvent)
+addon:RegisterEvent("READY_CHECK", "ui/talentCheck.lua", onEvent)
+addon:RegisterEvent("TRAIT_CONFIG_UPDATED", "ui/talentCheck.lua", onEvent)

@@ -1,4 +1,3 @@
-local addonName = ...
 ---@class RasuGUI
 ---@field Widgets table
 local lib = LibStub:NewLibrary("RasuGUI", 1)
@@ -35,26 +34,52 @@ lib.Widgets.Base.mixTables = function(...)
     return mixed
 end
 
----@param frame Frame|table
----@param tooltipText string
-function lib.Widgets.Base.AddTooltip(frame, tooltipText)
-    frame.tooltipText = tooltipText
-    if frame.hasTooltip then return end
-    frame:HookScript("OnEnter", function(self)
-        GameTooltip:SetOwner(self, "ANCHOR_CURSOR_RIGHT")
-        GameTooltip:ClearLines()
-        GameTooltip:AddLine(self.tooltipText, lib.styles.COLORS.TEXT_HOVER:GetRGBA())
-        GameTooltip:Show()
-    end)
-    frame:HookScript("OnLeave", function(self)
-        GameTooltip:Hide()
-    end)
-    frame.hasTooltip = true
-end
 
 ---This gotta be redesigned if the lib gets used by multiple addons
+local addonName = ...
 ---@param path string
 ---@return string
 lib.Widgets.Base.getAddonPath = function(path)
     return string.format("Interface\\Addons\\%s\\%s", addonName, path)
+end
+
+-- Mixins
+---@class RasuGUIBaseMixin
+lib.Widgets.BaseMixin = {}
+
+---@param self Frame
+---@param tooltipText string
+function lib.Widgets.BaseMixin:AddTooltip(tooltipText)
+    self.tooltipText = tooltipText
+    if self.hasTooltip then return end
+    self:HookScript("OnEnter", function(frame)
+        GameTooltip:SetOwner(frame, "ANCHOR_CURSOR_RIGHT")
+        GameTooltip:ClearLines()
+        GameTooltip:AddLine(frame.tooltipText, lib.styles.COLORS.TEXT_HOVER:GetRGBA())
+        GameTooltip:Show()
+    end)
+    self:HookScript("OnLeave", function()
+        GameTooltip:Hide()
+    end)
+    self.hasTooltip = true
+end
+
+---@param self Frame
+function lib.Widgets.BaseMixin:MakeMovable(deactivate, onStop, onStart)
+    local isActive = not deactivate
+    self:SetMovable(isActive)
+    self:EnableMouse(isActive)
+    self:RegisterForDrag('LeftButton')
+    self:SetScript('OnDragStart', isActive and function (frame, ...)
+        frame:StartMoving()
+        if onStart then
+            onStart(frame, ...)
+        end
+    end or nil)
+    self:SetScript('OnDragStop', isActive and function (frame, ...)
+        frame:StopMovingOrSizing()
+        if onStop then
+            onStop(frame, ...)
+        end
+    end or nil)
 end

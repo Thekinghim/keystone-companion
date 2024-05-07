@@ -9,6 +9,7 @@ local mixTables = lib.Widgets.Base.mixTables
 ---@field fill_direction FillDirections?
 ---@field progress_value number?
 ---@field progress_total number?
+---@field frame_strata FrameStrata?
 local defaultOptions = {
     height = 200,
     width = 200,
@@ -32,6 +33,9 @@ local defaultOptions = {
 ---@return ProgressBar
 local function createBar(parent, options)
     parent = parent or UIParent
+    if not options.frame_strata then
+        options.frame_strata = parent:GetFrameStrata()
+    end
     options = mixTables(defaultOptions, options)
     ---@class ProgressBar:Frame
     ---@field value number?
@@ -40,9 +44,11 @@ local function createBar(parent, options)
     ---@field SetProgress fun(self:ProgressBar, value:number, total:number))
     ---@field SetFill fun(self:ProgressBar, direction:FillDirections)
     local frame = CreateFrame("Frame", nil, parent)
+    Mixin(frame, lib.Widgets.BaseMixin)
     for _, point in ipairs(options.points) do
         frame:SetPoint(unpack(point))
     end
+    frame:SetFrameStrata(options.frame_strata)
     frame:SetSize(options.width, options.height)
     frame.Background = RoundedFrame.CreateFrame(frame, options)
     frame.Background:ClearAllPoints()
@@ -106,10 +112,6 @@ local function createBar(parent, options)
 
     frame:SetFill(options.fill_direction)
     frame:SetProgress(options.progress_value, options.progress_total)
-
-    if options.frame_strata then
-        frame:SetFrameStrata(options.frame_strata)
-    end
 
     return frame
 end

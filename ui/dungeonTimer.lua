@@ -1,30 +1,43 @@
-local addonName, KeystoneCompanion = ...
-local widgets = KeystoneCompanion.widgets
-local styles = KeystoneCompanion.constants.styles;
-local getTexturePath = KeystoneCompanion.utils.path.getTexturePath;
-local fillColor = CreateColorFromHexString("FF009901")
+local _, Private = ...
+local widgets = Private.widgets
+local styles = Private.constants.styles
+local getTexturePath = Private.utils.path.getTexturePath
+local addon = Private.Addon
+local loc = addon.Loc
 local dungeonNameFixes = {
     [464] = "DotI: Upper", -- Dawn of the Infinite: Murozond's Rise
     [463] = "DotI: Lower", -- Dawn of the Infinite: Galakrond's Fall
-    [403] = "Uldaman", -- Uldaman: Legacy of Tyr
+    [403] = "Uldaman",     -- Uldaman: Legacy of Tyr
 }
-local timerFrame
 
-local function loadTimerFrame()
-    local db = KeystoneCompanionDB
-    local uiSettings = KeystoneCompanion.UI.Settings.Timer
+function KeystoneCompanion:TimerInit()
+    local db = self.DB
+    local uiSettings = Private.UI.Settings.Timer
     if not db.bestTimes then
         db.bestTimes = {}
     end
     local mdt = MDT
 
-    timerFrame = widgets.RoundedFrame.CreateFrame(UIParent, {
+    -- Creates a Tooltip hook to show MDT count on Unit Tooltips
+    TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tooltip, data)
+        if not mdt then return end
+        local guid = data.guid
+        if not guid then return end
+        local npcID = select(6, strsplit("-", guid))
+        if not npcID then return end
+        local count = mdt:GetEnemyForces(tonumber(npcID))
+        if count and count > 0 then
+            tooltip:AddDoubleLine(loc["M+ Count"], count)
+        end
+    end)
+
+    local timerFrame = widgets.RoundedFrame.CreateFrame(UIParent, {
         width = 352,
         height = 265,
         border_size = 1,
         background_color = CreateColorFromHexString("99131315")
     })
-    KeystoneCompanion.DungeonTimerFrame = timerFrame
+    Private.DungeonTimerFrame = timerFrame
     timerFrame:SetClampedToScreen(true)
     timerFrame:Hide()
     timerFrame.currentPull = {}
@@ -87,9 +100,9 @@ local function loadTimerFrame()
         end
         boss:Show()
         boss.used = true
-        boss.name:SetText("Hymdall")
-        boss.bestDiff:SetText("+/- 0")
-        boss.time:SetText("6:29")
+        boss.name:SetText("")
+        boss.bestDiff:SetText("")
+        boss.time:SetText("")
         boss:ClearAllPoints()
         boss:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 0, -4)
         boss:SetPoint("TOPRIGHT", anchor, "BOTTOMRIGHT", 0, -4)
@@ -98,21 +111,13 @@ local function loadTimerFrame()
 
     function timerFrame:ToggleMoveable(forceState)
         local makeMovable = false
-        if not self:GetScript("OnMouseDown") then
+        if not self:GetScript("OnDragStart") then
             makeMovable = true
         end
         if forceState ~= nil then
             makeMovable = forceState
         end
-        self:SetScript("OnMouseDown", makeMovable and function()
-            self:StartMoving()
-        end or nil)
-        self:SetScript("OnMouseUp", makeMovable and function()
-            self:SaveAnchors()
-            self:StopMovingOrSizing()
-        end or nil)
-        self:SetMovable(makeMovable)
-        self:EnableMouse(makeMovable)
+        self:MakeMovable(not makeMovable, self.SaveAnchors)
 
         self:Show()
         if not makeMovable and (not C_ChallengeMode.IsChallengeModeActive() or not db.settings.timerSettings.active) then
@@ -126,8 +131,7 @@ local function loadTimerFrame()
             point = point,
             relativePoint = relativePoint,
             offsetX = offsetX,
-            offsetY =
-                offsetY
+            offsetY = offsetY
         }
     end
 
@@ -197,23 +201,35 @@ local function loadTimerFrame()
 
     function timerFrame:OnEvent(event, ...)
         if not db.settings.timerSettings then
-            timerFrame:LoadSettings()
+            self:LoadSettings()
         end
         if not db.settings.timerSettings.active and event ~= "PLAYER_ENTERING_WORLD" then
             self:ReleaseFrame()
             return
         end
         if event == "CHALLENGE_MODE_START" then
+            self:ReleaseFrame()
             self:FillFrame()
-            self:SetScript("OnUpdate", timerFrame.UpdateFrame)
+            self:SetScript("OnUpdate", self.UpdateFrame)
         elseif event == "CHALLENGE_MODE_COMPLETED" then
             saveBestTimes(self.runData.mapID, self.runData.week, self.runData.level, self:GetBossTimes())
-            self:ReleaseFrame()
+            self:devPrint("MAP ID", self.runData.mapID)
+            self:devPrint("RUN WEEK", self.runData.week)
+            self:devPrint("RUN LEVEL", self.runData.level)
+            self:devPrint("BOSS TIMES")
+            DevTools_Dump(self:GetBossTimes())
+            self.last = 0
+            self:SetScript("OnUpdate", nil)
         elseif event == "PLAYER_ENTERING_WORLD" then
+            local isLogin, isReload = ...
+            if isLogin or isReload then
+                self:LoadSettings()
+            else
+                self:ReleaseFrame()
+            end
             if C_ChallengeMode.IsChallengeModeActive() then
                 self:OnEvent("CHALLENGE_MODE_START")
             end
-            self:LoadSettings()
         elseif event == "COMBAT_LOG_EVENT_UNFILTERED" then
             local _, se, _, _, _, _, _, destGUID = ...
             if se == "UNIT_DIED" then
@@ -274,6 +290,7 @@ local function loadTimerFrame()
     function timerFrame:GetBossTimes()
         local times = {}
         for index, boss in pairs(self.bosses) do
+            self:devPrint(string.format("Boss %d died %s", index, boss.dead))
             times[index] = boss.dead
         end
         return times
@@ -326,8 +343,8 @@ local function loadTimerFrame()
 
     function timerFrame:ReleaseFrame()
         self.last = 0
-        self:Hide()
         self:SetScript("OnUpdate", nil)
+        self:Hide()
         for _, frame in ipairs(bossFrames) do
             frame.name:SetText("")
             frame.name:SetTextColor(styles.COLORS.TEXT_PRIMARY:GetRGBA())
@@ -457,7 +474,7 @@ local function loadTimerFrame()
     local timeBar = widgets.ProgressBar.CreateFrame(timerFrame, {
         height = 25,
         background_color = barColor,
-        foreground_color = fillColor,
+        foreground_color = styles.COLORS.GREEN_DARK,
         border_size = 0,
         points = {
             { "TOPLEFT",  headerBar, "BOTTOMLEFT",  0, -12 },
@@ -502,7 +519,7 @@ local function loadTimerFrame()
     local countBar = widgets.ProgressBar.CreateFrame(timerFrame, {
         height = 33,
         background_color = barColor,
-        foreground_color = fillColor,
+        foreground_color = styles.COLORS.GREEN_DARK,
         border_size = 2,
     })
     countBar.Background.Border:ClearAllPoints()
@@ -521,36 +538,18 @@ local function loadTimerFrame()
     countNumber:SetJustifyH("RIGHT")
     countNumber:SetPoint("RIGHT", countBar, "RIGHT", -8, 0)
     timerFrame.countNumber = countNumber
-end
 
-local eventFrame = CreateFrame("Frame")
-eventFrame:RegisterEvent("ADDON_LOADED")
-eventFrame:RegisterEvent("PLAYER_ENTERING_WORLD")
-eventFrame:RegisterEvent("CHALLENGE_MODE_START")
-eventFrame:RegisterEvent("CHALLENGE_MODE_COMPLETED")
-eventFrame:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-eventFrame:RegisterEvent("UNIT_THREAT_LIST_UPDATE")
-eventFrame:RegisterEvent("PLAYER_REGEN_ENABLED")
-eventFrame:RegisterEvent("PLAYER_DEAD")
-eventFrame:SetScript("OnEvent", function(_, ...)
-    if timerFrame then
-        timerFrame:OnEvent(...)
-    else
-        -- Saved Variables is only available after ADDON_LOADED that's why the frame gets created after
-        local loadedAddon = select(2, ...)
-        if loadedAddon == addonName then
-            loadTimerFrame()
-            -- Creates a Tooltip hook to show MDT count on Unit Tooltips
-            TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, function(tooltip, data)
-                if not MDT then return end
-                local guid = data.guid
-                if not guid then return end
-                local npcID = select(6, strsplit("-", guid))
-                if not npcID then return end
-                local count = MDT:GetEnemyForces(tonumber(npcID))
-                tooltip:AddDoubleLine("M+ Count", count)
-            end)
-            eventFrame:UnregisterEvent("ADDON_LOADED")
+    local function onEvent(_, ...)
+        if timerFrame then
+            timerFrame:OnEvent(...)
         end
     end
-end)
+
+    self:RegisterEvent("PLAYER_ENTERING_WORLD", "ui/dungeronTimer.lua", onEvent)
+    self:RegisterEvent("CHALLENGE_MODE_START", "ui/dungeronTimer.lua", onEvent)
+    self:RegisterEvent("CHALLENGE_MODE_COMPLETED", "ui/dungeronTimer.lua", onEvent)
+    self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", "ui/dungeronTimer.lua", onEvent, nil, { "UNIT_DIED" })
+    self:RegisterEvent("UNIT_THREAT_LIST_UPDATE", "ui/dungeronTimer.lua", onEvent)
+    self:RegisterEvent("PLAYER_REGEN_ENABLED", "ui/dungeronTimer.lua", onEvent)
+    self:RegisterEvent("PLAYER_DEAD", "ui/dungeronTimer.lua", onEvent)
+end

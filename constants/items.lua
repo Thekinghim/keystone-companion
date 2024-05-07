@@ -3,59 +3,59 @@ local _, KeystoneCompanion = ...
 KeystoneCompanion.constants = KeystoneCompanion.constants or {};
 KeystoneCompanion.constants.items = {
   Food = {
-    [197778] = { name = 'Timely Demise' },
-    [197779] = { name = 'Filet of Fangs' },
-    [197780] = { name = 'Seamoth Surprise' },
-    [197781] = { name = 'Salt-Baked Fishcake' },
-    [197782] = { name = 'Feisty Fish Sticks' },
-    [197783] = { name = 'Aromatic Seafood Platter' },
-    [197784] = { name = 'Sizzling Seafood Medley' },
-    [197785] = { name = 'Revenge, Served Cold' },
-    [197786] = { name = 'Thousandbone Tongueslicer' },
-    [197787] = { name = 'Great Cerulean Sea' },
-    [197794] = { name = 'Grand Banquet of the Kalu\'ak' },
-    [204072] = { name = 'Deviously Deviled Eggs' },
+    [197778] = true, -- Timely Demise
+    [197779] = true, -- Filet of Fangs
+    [197780] = true, -- Seamoth Surprise
+    [197781] = true, -- Salt-Baked Fishcake
+    [197782] = true, -- Feisty Fish Sticks
+    [197783] = true, -- Aromatic Seafood Platter
+    [197784] = true, -- Sizzling Seafood Medley
+    [197785] = true, -- Revenge, Served Cold
+    [197786] = true, -- Thousandbone Tongueslicer
+    [197787] = true, -- Great Cerulean Sea
+    [197794] = true, -- Grand Banquet of the Kalu'ak
+    [204072] = true, -- Deviously Deviled Eggs
   },
   Rune = {
-    [201325] = { name = 'Draconic Augment Rune' },
-    [211495] = { name = 'Dreambound Augment Rune' },
+    [201325] = true, -- Draconic Augment Rune
+    [211495] = true, -- Dreambound Augment Rune
   },
   Potion = {
-    [191365] = { name = 'Potion of Frozen Focus' },
-    [191368] = { name = 'Potion of Chilled Clarity' },
-    [191371] = { name = 'Potion of Withering Vitality' },
-    [191374] = { name = 'Residual Neural Channeling Agent' },
-    [191380] = { name = 'Refreshing Healing Potion' },
-    [191383] = { name = 'Elemental Potion of Ultimate Power' },
-    [191386] = { name = 'Aerated Mana Potion' },
-    [191389] = { name = 'Elemental Potion of Power' },
-    [191395] = { name = 'Potion of the Hushed Zephyr' },
-    [191398] = { name = 'Potion of Gusts' },
-    [191401] = { name = 'Potion of Shocking Disclosure' },
-    [207023] = { name = 'Dreamwalker\'s Healing Potion' },
-    [207041] = { name = 'Potion of Withering Dreams' },
+    [191365] = true, -- Potion of Frozen Focus
+    [191368] = true, -- Potion of Chilled Clarity
+    [191371] = true, -- Potion of Withering Vitality
+    [191374] = true, -- Residual Neural Channeling Agent
+    [191380] = true, -- Refreshing Healing Potion
+    [191383] = true, -- Elemental Potion of Ultimate Power
+    [191386] = true, -- Aerated Mana Potion
+    [191389] = true, -- Elemental Potion of Power
+    [191395] = true, -- Potion of the Hushed Zephyr
+    [191398] = true, -- Potion of Gusts
+    [191401] = true, -- Potion of Shocking Disclosure
+    [207023] = true, -- Dreamwalker's Healing Potion
+    [207041] = true, -- Potion of Withering Dreams
   },
   Flask = {
-    [191320] = { name = 'Phial of the Eye in the Storm' },
-    [191323] = { name = 'Phial of Still Air' },
-    [191326] = { name = 'Phial of Icy Preservation' },
-    [191329] = { name = 'Iced Phial of Corrupting Rage' },
-    [191332] = { name = 'Phial of Charged Isolation' },
-    [191335] = { name = 'Phial of Glacial Fury' },
-    [191338] = { name = 'Phial of Static Empowerment' },
-    [191341] = { name = 'Phial of Tepid Versatility' },
-    [191350] = { name = 'Charged Phial of Alacrity' },
-    [191359] = { name = 'Phial of Elemental Chaos' },
+    [191320] = true, -- Phial of the Eye in the Storm
+    [191323] = true, -- Phial of Still Air
+    [191326] = true, -- Phial of Icy Preservation
+    [191329] = true, -- Iced Phial of Corrupting Rage
+    [191332] = true, -- Phial of Charged Isolation
+    [191335] = true, -- Phial of Glacial Fury
+    [191338] = true, -- Phial of Static Empowerment
+    [191341] = true, -- Phial of Tepid Versatility
+    [191350] = true, -- Charged Phial of Alacrity
+    [191359] = true, -- Phial of Elemental Chaos
   },
   WeaponEnchantment = {
-    [191940] = { name = 'Primal Whetstone' },
-    [191944] = { name = 'Primal Weightstone' },
-    [191950] = { name = 'Primal Razorstone' },
-    [194820] = { name = 'Howling Rune' },
-    [194823] = { name = 'Buzzing Rune' },
-    [194826] = { name = 'Chirping Rune' },
-    [204973] = { name = 'Hissing Rune' },
-    [198318] = { name = 'High Intensity Thermal Scanner' },
+    [191940] = true, -- Primal Whetstone
+    [191944] = true, -- Primal Weightstone
+    [191950] = true, -- Primal Razorstone
+    [194820] = true, -- Howling Rune
+    [194823] = true, -- Buzzing Rune
+    [194826] = true, -- Chirping Rune
+    [204973] = true, -- Hissing Rune
+    [198318] = true, -- High Intensity Thermal Scanner
   }
 }
 

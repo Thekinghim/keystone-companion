@@ -1,6 +1,6 @@
-local _, KeystoneCompanion = ...
-local CreateRoundedFrame = KeystoneCompanion.widgets.RoundedFrame.CreateFrame
-local styles = KeystoneCompanion.constants.styles
+local _, Private = ...
+local CreateRoundedFrame = Private.widgets.RoundedFrame.CreateFrame
+local styles = Private.constants.styles
 
 local settingsFrame = CreateRoundedFrame(UIParent, {
     height = 200,

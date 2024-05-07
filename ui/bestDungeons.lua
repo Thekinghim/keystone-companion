@@ -1,9 +1,10 @@
-local KeystoneCompanion = select(2, ...)
-local CreateRoundedFrame = KeystoneCompanion.widgets.RoundedFrame.CreateFrame;
-local getTexturePath = KeystoneCompanion.utils.path.getTexturePath;
-local styles = KeystoneCompanion.constants.styles;
+local Private = select(2, ...)
+local CreateRoundedFrame = Private.widgets.RoundedFrame.CreateFrame
+local styles = Private.constants.styles
 local customIconMixin = { customMixin = true }
 local screenWidth = GetScreenWidth()
+local addon = Private.Addon
+local loc = addon.Loc
 
 local shortDungeonNames = {
     -- Season 3 Dragonflight Dungeons
@@ -144,7 +145,7 @@ local function createWeeklyBest()
     title:SetPoint("TOP", 0, -10)
     title:SetFontObject(styles.FONT_OBJECTS.BOLD)
     title:SetTextColor(styles.COLORS.TEXT_HIGHLIGHT:GetRGBA())
-    title:SetText("WEEKLY BEST")
+    title:SetText(loc["WEEKLY BEST"])
 
     local divider = weeklyBest:CreateTexture()
     divider:SetPoint("TOPLEFT", title, "BOTTOMLEFT", -11, -4)
@@ -178,12 +179,12 @@ local function createWeeklyBest()
         key:SetPoint("LEFT", 4, 0)
         key:SetFontObject(styles.FONT_OBJECTS.BOLD)
         key:SetTextColor(keyColor:GetRGBA())
-        key:SetText("BRH +25")
+        key:SetText("")
 
         local score = row:CreateFontString()
         score:SetPoint("RIGHT", -4, 0)
         score:SetFontObject(styles.FONT_OBJECTS.BOLD)
-        score:SetText(styles.COLORS.TEXT_HIGHLIGHT:WrapTextInColorCode("390"))
+        score:SetText(styles.COLORS.TEXT_HIGHLIGHT:WrapTextInColorCode(""))
 
         function row:UpdateKey(dungeon, level, scoreNum)
             if not scoreNum then return end
@@ -217,19 +218,18 @@ local function updateWeeklyBest()
     weeklyBest:SetHeight(min(8, #runs) * (weeklyBest.heightPerRow + 2) + 48)
 end
 
-local eventFrame = CreateFrame("Frame")
-eventFrame:RegisterEvent("ADDON_LOADED")
-eventFrame:RegisterEvent("CHALLENGE_MODE_MAPS_UPDATE")
-eventFrame:SetScript("OnEvent", function(_, event, addon)
-    if event == "ADDON_LOADED" and addon == "Blizzard_ChallengesUI" then
+
+local function onEvent(_, event, loadedAddon)
+    if event == "ADDON_LOADED" and loadedAddon == "Blizzard_ChallengesUI" then
         ChallengesFrame:HookScript("OnShow", function(self)
             applyMixin(self)
         end)
-        eventFrame:UnregisterEvent("ADDON_LOADED")
-        eventFrame:SetScript("OnEvent", nil)
         createWeeklyBest()
         updateWeeklyBest()
     elseif event == "CHALLENGE_MODE_MAPS_UPDATE" then
         updateWeeklyBest()
     end
-end)
+end
+
+addon:RegisterEvent("ADDON_LOADED", "ui/bestDungeons.lua", onEvent)
+addon:RegisterEvent("CHALLENGE_MODE_MAPS_UPDATE", "ui/bestDungeons.lua", onEvent)

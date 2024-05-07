@@ -1,6 +1,6 @@
 ---@class RasuAddon
 ---@field RegisteredAddons table<string, RasuAddonBase>
----@field CreateAddon fun(self:RasuAddon, name:string, db:string|table|?, defaultDB:table|?, loc:table|?, defaultLoc:string|?) : RasuAddonBase
+---@field CreateAddon fun(self:RasuAddon, name:string, displayName:string, db:string|table|?, defaultDB:table|?, loc:table|?, defaultLoc:string|?) : RasuAddonBase
 ---@field GetAddon fun(self:RasuAddon, name:string) : RasuAddonBase|?
 local lib = LibStub:NewLibrary("RasuAddon", 1)
 
@@ -14,6 +14,7 @@ lib.RegisteredAddons = {}
 ---@field PrefixColor colorRGB
 ---@field Version string
 ---@field Name string
+---@field DisplayName string
 ---@field Events table
 ---@field Commands table
 ---@field Loc table|?
@@ -27,7 +28,8 @@ local AddonBase = {
     PrefixColor = CreateColorFromHexString("FFFFCA2E"),
     Version = "",
     Name = "",
-    Events = {},
+    DisplayName = "",
+    EventCallbacks = {},
     Commands = {},
     Loc = {},
     DB = {},
@@ -35,6 +37,7 @@ local AddonBase = {
 }
 
 function lib:CreateAddon(name, db, defaultDB, loc, defaultLoc)
+    defaultLoc = defaultLoc or "enUS"
     if self.RegisteredAddons[name] then
         error("This addon name is already taken!", 2)
     end
@@ -43,6 +46,7 @@ function lib:CreateAddon(name, db, defaultDB, loc, defaultLoc)
     self.RegisteredAddons[name] = addon
     addon.Version = C_AddOns.GetAddOnMetadata(name, "Version")
     addon.Name = name
+    addon.DisplayName = C_AddOns.GetAddOnMetadata(name, "Title")
     addon.DB = db
     addon.DefaultDB = defaultDB
     if loc and (loc[GetLocale()] or defaultLoc) then
@@ -70,20 +74,64 @@ function lib:GetAddon(name)
 end
 
 ---@param event string
----@param func string|function
-function AddonBase:RegisterEvent(event, func)
-    self.EventsFrame:RegisterEvent(event)
-    if func and type(func) == "function" then
-        self.Events[event] = func
-    else
-        self.Events[event] = self[event]
+---@param name string
+---@param callbackFunc function
+---@param args table|?
+---@param cleuSubEvents table|?
+---@return string
+function AddonBase:RegisterEventCallback(event, name, callbackFunc, args, cleuSubEvents)
+    if not self.EventCallbacks[event] then
+        self.EventCallbacks[event] = {}
+    end
+    if self.EventCallbacks[event][name] then
+        error("This callback name is already taken!", 3)
+    end
+    local subEvents
+    if cleuSubEvents then
+        subEvents = {}
+        for _, subEventName in ipairs(cleuSubEvents) do
+            subEvents[subEventName] = true
+        end
+    end
+    self.EventCallbacks[event][name] = {
+        func = callbackFunc,
+        args = args or {},
+        subEvents = subEvents,
+    }
+    return name
+end
+
+---@param event string
+---@param name string
+---@return table|nil
+function AddonBase:GetEventCallback(event, name)
+    if not self.EventCallbacks[event] then return end
+    return self.EventCallbacks[event][name]
+end
+
+---@param event string
+---@param name string
+function AddonBase:UnregisterEventCallback(event, name)
+    if self:GetEventCallback(event, name) then
+        wipe(self.EventCallbacks[event][name])
     end
 end
 
 ---@param event string
+---@param callbackName string
+---@param func string|function|?
+---@param args table|?
+---@param cleuSubEvents table|?
+function AddonBase:RegisterEvent(event, callbackName, func, args, cleuSubEvents)
+    self.EventsFrame:RegisterEvent(event)
+    if not callbackName then return end
+    local callbackFunc = type(func) == "function" and func or type(func) == "string" and self[func] or self[event]
+    ---@cast callbackFunc function
+    self:RegisterEventCallback(event, callbackName, callbackFunc, args, cleuSubEvents)
+end
+
+---@param event string
 function AddonBase:UnregisterEvent(event)
-    if not self.Events[event] then return end
-    self.Events[event] = nil
     self.EventsFrame:UnregisterEvent(event)
 end
 
@@ -98,21 +146,23 @@ local function msgToArgs(msg)
     return args
 end
 
----@param command string
----@param func string|fun(args:table)
-function AddonBase:RegisterCommand(command, func)
-    local name = "RASU_" .. command:upper()
+---@param commands table
+---@param func string|fun(self:RasuBaseMixin, args:table)
+function AddonBase:RegisterCommand(commands, func)
+    local name = "RASU_" .. commands[1]:upper()
     if type(func) == "string" then
         SlashCmdList[name] = function(msg)
             self[func](self, msgToArgs(msg))
         end
     else
         SlashCmdList[name] = function(msg)
-            func(msgToArgs(msg))
+            func(self, msgToArgs(msg))
         end
     end
-    _G["SLASH_" .. name .. "1"] = "/" .. command:lower()
-    self.Commands[command] = name
+    for index, command in ipairs(commands) do
+        _G["SLASH_" .. name .. index] = "/" .. command:lower()
+    end
+    self.Commands[commands[1]] = name
 end
 
 ---@param command string
@@ -152,19 +202,34 @@ end
 ---@param message string
 ---@param ... string
 function AddonBase:ThrowError(message, ...)
-    error(string.format("%s: %s", self.PrefixColor:WrapTextInColorCode(self.Name), message, ... or ""), 2)
+    error(string.format("%s: %s", self.PrefixColor:WrapTextInColorCode(self.DisplayName), message, ... or ""), 2)
 end
 
 ---@param ... string
 function AddonBase:Print(...)
-    local args = table.concat({ ... } or {}, " ")
-    print(string.format("%s: %s", self.PrefixColor:WrapTextInColorCode(self.Name), args))
+    local args = ""
+    for _, val in ipairs({ ... }) do
+        args = args .. " " .. tostring(val)
+    end
+    print(string.format("%s: %s", self.PrefixColor:WrapTextInColorCode(self.DisplayName), args))
 end
 
 ---@param message string
 ---@param ... string
 function AddonBase:FPrint(message, ...)
     self:Print(... and string.format(message, ...) or message or "")
+end
+
+---@param ... table
+---@return table
+function AddonBase:MergeTables(...)
+    local mergedTable = {}
+    for _, tbl in pairs({ ... }) do
+        for _, value in pairs(tbl) do
+            tinsert(mergedTable, value)
+        end
+    end
+    return mergedTable
 end
 
 ---@param event string
@@ -180,9 +245,22 @@ function AddonBase:OnEvent(event, ...)
     elseif event == "PLAYER_LOGOUT" then
         self:DisableAddon()
     end
-    if self.Events[event] then
-        for _, eventFunc in pairs(self.Events[event]) do
-            eventFunc(self, event, ...)
+    if self.EventCallbacks[event] then
+        local cleuArgs = {}
+        if event == "COMBAT_LOG_EVENT_UNFILTERED" then
+            cleuArgs = { CombatLogGetCurrentEventInfo() }
+        end
+        for entryName, callbackEntry in pairs(self.EventCallbacks[event]) do
+            if event == "COMBAT_LOG_EVENT_UNFILTERED" and callbackEntry.subEvents then
+                if not callbackEntry.subEvents[cleuArgs[2]] then
+                    return
+                end
+            end
+            local callbackArgs = self:MergeTables(callbackEntry.args, { ... }, cleuArgs)
+            callbackEntry.func(self, event, unpack(callbackArgs))
+            if self.devPrint then
+                self:devPrint(event, entryName, unpack(callbackArgs))
+            end
         end
     end
 end
