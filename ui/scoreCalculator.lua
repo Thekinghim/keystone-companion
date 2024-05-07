@@ -514,6 +514,13 @@ local function createCalcButton(parent, offsetX, offsetY)
 end
 
 UI.CalculatorButton = createCalcButton(UI.Frame.Top, -30, 0)
+calculatorFrame:SetScript("OnShow", function()
+    if not C_AddOns.IsAddOnLoaded("Blizzard_ChallengesUI") then
+        local hideAfter = not PVEFrame:IsVisible()
+        PVEFrame_ShowFrame("ChallengesFrame")
+        if hideAfter then HideUIPanel(PVEFrame) end
+    end
+end)
 
 local eventFrame = CreateFrame("Frame")
 eventFrame:RegisterEvent("ADDON_LOADED")
