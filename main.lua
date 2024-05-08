@@ -113,12 +113,12 @@ addon:RegisterEvent("BAG_UPDATE", "MAIN.LUA", function(_, event)
     end
   end
 end)
-addon:RegisterEvent("PARTY_LEADER_CHANGED", "MAIN.LUA", function (_, event)
+addon:RegisterEvent("PARTY_LEADER_CHANGED", "MAIN.LUA", function(_, event)
   if event == "PARTY_LEADER_CHANGED" and Private.loaded == true then
     Private.UI.Rerender()
   end
 end)
-addon:RegisterEvent("ROLE_CHANGED_INFORM", "MAIN.LUA", function (_,event)
+addon:RegisterEvent("ROLE_CHANGED_INFORM", "MAIN.LUA", function(_, event)
   if event == "ROLE_CHANGED_INFORM" and Private.loaded == true then
     Private.UI.Rerender()
   end
@@ -151,13 +151,26 @@ addon:RegisterCommand({ "keystonecompanion", "kc" }, function(self, args)
   local enabled = self.colorise(styles.COLORS.GREEN_LIGHT, loc["enabled"])
   local disabled = self.colorise(styles.COLORS.RED_LIGHT, loc["disabled"])
 
-  if args[1] == "dev" then
+  if args[1] == "error" then
+    error("Test Error")
+  elseif args[1] == "dev" then
     local devMode = loc["Developer mode"]
     if args[2] == "on" or args[2] == "enable" then
       self:ToggleDevMode(true)
       self:FPrint("%s %s", devMode, enabled)
     elseif (args[2] == "off" or args[2] == "disable") then
       self:ToggleDevMode(false)
+      self:FPrint("%s %s", devMode, disabled)
+    else
+      self:Print("/kc dev [enable|on|disable|off]")
+    end
+  elseif args[1] == "devchat" then
+    local devMode = loc["Developer mode"] .. " Chat"
+    if args[2] == "on" or args[2] == "enable" then
+      self:ToggleDevChat(true)
+      self:FPrint("%s %s", devMode, enabled)
+    elseif (args[2] == "off" or args[2] == "disable") then
+      self:ToggleDevChat(false)
       self:FPrint("%s %s", devMode, disabled)
     else
       self:Print("/kc dev [enable|on|disable|off]")

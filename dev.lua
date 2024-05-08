@@ -28,11 +28,17 @@ function addon:ToggleDevMode(forceState)
   end
 end
 
+function addon:ToggleDevChat(forceState)
+  self.DB.settings.DevChatPrint = forceState ~= nil and forceState or not self.DB.settings.DevChatPrint
+end
+
 function addon:devPrint(...)
   if (self:isDev()) then
     local argStr = argsToString(...)
     local currentTime = date("%m/%d/%y %H:%M:%S")
-    self:Print("|cffff0000(Dev) |r", argStr)
+    if self.DB.settings.DevChatPrint then
+      self:Print("|cffff0000(Dev) |r", argStr)
+    end
 
     if EventTrace then
       EventTrace:LogEvent(self.Name, ...)
@@ -150,25 +156,28 @@ function addon:DevInit()
     return inputTbl
   end
 
-  local function isCharacterReadable(char)
-    return char:byte() >= 32 and char:byte() <= 126
+  local function isCharacterPrintable(char)
+    local byte = string.byte(char)
+    return (byte >= 32 and byte <= 126) or byte == 10
   end
-  local function hasUnreadableCharacters(str)
+
+  local function replaceUnreadableCharacters(str)
+    local result = ""
     for i = 1, #str do
-      if not isCharacterReadable(str:sub(i, i)) then
-        return true
+      local char = str:sub(i, i)
+      if isCharacterPrintable(char) then
+        result = result .. char
+      else
+        result = result .. "?"
       end
     end
-    return false
+    return result
   end
 
   local function updateCopyText()
     local eb = copyScroll:GetEditBox()
     for _, entry in ipairs(getData()) do
-      local txt = entry.text
-      if hasUnreadableCharacters(txt) then
-        txt = strlenutf8(txt)
-      end
+      local txt = replaceUnreadableCharacters(entry.text)
       eb:SetText(string.format("%s%s\n", eb:GetText(), txt))
     end
     copyFrame:Show()
@@ -183,5 +192,15 @@ function addon:DevInit()
     local newData = getData()
     tinsert(newData, { text = debugText })
     devScrollView:UpdateContentData(newData)
+  end
+
+  if BugGrabber then
+    BugGrabber.RegisterCallback({}, "BugGrabber_BugGrabbed", function(_, bug)
+      local bugText = string.format("BUGGRABBER: %s\n%s\n%s\nENDBUGGRABBER", (bug.message or ""), (bug.locals or ""),
+        (bug.stack or ""))
+      if bugText:lower():match("keystone") then
+        self:devPrint(bugText)
+      end
+    end)
   end
 end

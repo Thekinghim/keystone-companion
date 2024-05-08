@@ -21,6 +21,7 @@ local locale = Private.Locales
 local defaultDB = {
   settings = {
     DevMode = false,
+    DevChatPrint = true,
     MinimapButton = true,
     bestTimes = {},
   }
