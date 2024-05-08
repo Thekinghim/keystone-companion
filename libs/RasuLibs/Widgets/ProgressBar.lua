@@ -37,7 +37,7 @@ local function createBar(parent, options)
         options.frame_strata = parent:GetFrameStrata()
     end
     options = mixTables(defaultOptions, options)
-    ---@class ProgressBar:Frame
+    ---@class ProgressBar:Frame,RasuGUIBaseMixin
     ---@field value number?
     ---@field total number?
     ---@field fillDirection FillDirections?

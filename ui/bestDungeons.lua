@@ -3,6 +3,7 @@ local CreateRoundedFrame = Private.widgets.RoundedFrame.CreateFrame
 local styles = Private.constants.styles
 local customIconMixin = { customMixin = true }
 local screenWidth = GetScreenWidth()
+---@class KeystoneCompanion
 local addon = Private.Addon
 local loc = addon.Loc
 

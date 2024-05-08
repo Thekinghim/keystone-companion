@@ -1,7 +1,12 @@
-local _, KeystoneCompanion = ...
+---@class KeystoneCompanionPrivate
+local Private = select(2, ...)
 
-KeystoneCompanion.constants = KeystoneCompanion.constants or {};
-KeystoneCompanion.constants.dungeonTeleports = {
+---@class KCConstants
+---@field dungeonTeleports KCDungeonPorts
+Private.constants = Private.constants or {}
+
+---@class KCDungeonPorts
+Private.constants.dungeonTeleports = {
   [643] = 424142,  -- Throne of the Tides : Path of the Tidehunter
   [1279] = 159901, -- Everbloom : Path of the verdant
   [1466] = 424163, -- Darkheart Thicket : Path of the Nightmare Lord

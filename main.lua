@@ -154,10 +154,10 @@ addon:RegisterCommand({ "keystonecompanion", "kc" }, function(self, args)
   if args[1] == "dev" then
     local devMode = loc["Developer mode"]
     if args[2] == "on" or args[2] == "enable" then
-      self.DB.settings.DevMode = true
+      self:ToggleDevMode(true)
       self:FPrint("%s %s", devMode, enabled)
     elseif (args[2] == "off" or args[2] == "disable") then
-      self.DB.settings.DevMode = false
+      self:ToggleDevMode(false)
       self:FPrint("%s %s", devMode, disabled)
     else
       self:Print("/kc dev [enable|on|disable|off]")

@@ -1,4 +1,5 @@
 local _, Private = ...
+---@class KeystoneCompanion
 local addon = Private.Addon
 
 addon:RegisterEvent("CHALLENGE_MODE_KEYSTONE_RECEPTABLE_OPEN", "autoSocket.lua", function()

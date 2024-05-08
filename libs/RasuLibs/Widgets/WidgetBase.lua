@@ -1,14 +1,21 @@
 ---@class RasuGUI
----@field Widgets table
+---@field Widgets RasuGUIWidgets
 local lib = LibStub:NewLibrary("RasuGUI", 1)
 
 if not lib then
     return
 end
 
-lib.Widgets = {
-    Base = {}
-}
+---@class RasuGUIWidgets
+---@field CheckBox CheckBoxAPI
+---@field ProgressBar ProgressBarAPI
+---@field RoundedButton RoundedButtonAPI
+---@field RoundedFrame RoundedFrameAPI
+---@field ScrollableFrame ScrollableFrameAPI
+---@field Slider SliderAPI
+lib.Widgets = {}
+
+---@class RasuGUIStyles
 lib.styles = {
     COLORS = {
         BACKGROUND = CreateColorFromHexString("FF131315"),
@@ -21,6 +28,9 @@ lib.styles = {
         TEXT_DISABLED = CreateColorFromHexString("FF6E6E6E"),
     }
 }
+
+---@class RasuGUIBase
+lib.Widgets.Base = {}
 
 ---@param ... table
 ---@return table

@@ -32,7 +32,7 @@ local function createCheckBox(parent, options)
         options.frame_strata = parent:GetFrameStrata()
     end
     options = mixTables(defaultOptions, options)
-    ---@class CheckBox:CheckButton
+    ---@class CheckBox:CheckButton,RasuGUIBaseMixin
     local checkBox = CreateFrame("CheckButton", nil, parent)
     checkBox:SetFrameStrata(options.frame_strata)
     Mixin(checkBox, lib.Widgets.BaseMixin)

@@ -46,7 +46,7 @@ local function createScrollable(parent, options)
     end
     options = mixTables(defaultOptions, options)
 
-    ---@class ScrollBoxFrame : Frame
+    ---@class ScrollBoxFrame : Frame,RasuGUIBaseMixin
     ---@field GetScrollPercentage fun(self:ScrollBoxFrame)
     ---@field SetScrollPercentage fun(self:ScrollBoxFrame, percentage:number)
     local scrollBox = CreateFrame("Frame", nil, parent, "WowScrollBoxList")

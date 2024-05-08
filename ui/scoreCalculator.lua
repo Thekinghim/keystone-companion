@@ -1,8 +1,10 @@
-local _, Private = ...
-local styles = Private.constants.styles;
-local getTexturePath = Private.utils.path.getTexturePath
+---@class KeystoneCompanionPrivate
+local Private = select(2, ...)
+---@class KeystoneCompanion
 local addon = Private.Addon
 local loc = addon.Loc
+local styles = Private.constants.styles;
+local getTexturePath = Private.utils.path.getTexturePath
 
 local widgets = Private.widgets
 local createRoundedFrame = widgets.RoundedFrame.CreateFrame

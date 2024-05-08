@@ -1,8 +1,47 @@
-local _, KeystoneCompanion = ...
-KeystoneCompanion.constants = KeystoneCompanion.constants or {};
-KeystoneCompanion.constants.affixTalents = {}
-local aTalents = KeystoneCompanion.constants.affixTalents
+---@class KeystoneCompanionPrivate
+local Private = select(2, ...)
 
+---@class KCConstants
+---@field affixTalents KCAffixTalents
+Private.constants = Private.constants or {};
+
+---@class KCAffixInfoInfo
+---@field specs [number]
+---@field definitionID number
+---@field reason string
+
+---@class KCAffixes
+---@field [9]  {[number] : KCAffixInfoInfo} Tyrannical
+---@field [10]  {[number] : KCAffixInfoInfo} Fortified
+---@field [135]  {[number] : KCAffixInfoInfo} Afflicted
+---@field [136] {[number] : KCAffixInfoInfo} Incorporeal
+---@field [3] {[number] : KCAffixInfoInfo} Volcanic
+---@field [134] {[number] : KCAffixInfoInfo} Entangling
+---@field [124] {[number] : KCAffixInfoInfo} Storming
+---@field [123] {[number] : KCAffixInfoInfo} Spiteful
+---@field [6] {[number] : KCAffixInfoInfo} Raging
+---@field [7] {[number] : KCAffixInfoInfo} Bolstering
+---@field [11] {[number] : KCAffixInfoInfo} Bursting
+---@field [8] {[number] : KCAffixInfoInfo} Sanguine
+
+---@class KCClasses
+---@field [1] KCAffixes Warrior
+---@field [2] KCAffixes Paladin
+---@field [3] KCAffixes Hunter
+---@field [4] KCAffixes Rogue
+---@field [5] KCAffixes Priest
+---@field [6] KCAffixes Death Knight
+---@field [7] KCAffixes Shaman
+---@field [8] KCAffixes Mage
+---@field [9] KCAffixes Warlock
+---@field [10] KCAffixes Monk
+---@field [11] KCAffixes Druid
+---@field [12] KCAffixes Demon Hunter
+---@field [13] KCAffixes Evoker
+
+---@class KCAffixTalents : KCClasses
+local aTalents = {}
+Private.constants.affixTalents = aTalents
 --[[
     Table Structure is as follows: [ClassID] -> [AffixID] -> Info Table
     Info Table:

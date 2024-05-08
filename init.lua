@@ -1,4 +1,10 @@
-local addonName, Private = ...
+local addonName = ...
+
+---@class KeystoneCompanionPrivate
+---@field Addon KeystoneCompanion
+---@field constants KCConstants
+---@field Locales {[string] : table}
+local Private = select(2, ...)
 
 local rasuGUI = LibStub("RasuGUI")
 
@@ -10,10 +16,13 @@ Private.LibDataBroker = LibStub:GetLibrary("LibDataBroker-1.1")
 Private.LibDBIcon = LibStub:GetLibrary("LibDBIcon-1.0")
 
 local locale = Private.Locales
+
+---@class KCDatabase
 local defaultDB = {
   settings = {
     DevMode = false,
-    MinimapButton = true
+    MinimapButton = true,
+    bestTimes = {},
   }
 }
 
@@ -23,6 +32,7 @@ for lang, langInfo in pairs(Private.Locales) do
   end
 end
 ---@class KeystoneCompanion : RasuAddonBase
+---@field DB KCDatabase
 KeystoneCompanion = LibStub("RasuAddon"):CreateAddon(
   addonName,
   "KeystoneCompanionDB",
@@ -53,10 +63,11 @@ function KeystoneCompanion:OnInitialize()
       PVEFrame_ShowFrame("ChallengesFrame")
       if hideAfter then HideUIPanel(PVEFrame) end
     end
-    self:ScoreCalculatorInit()
+    self:ScoreCalculatorInit() -- ui/scoreCalculator.lua
   end)
 
   self:TimerInit() -- ui/dungeonTimer.lua
+  self:DevInit() -- dev.lua
 end
 
 KeystoneCompanion.Private = Private

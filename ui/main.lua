@@ -1,7 +1,8 @@
 local _, Private = ...
-local CreateRoundedFrame = Private.widgets.RoundedFrame.CreateFrame;
-local getTexturePath = Private.utils.path.getTexturePath;
-local styles = Private.constants.styles;
+local CreateRoundedFrame = Private.widgets.RoundedFrame.CreateFrame
+local getTexturePath = Private.utils.path.getTexturePath
+local styles = Private.constants.styles
+---@class KeystoneCompanion
 local addon = Private.Addon
 local loc = addon.Loc
 
@@ -545,7 +546,7 @@ for i = 1, 5 do
   playerRow.KeystoneLevel.Label:SetFontObject(styles.FONT_OBJECTS.NORMAL)
   playerRow.KeystoneLevel.Label:SetTextColor(styles.COLORS.TEXT_SECONDARY:GetRGBA());
   playerRow.KeystoneLevel.Label:SetJustifyH('CENTER');
-  playerRow.KeystoneLevel.Label:SetJustifyV('CENTER');
+  playerRow.KeystoneLevel.Label:SetJustifyV('MIDDLE');
 
   playerRow.KeystoneLevel:Hide();
 
