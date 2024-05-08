@@ -1,6 +1,10 @@
-local _, KeystoneCompanion = ...;
-KeystoneCompanion.utils = KeystoneCompanion.utils or {};
+---@class KeystoneCompanionPrivate
+local Private = select(2, ...)
+---@class KeystoneCompanion
+local addon = Private.Addon
 
-KeystoneCompanion.utils.path = {
-  getTexturePath = function(name) return KeystoneCompanion.constants.ASSETS_PATH .. 'textures/' .. name end
+Private.utils = Private.utils or {};
+
+Private.utils.path = {
+  getTexturePath = function(name) return Private.constants.ASSETS_PATH .. 'textures/' .. name end
 }

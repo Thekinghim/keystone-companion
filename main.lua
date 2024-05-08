@@ -1,12 +1,13 @@
-local _, Private = ...
-local getTexturePath = Private.utils.path.getTexturePath
-
-Private.loaded = false
+---@class KeystoneCompanionPrivate
+local Private = select(2, ...)
+---@class KeystoneCompanion
 local addon = Private.Addon
 local loc = addon.Loc
 local styles = Private.constants.styles
 
-local function ToggleUI()
+Private.loaded = false
+
+function addon:ToggleUI()
   if (Private.UI.Frame:IsShown()) then
     Private.UI.Frame:Hide()
   else
@@ -14,28 +15,6 @@ local function ToggleUI()
     Private.UI.Frame.Party:Show()
     Private.UI.Rerender()
     Private.UI.Frame:Show()
-  end
-end
-
-local dataBrokerObj = Private.LibDataBroker:NewDataObject("Keystone Companion", {
-  type = "launcher",
-  icon = getTexturePath("icons/addon"),
-  OnClick = function() ToggleUI() end,
-  OnTooltipShow = function(tooltip)
-    tooltip:AddLine("Keystone Companion", 1, 1, 1)
-    tooltip:AddLine(loc["Click to open an overview of your party's keystones and dungeon items."], nil, nil, nil, true)
-  end
-})
-
-local function InitDataBrokerIcon()
-  addon.DB.libDBIcon = addon.DB.libDBIcon or { hide = false }
-  if (not Private.LibDBIcon:GetMinimapButton("Keystone Companion")) then
-    Private.LibDBIcon:Register("Keystone Companion", dataBrokerObj, addon.DB.libDBIcon)
-  end
-  if (addon.DB.settings.MinimapButton ~= false) then
-    Private.LibDBIcon:Show("Keystone Companion")
-  else
-    Private.LibDBIcon:Hide("Keystone Companion")
   end
 end
 
@@ -65,7 +44,7 @@ addon:RegisterEvent("PLAYER_ENTERING_WORLD", "MAIN.LUA", function(self, event)
       Private.UI.Rerender()
     end
 
-    InitDataBrokerIcon()
+    --InitDataBrokerIcon()
   end
 end)
 addon:RegisterEvent("GROUP_ROSTER_UPDATE", "MAIN.LUA", function(_, event)
@@ -113,12 +92,12 @@ addon:RegisterEvent("BAG_UPDATE", "MAIN.LUA", function(_, event)
     end
   end
 end)
-addon:RegisterEvent("PARTY_LEADER_CHANGED", "MAIN.LUA", function (_, event)
+addon:RegisterEvent("PARTY_LEADER_CHANGED", "MAIN.LUA", function(_, event)
   if event == "PARTY_LEADER_CHANGED" and Private.loaded == true then
     Private.UI.Rerender()
   end
 end)
-addon:RegisterEvent("ROLE_CHANGED_INFORM", "MAIN.LUA", function (_,event)
+addon:RegisterEvent("ROLE_CHANGED_INFORM", "MAIN.LUA", function(_, event)
   if event == "ROLE_CHANGED_INFORM" and Private.loaded == true then
     Private.UI.Rerender()
   end
@@ -144,37 +123,49 @@ Private.communication:RegisterMessageHandler(Private.communication.messageTypes.
     end
   end)
 
+local onOffArgs = {
+  ["on"] = true,
+  ["enable"] = true,
+  ["off"] = false,
+  ["disable"] = false,
+}
+
+local function isOnOff(arg)
+  return arg and onOffArgs[arg] ~= nil
+end
+
 addon:RegisterCommand({ "keystonecompanion", "kc" }, function(self, args)
+  ---@cast self KeystoneCompanion
   if #args == 0 then
     ToggleUI()
   end
   local enabled = self.colorise(styles.COLORS.GREEN_LIGHT, loc["enabled"])
   local disabled = self.colorise(styles.COLORS.RED_LIGHT, loc["disabled"])
 
-  if args[1] == "dev" then
-    local devMode = loc["Developer mode"]
-    if args[2] == "on" or args[2] == "enable" then
-      self.DB.settings.DevMode = true
-      self:FPrint("%s %s", devMode, enabled)
-    elseif (args[2] == "off" or args[2] == "disable") then
-      self.DB.settings.DevMode = false
-      self:FPrint("%s %s", devMode, disabled)
-    else
-      self:Print("/kc dev [enable|on|disable|off]")
+  if args[1] == "error" then
+    error("Test Error")
+  elseif args[1] == "dev" then
+    if args[2] and isOnOff(args[3]) then
+      local state = onOffArgs[args[3]]
+      local cmdType = loc["Developer " .. args[2]]
+      if args[2] == "mode" then
+        self:ToggleDevMode(state)
+      elseif args[2] == "chat" then
+        self:ToggleDevChat(state)
+      end
+      self:FPrint("%s %s", cmdType, (state and enabled or disabled))
+      return
     end
+    self:Print("/kc dev [mode|chat] [enable|on|disable|off]")
   elseif (args[1] == "minimap") then
-    local minimapBtn = loc["Minimap button"]
-    if (args[2] == "on" or args[2] == "enable") then
-      self.DB.settings.MinimapButton = true
-      self:FPrint("%s %s", minimapBtn, enabled)
-      Private.LibDBIcon:Show("Keystone Companion")
-    elseif (args[2] == "off" or args[2] == "disable") then
-      self.DB.settings.MinimapButton = false
-      self:FPrint("%s %s", minimapBtn, disabled)
-      Private.LibDBIcon:Hide("Keystone Companion")
-    else
-      self:Print("/kc minimap [enable|on|disable|off]")
+    if isOnOff(args[2]) then
+      local state = onOffArgs[args[2]]
+      local minimapBtn = loc["Minimap button"]
+      self:ToggleMinimapButton(state)
+      self:FPrint("%s %s", minimapBtn, (state and enabled or disabled))
+      return
     end
+    self:Print("/kc minimap [enable|on|disable|off]")
   end
 end)
 

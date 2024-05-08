@@ -37,7 +37,7 @@ local function createSlider(parent, options)
         options.frame_strata = parent:GetFrameStrata()
     end
     options = mixTables(defaultOptions, options)
-    ---@class ModernSlider:Slider
+    ---@class ModernSlider:Slider,RasuGUIBaseMixin
     local slider = CreateFrame("Slider", nil, parent, "MinimalSliderTemplate")
     slider:SetFrameStrata(options.frame_strata)
     Mixin(slider, lib.Widgets.BaseMixin)

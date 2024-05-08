@@ -1,16 +1,18 @@
-local _, Private = ...
-local widgets = Private.widgets
-local styles = Private.constants.styles
-local getTexturePath = Private.utils.path.getTexturePath
+---@class KeystoneCompanionPrivate
+local Private = select(2, ...)
+---@class KeystoneCompanion
 local addon = Private.Addon
 local loc = addon.Loc
+local widgets = Private.widgets
+local getTexturePath = Private.utils.path.getTexturePath
+local styles = Private.constants.styles
 local dungeonNameFixes = {
     [464] = "DotI: Upper", -- Dawn of the Infinite: Murozond's Rise
     [463] = "DotI: Lower", -- Dawn of the Infinite: Galakrond's Fall
     [403] = "Uldaman",     -- Uldaman: Legacy of Tyr
 }
 
-function KeystoneCompanion:TimerInit()
+function addon:TimerInit()
     local db = self.DB
     local uiSettings = Private.UI.Settings.Timer
     if not db.bestTimes then
@@ -31,11 +33,12 @@ function KeystoneCompanion:TimerInit()
         end
     end)
 
+    ---@class DungeronTimerFrame : RoundedFrame
     local timerFrame = widgets.RoundedFrame.CreateFrame(UIParent, {
         width = 352,
         height = 265,
         border_size = 1,
-        background_color = CreateColorFromHexString("99131315")
+        background_color = styles.COLORS.BACKGROUND_TRANSPARENT
     })
     Private.DungeonTimerFrame = timerFrame
     timerFrame:SetClampedToScreen(true)

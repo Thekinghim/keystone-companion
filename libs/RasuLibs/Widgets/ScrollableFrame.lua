@@ -46,7 +46,7 @@ local function createScrollable(parent, options)
     end
     options = mixTables(defaultOptions, options)
 
-    ---@class ScrollBoxFrame : Frame
+    ---@class ScrollBoxFrame : Frame,RasuGUIBaseMixin
     ---@field GetScrollPercentage fun(self:ScrollBoxFrame)
     ---@field SetScrollPercentage fun(self:ScrollBoxFrame, percentage:number)
     local scrollBox = CreateFrame("Frame", nil, parent, "WowScrollBoxList")
@@ -88,9 +88,22 @@ local function createScrollable(parent, options)
     else
         scrollView:SetElementExtent(options.element_height)
     end
-    -- Sadly this seems to be broken for Grids rn from blizzards side
-    ScrollUtil.AddManagedScrollBarVisibilityBehavior(scrollBox, scrollBar, options.anchors.with_scroll_bar,
-        options.anchors.without_scroll_bar);
+    -- seems buggy so write my own func for this
+    --ScrollUtil.AddManagedScrollBarVisibilityBehavior(scrollBox, scrollBar, options.anchors.with_scroll_bar,
+    --options.anchors.without_scroll_bar)
+    local function setAnchors(withScrollBar)
+        scrollBox:ClearAllPoints()
+        for _, anchor in ipairs(withScrollBar and options.anchors.with_scroll_bar or options.anchors.without_scroll_bar) do
+            scrollBox:SetPoint(anchor:Get())
+        end
+    end
+    scrollBar:HookScript("OnShow", function()
+        setAnchors(true)
+    end)
+    scrollBar:HookScript("OnHide", function()
+        setAnchors()
+    end)
+    setAnchors()
 
     function scrollView:UpdateContentData(data)
         local scrollPercent = scrollBox:GetScrollPercentage()

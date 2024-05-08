@@ -1,10 +1,14 @@
-local addonName, KeystoneCompanion = ...
+local addonName = ...
+---@class KeystoneCompanionPrivate
+local Private = select(2, ...)
 
 local ASSETS_PATH = 'Interface/Addons/' .. addonName .. '/assets/';
 
+---@class KCStyles
 local styles = {
   COLORS = {
     BACKGROUND = CreateColorFromHexString("FF131315"),
+    BACKGROUND_TRANSPARENT = CreateColorFromHexString("99131315"),
     BORDER = CreateColorFromHexString("FFFF8000"),
 
     TEXT_PRIMARY = CreateColorFromHexString("FFFFFFFF"),
@@ -53,6 +57,9 @@ do
 end
 
 
-KeystoneCompanion.constants = KeystoneCompanion.constants or {};
-KeystoneCompanion.constants.styles = styles;
-KeystoneCompanion.constants.ASSETS_PATH = ASSETS_PATH
+---@class KCConstants
+---@field styles KCStyles
+---@field ASSETS_PATH string
+Private.constants = Private.constants or {};
+Private.constants.styles = styles;
+Private.constants.ASSETS_PATH = ASSETS_PATH

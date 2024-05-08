@@ -1,6 +1,7 @@
 local Private = select(2, ...)
 local getTexturePath = Private.utils.path.getTexturePath
 
+---@class KeystoneCompanion
 local addon = Private.Addon
 local loc = addon.Loc
 

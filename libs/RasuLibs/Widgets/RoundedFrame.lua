@@ -50,7 +50,7 @@ local function createRoundedFrame(parent, options)
     end
     options = mixTables(defaultOptions, options)
 
-    ---@class RoundedFrame:Frame
+    ---@class RoundedFrame:Frame,RasuGUIBaseMixin
     local frame = CreateFrame("Frame", nil, parent)
     frame:SetFrameStrata(options.frame_strata)
     Mixin(frame, lib.Widgets.BaseMixin)
@@ -77,7 +77,7 @@ local function createRoundedFrame(parent, options)
 end
 
 ---@class RoundedFrameAPI
----@field CreateFrame fun(parent:Frame, options:RoundedFrameOptions): Frame
+---@field CreateFrame fun(parent:Frame, options:RoundedFrameOptions): RoundedFrame
 lib.Widgets.RoundedFrame = {
     CreateFrame = createRoundedFrame
 }

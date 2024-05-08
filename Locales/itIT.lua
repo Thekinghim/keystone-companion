@@ -61,6 +61,7 @@ Private.Locales["itIT"] = {
     ["enabled"] = "abilitato",
     ["disabled"] = "disabilitato",
     ["Developer mode"] = "Modalità sviluppatore",
+    ["Developer chat"] = "Developer chat",
     ["Minimap button"] = "Pulsante Minimap",
     ["You're running an"] = "Stai eseguendo un",
     ["build of the addon. Features may be broken or only half finished in alpha versions!"] =

@@ -1,8 +1,9 @@
-local _, Private = ...;
-local UI = Private.UI;
-local styles = Private.constants.styles;
-local widgets = Private.widgets;
-local getTexturePath = Private.utils.path.getTexturePath;
+local _, Private = ...
+local UI = Private.UI
+local styles = Private.constants.styles
+local widgets = Private.widgets
+local getTexturePath = Private.utils.path.getTexturePath
+---@class KeystoneCompanion
 local addon = Private.Addon
 local loc = Private.Addon.Loc
 

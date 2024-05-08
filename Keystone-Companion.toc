@@ -1,4 +1,4 @@
-## Interface: 100206
+## Interface: 100206, 100207
 ## Version: 2.3.5
 ## Title: Keystone Companion
 ## IconTexture: Interface\AddOns\Keystone-Companion\assets\textures\icons\addon

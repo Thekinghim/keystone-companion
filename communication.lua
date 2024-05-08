@@ -4,6 +4,7 @@ Private.communication = { prefix = "keystonecomp", messageTypes = { LOGON = "LOG
 local LIB_OPEN_RAID_COMM_PREFIX = 'LRS'
 local LIB_OPEN_RAID_KEYSTONE_PREFIX = 'K'
 local LIB_OPEN_RAID_KEYSTONE_REQUEST_PREFIX = 'J'
+---@class KeystoneCompanion
 local addon = Private.Addon
 
 function Private.communication.SendMessage(...)

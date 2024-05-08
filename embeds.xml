@@ -3,10 +3,11 @@
 ..\FrameXML\UI.xsd">
     <Include file="libs/embeds.xml" />
     <Include file="Locales/embeds.xml" />
-
-    <Script file="init.lua"/>
+    <Include file="Database/embeds.xml" />
     <Include file="constants/embeds.xml" />
     <Include file="utils/embeds.xml" />
+
+    <Script file="init.lua"/>
     
     <Script file="dev.lua"/>
     <Script file="inventory.lua"/>

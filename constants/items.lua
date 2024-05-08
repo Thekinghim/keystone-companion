@@ -1,7 +1,13 @@
-local _, KeystoneCompanion = ...
+---@class KeystoneCompanionPrivate
+local Private = select(2, ...)
 
-KeystoneCompanion.constants = KeystoneCompanion.constants or {};
-KeystoneCompanion.constants.items = {
+---@class KCConstants
+---@field items KCItemList
+---@field itemLookup KCItemLookup
+Private.constants = Private.constants or {}
+
+---@class KCItemList
+Private.constants.items = {
   Food = {
     [197778] = true, -- Timely Demise
     [197779] = true, -- Filet of Fangs
@@ -59,9 +65,11 @@ KeystoneCompanion.constants.items = {
   }
 }
 
-KeystoneCompanion.constants.itemLookup = {};
-for category, entries in pairs(KeystoneCompanion.constants.items) do
+---@class KCItemLookup
+---@field [number] "Food"|"Rune"|"Potion"|"Flask"|"WeaponEnchantment"|nil
+Private.constants.itemLookup = {};
+for category, entries in pairs(Private.constants.items) do
   for itemId in pairs(entries) do
-    KeystoneCompanion.constants.itemLookup[itemId] = category
+    Private.constants.itemLookup[itemId] = category
   end
 end
