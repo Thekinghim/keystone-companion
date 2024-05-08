@@ -3,6 +3,7 @@
 ..\FrameXML\UI.xsd">
     <Include file="libs/embeds.xml" />
     <Include file="Locales/embeds.xml" />
+    <Include file="Database/embeds.xml" />
     <Include file="constants/embeds.xml" />
     <Include file="utils/embeds.xml" />
 

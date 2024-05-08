@@ -8,16 +8,7 @@ local Private = select(2, ...)
 local getTexturePath = Private.utils.path.getTexturePath
 local rasuGUI = LibStub("RasuGUI")
 local locale = Private.Locales
----@class KCDatabase
-local defaultDB = {
-  settings = {
-    DevMode = false,
-    DevChatPrint = true,
-    MinimapButton = true,
-    libDBIcon = { hide = false },
-    bestTimes = {},
-  }
-}
+local defaultDB = Private.DefaultDatabase
 
 -- [[ CREATING ADDON AS GLOBAL AND ADDING VARIABLES ]] --
 ---@class KeystoneCompanion : RasuAddonBase
@@ -72,7 +63,7 @@ function KeystoneCompanion:InitDataBrokerIcon()
     end
   })
 
-  self.DB.libDBIcon = self.DB.libDBIcon or { hide = false }
+  self.DB.libDBIcon = self.DB.libDBIcon or defaultDB.libDBIcon
   if (not Private.LibDBIcon:GetMinimapButton("Keystone Companion")) then
     Private.LibDBIcon:Register("Keystone Companion", dataBrokerObj, self.DB.libDBIcon)
   end
