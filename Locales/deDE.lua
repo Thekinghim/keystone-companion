@@ -61,6 +61,7 @@ Private.Locales["deDE"] = {
     ["enabled"] = "aktiviert",
     ["disabled"] = "deaktiviert",
     ["Developer mode"] = "Entwicklermodus",
+    ["Developer chat"] = "Entwicklerchat",
     ["Minimap button"] = "Minimap-Symbol",
     ["You're running an"] = "Sie benutzen eine",
     ["build of the addon. Features may be broken or only half finished in alpha versions!"] =
