@@ -35,6 +35,7 @@ end
 function addon:devPrint(...)
   if (self:isDev()) then
     local argStr = argsToString(...)
+    if argStr:match("BAG_UPDATE") then return end -- This fires a lot so we don't log it for performance reasons
     local currentTime = date("%m/%d/%y %H:%M:%S")
     if self.DB.settings.DevChatPrint then
       self:Print("|cffff0000(Dev) |r", argStr)
