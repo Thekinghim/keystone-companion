@@ -155,7 +155,7 @@ Private.constants.items = {
     [201325] = true, -- Draconic Augment Rune
     [211495] = true, -- Dreambound Augment Rune
   },
-  Potions = {
+  Potion = {
     [191351] = true, -- Potion of Frozen Fatality  (Rank 1)
     [191352] = true, -- Potion of Frozen Fatality  (Rank 2)
     [191353] = true, -- Potion of Frozen Fatality  (Rank 3)
