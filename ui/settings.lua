@@ -1,11 +1,12 @@
-local _, Private = ...
-local UI = Private.UI
-local styles = Private.constants.styles
-local widgets = Private.widgets
-local getTexturePath = Private.utils.path.getTexturePath
+---@class KeystoneCompanionPrivate
+local Private = select(2, ...)
 ---@class KeystoneCompanion
 local addon = Private.Addon
-local loc = Private.Addon.Loc
+local loc = addon.Loc
+local styles = Private.constants.styles
+local UI = Private.UI
+local widgets = Private.widgets
+local getTexturePath = Private.utils.path.getTexturePath
 
 UI.Settings = CreateFrame('Frame', 'KeystoneCompanionSettings', UI.Frame)
 UI.Settings:SetSize(411, 461)

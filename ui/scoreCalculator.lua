@@ -3,7 +3,7 @@ local Private = select(2, ...)
 ---@class KeystoneCompanion
 local addon = Private.Addon
 local loc = addon.Loc
-local styles = Private.constants.styles;
+local styles = Private.constants.styles
 local getTexturePath = Private.utils.path.getTexturePath
 
 local widgets = Private.widgets

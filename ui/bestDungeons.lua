@@ -1,11 +1,12 @@
+---@class KeystoneCompanionPrivate
 local Private = select(2, ...)
-local CreateRoundedFrame = Private.widgets.RoundedFrame.CreateFrame
-local styles = Private.constants.styles
-local customIconMixin = { customMixin = true }
-local screenWidth = GetScreenWidth()
 ---@class KeystoneCompanion
 local addon = Private.Addon
 local loc = addon.Loc
+local styles = Private.constants.styles
+local CreateRoundedFrame = Private.widgets.RoundedFrame.CreateFrame
+local customIconMixin = { customMixin = true }
+local screenWidth = GetScreenWidth()
 
 local shortDungeonNames = {
     -- Season 3 Dragonflight Dungeons

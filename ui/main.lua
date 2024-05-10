@@ -1,11 +1,13 @@
-local _, Private = ...
-local CreateRoundedFrame = Private.widgets.RoundedFrame.CreateFrame
-local getTexturePath = Private.utils.path.getTexturePath
-local styles = Private.constants.styles
+---@class KeystoneCompanionPrivate
+local Private = select(2, ...)
 ---@class KeystoneCompanion
 local addon = Private.Addon
 local loc = addon.Loc
+local styles = Private.constants.styles
+local CreateRoundedFrame = Private.widgets.RoundedFrame.CreateFrame
+local getTexturePath = Private.utils.path.getTexturePath
 
+---@class KeystoneCompanionUI : RoundedFrame
 local UI = CreateRoundedFrame(UIParent, {
   width = 438, height = 566, border_size = 1, frame_strata = "DIALOG"
 });
@@ -147,7 +149,7 @@ UI.AddonVersion:SetFontObject(styles.FONT_OBJECTS.NORMAL)
 UI.AddonVersion:SetPoint('LEFT', UI.Footer, 'LEFT', 8, 0)
 UI.AddonVersion:SetTextColor(89 / 255, 89 / 255, 91 / 255, 1);
 UI.AddonVersion:SetJustifyH('LEFT');
-UI.AddonVersion:SetText('V' .. addon.Version)
+UI.AddonVersion:SetText(string.format("V%s (%s)", addon.Version, addon.buildType:gsub("^%l", string.upper)))
 
 UI.GitHub = CreateFrame('Frame', 'KeystoneCompanionFooterGitHub', UI.Footer);
 UI.GitHub:SetSize(58, 15);

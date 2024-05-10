@@ -3,9 +3,9 @@ local Private = select(2, ...)
 ---@class KeystoneCompanion
 local addon = Private.Addon
 local loc = addon.Loc
+local styles = Private.constants.styles
 local widgets = Private.widgets
 local getTexturePath = Private.utils.path.getTexturePath
-local styles = Private.constants.styles
 local dungeonNameFixes = {
     [464] = "DotI: Upper", -- Dawn of the Infinite: Murozond's Rise
     [463] = "DotI: Lower", -- Dawn of the Infinite: Galakrond's Fall

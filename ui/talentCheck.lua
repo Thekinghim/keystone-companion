@@ -1,11 +1,11 @@
+---@class KeystoneCompanionPrivate
 local Private = select(2, ...)
-local getTexturePath = Private.utils.path.getTexturePath
-
 ---@class KeystoneCompanion
 local addon = Private.Addon
 local loc = addon.Loc
-
 local styles = Private.constants.styles
+
+local getTexturePath = Private.utils.path.getTexturePath
 local aTalents = Private.constants.affixTalents
 
 local widgets = Private.widgets
@@ -47,6 +47,7 @@ local iconBox, iconView = createScrollable(talentCheckFrame, {
     elements_per_row = 5,
     element_padding = 5,
     initializer = function(frame, elementData)
+        ---@cast frame table : Frame
         if not frame.initialized then
             local icon = frame:CreateTexture()
             icon:SetPoint("TOPLEFT", 1, -1)
