@@ -81,9 +81,6 @@ end
 -- [[ ADDON INIT ]] --
 function KeystoneCompanion:OnInitialize()
   KeystoneCompanionDebug = KeystoneCompanionDebug or { messages = {} }
-  DevTools_Dump(self:GetDatabaseValue("settings.timerSettings.scale"))
-  self:SetDatabaseValue("settings.timerSettings.scale", 90)
-  DevTools_Dump(self:GetDatabaseValue("settings.timerSettings.scale"))
 
   -- This is needed for some M+ Related Functions
   -- As the UI can not be loaded before entering the World we just run this in the first possible frame
@@ -99,7 +96,7 @@ function KeystoneCompanion:OnInitialize()
   self:TimerInit() -- ui/dungeonTimer.lua
   self:DevInit()   -- dev.lua
 
-  self:InitDataBrokerIcon()
+  self:InitDataBrokerIcon() -- this File
 
-  Private.InitDatabaseCallbacks()
+  Private.InitDatabaseCallbacks() -- Database/Database.lua
 end
