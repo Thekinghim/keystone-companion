@@ -13,7 +13,7 @@ local dungeonNameFixes = {
 }
 
 function addon:TimerInit()
-    local db = self.DB
+    local db = self.Database
     local uiSettings = Private.UI.Settings.Timer
     if not db.bestTimes then
         db.bestTimes = {}

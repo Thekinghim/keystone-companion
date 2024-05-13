@@ -21,8 +21,8 @@ UI.Settings.Minimap.Activate = widgets.CheckBox.CreateFrame(UI.Settings, {
   font_text = loc["Show UI button on minimap"],
   font_object = styles.FONT_OBJECTS.BOLD,
   callback = function(_, checked)
-    addon.DB.settings.MinimapButton = checked
-    if (addon.DB.settings.MinimapButton) then
+    addon.Database.settings.MinimapButton = checked
+    if (addon.Database.settings.MinimapButton) then
       Private.LibDBIcon:Show("Keystone Companion")
     else
       Private.LibDBIcon:Hide("Keystone Companion")
@@ -31,7 +31,7 @@ UI.Settings.Minimap.Activate = widgets.CheckBox.CreateFrame(UI.Settings, {
 })
 
 function RerenderSettings()
-  if (addon.DB.settings.MinimapButton ~= false) then
+  if (addon.Database.settings.MinimapButton ~= false) then
     UI.Settings.Minimap.Activate:SetChecked(true)
   else
     UI.Settings.Minimap.Activate:SetChecked(false)

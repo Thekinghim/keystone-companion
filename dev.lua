@@ -20,7 +20,7 @@ local function argsToString(...)
 end
 
 function addon:ToggleDevMode(forceState)
-  self.DB.settings.DevMode = forceState ~= nil and forceState or not self.DB.settings.DevMode
+  self.Database.settings.DevMode = forceState ~= nil and forceState or not self.Database.settings.DevMode
   if self:isDev() then
     self.dev.DebugFrame:Show()
   else
@@ -29,7 +29,7 @@ function addon:ToggleDevMode(forceState)
 end
 
 function addon:ToggleDevChat(forceState)
-  self.DB.settings.DevChatPrint = forceState ~= nil and forceState or not self.DB.settings.DevChatPrint
+  self.Database.settings.DevChatPrint = forceState ~= nil and forceState or not self.Database.settings.DevChatPrint
 end
 
 function addon:devPrint(...)
@@ -37,7 +37,7 @@ function addon:devPrint(...)
     local argStr = argsToString(...)
     if argStr:match("BAG_UPDATE") then return end -- This fires a lot so we don't log it for performance reasons
     local currentTime = date("%m/%d/%y %H:%M:%S")
-    if self.DB.settings.DevChatPrint then
+    if self.Database.settings.DevChatPrint then
       self:Print("|cffff0000(Dev) |r", argStr)
     end
 

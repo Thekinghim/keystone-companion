@@ -18,8 +18,8 @@ lib.RegisteredAddons = {}
 ---@field Events table
 ---@field Commands table
 ---@field Loc table|?
----@field DB table|string|?
----@field DefaultDB table|?
+---@field Database table|string|?
+---@field DefaultDatabase table|?
 ---@field OnInitialize function|?
 ---@field OnEnable function|?
 ---@field OnDisable function|?
@@ -30,10 +30,11 @@ local AddonBase = {
     Name = "",
     DisplayName = "",
     EventCallbacks = {},
+    DatabaseCallbacks = {},
     Commands = {},
     Loc = {},
-    DB = {},
-    DefaultDB = {}
+    Database = {},
+    DefaultDatabase = {}
 }
 
 function lib:CreateAddon(name, db, defaultDB, loc, defaultLoc)
@@ -47,8 +48,8 @@ function lib:CreateAddon(name, db, defaultDB, loc, defaultLoc)
     addon.Version = C_AddOns.GetAddOnMetadata(name, "Version")
     addon.Name = name
     addon.DisplayName = C_AddOns.GetAddOnMetadata(name, "Title")
-    addon.DB = db
-    addon.DefaultDB = defaultDB
+    addon.Database = db
+    addon.DefaultDatabase = defaultDB
     if loc and (loc[GetLocale()] or defaultLoc) then
         addon.Loc = loc[GetLocale()] or loc[defaultLoc]
     end
@@ -177,9 +178,9 @@ function AddonBase:UnregisterCommand(command)
 end
 
 function AddonBase:InitializeAddon()
-    if type(self.DB) == "string" then
-        _G[self.DB] = _G[self.DB] or self.DefaultDB
-        self.DB = _G[self.DB]
+    if type(self.Database) == "string" then
+        _G[self.Database] = _G[self.Database] or self.DefaultDatabase
+        self.Database = _G[self.Database]
     end
 
     if self.OnInitialize then
@@ -263,4 +264,75 @@ function AddonBase:OnEvent(event, ...)
             end
         end
     end
+end
+
+---@param databasePath string
+---@return unknown
+function AddonBase:GetDatabaseValue(databasePath)
+    local dbValue = self.Database
+    if type(dbValue) ~= "table" then error("Database is not a table!", 2) end
+    for step in databasePath:gmatch("[^%p]+") do
+        if type(dbValue) == "table" then
+            dbValue = dbValue[step]
+        else
+            error(string.format("Couldn't find %s!", step), 2)
+        end
+    end
+    return dbValue
+end
+
+---@param databasePath string
+---@param newValue any
+function AddonBase:SetDatabaseValue(databasePath, newValue)
+    local dbTable = self.Database
+    if type(dbTable) ~= "table" then error("Database is not a table!", 2) end
+    local keys = {}
+    for step in databasePath:gmatch("[^%.]+") do
+        table.insert(keys, step)
+    end
+
+    local lastKey = keys[#keys]
+    local parentTable = self:GetParentTable(dbTable, keys)
+
+    if parentTable then
+        parentTable[lastKey] = newValue
+    else
+        error("Invalid database path!", 2)
+    end
+
+    if self.DatabaseCallbacks[databasePath] then
+        for _, callback in ipairs(self.DatabaseCallbacks[databasePath]) do
+            callback(databasePath, newValue)
+        end
+    end
+end
+
+---@param tbl table
+---@param keys table
+---@return table|?
+function AddonBase:GetParentTable(tbl, keys)
+    local parentTable = tbl
+    for i = 1, #keys - 1 do
+        local key = keys[i]
+        if type(parentTable[key]) == "table" then
+            parentTable = parentTable[key]
+        else
+            return nil
+        end
+    end
+    return parentTable
+end
+
+---@param databasePath string
+---@param callback fun(path:string, value:any)
+function AddonBase:CreateDatabaseCallback(databasePath, callback)
+    if not self.DatabaseCallbacks[databasePath] then
+        self.DatabaseCallbacks[databasePath] = {}
+    end
+    tinsert(self.DatabaseCallbacks[databasePath], callback)
+    callback(databasePath, self:GetDatabaseValue(databasePath))
+end
+
+function AddonBase:ToggleDatabaseValue(databasePath, forceState)
+    self:SetDatabaseValue(databasePath, forceState ~= nil and forceState or not self:GetDatabaseValue(databasePath))
 end

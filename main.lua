@@ -20,10 +20,10 @@ end
 
 addon:RegisterEvent("PLAYER_ENTERING_WORLD", "MAIN.LUA", function(self, event)
   if event == "PLAYER_ENTERING_WORLD" then
-    if (self.DB.UI ~= nil) then
+    if (self.Database.UI ~= nil) then
       Private.UI.Frame:ClearAllPoints()
-      Private.UI.Frame:SetPoint(self.DB.UI.point, self.DB.UI.relativeTo,
-        self.DB.UI.relativePoint, self.DB.UI.offsetX, self.DB.UI.offsetY)
+      Private.UI.Frame:SetPoint(self.Database.UI.point, self.Database.UI.relativeTo,
+        self.Database.UI.relativePoint, self.Database.UI.offsetX, self.Database.UI.offsetY)
     else
       Private.UI.Frame:SetPoint("CENTER", UIParent, "CENTER")
     end

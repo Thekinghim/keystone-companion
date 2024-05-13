@@ -41,7 +41,7 @@ Private.Addon = KeystoneCompanion
 
 -- [[ ADDON FUNCTIONS ]] --
 function KeystoneCompanion:isDev()
-  return self.DB.settings.DevMode
+  return self:GetDatabaseValue("settings.DevMode")
 end
 
 function KeystoneCompanion.colorise(color, msg)
@@ -63,11 +63,11 @@ function KeystoneCompanion:InitDataBrokerIcon()
     end
   })
 
-  self.DB.libDBIcon = self.DB.libDBIcon or defaultDB.libDBIcon
+  self.Database.libDBIcon = self.Database.libDBIcon or defaultDB.libDBIcon
   if (not Private.LibDBIcon:GetMinimapButton("Keystone Companion")) then
-    Private.LibDBIcon:Register("Keystone Companion", dataBrokerObj, self.DB.libDBIcon)
+    Private.LibDBIcon:Register("Keystone Companion", dataBrokerObj, self:GetDatabaseValue("libDBIcon"))
   end
-  if (self.DB.settings.MinimapButton ~= false) then
+  if self:GetDatabaseValue("settings.MinimapButton") then
     Private.LibDBIcon:Show("Keystone Companion")
   else
     Private.LibDBIcon:Hide("Keystone Companion")
@@ -75,17 +75,15 @@ function KeystoneCompanion:InitDataBrokerIcon()
 end
 
 function KeystoneCompanion:ToggleMinimapButton(forceState)
-  self.DB.settings.MinimapButton = forceState ~= nil and forceState or not self.DB.settings.MinimapButton
-  if self.DB.settings.MinimapButton then
-    Private.LibDBIcon:Show("Keystone Companion")
-  else
-    Private.LibDBIcon:Hide("Keystone Companion")
-  end
+  self:ToggleDatabaseValue("settings.MinimapButton", forceState)
 end
 
 -- [[ ADDON INIT ]] --
 function KeystoneCompanion:OnInitialize()
   KeystoneCompanionDebug = KeystoneCompanionDebug or { messages = {} }
+  DevTools_Dump(self:GetDatabaseValue("settings.timerSettings.scale"))
+  self:SetDatabaseValue("settings.timerSettings.scale", 90)
+  DevTools_Dump(self:GetDatabaseValue("settings.timerSettings.scale"))
 
   -- This is needed for some M+ Related Functions
   -- As the UI can not be loaded before entering the World we just run this in the first possible frame
@@ -102,4 +100,6 @@ function KeystoneCompanion:OnInitialize()
   self:DevInit()   -- dev.lua
 
   self:InitDataBrokerIcon()
+
+  Private.InitDatabaseCallbacks()
 end
