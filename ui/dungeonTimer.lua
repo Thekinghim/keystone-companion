@@ -404,7 +404,7 @@ function addon:TimerInit()
         local liveIndex = 0
         for bossIndex = 1, self.runData.maxCriteria - 1 do
             local bossBar = self.bosses[bossIndex]
-            local dead = select(11, C_Scenario.GetCriteriaInfo(bossIndex))
+            local dead = select(10, C_Scenario.GetCriteriaInfo(bossIndex))
             if dead and dead > 0 and not bossBar.dead then
                 bossBar.dead = dead
                 local deathTime = dead - currentTime
