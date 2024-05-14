@@ -47,12 +47,13 @@ function addon:TimerInit()
         if bestTimes[mapID] and bestTimes[mapID][affixID] and bestTimes[mapID][affixID][keyLevel] and type(bestTimes[mapID][affixID][keyLevel]) == "table" then
             return bestTimes[mapID][affixID][keyLevel]
         end
+        return {}
     end
 
     local function saveBestTimes(mapID, affixID, keyLevel, times)
-        local dbTimes = getBestTimes(mapID, affixID, keyLevel) or {}
+        local dbTimes = getBestTimes(mapID, affixID, keyLevel)
         for index, newTime in pairs(times) do
-            if not dbTimes[index] or dbTimes[index] > newTime then
+            if (not dbTimes[index]) or (dbTimes[index] > newTime) then
                 dbTimes[index] = newTime
             end
         end
@@ -203,9 +204,7 @@ function addon:TimerInit()
             return
         end
         if event == "CHALLENGE_MODE_START" then
-            self:ReleaseFrame()
             self:FillFrame()
-            self:SetScript("OnUpdate", self.UpdateFrame)
         elseif event == "CHALLENGE_MODE_COMPLETED" then
             saveBestTimes(self.runData.mapID, self.runData.week, self.runData.level, self:GetBossTimes())
             self:devPrint("MAP ID", self.runData.mapID)
@@ -292,6 +291,8 @@ function addon:TimerInit()
     end
 
     function timerFrame:FillFrame()
+        self:ReleaseFrame()
+        self:SetScript("OnUpdate", self.UpdateFrame)
         self:ResetCurrentPull()
         if ObjectiveTrackerFrame and ObjectiveTrackerFrame:IsVisible() then
             ObjectiveTrackerFrame:Hide()
