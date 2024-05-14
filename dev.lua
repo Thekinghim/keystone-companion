@@ -110,10 +110,18 @@ function addon:DevInit()
   local copy = widgets.RoundedButton.CreateFrame(devFrame, {
     points = {
       { "TOPLEFT",  devScrollBox, "BOTTOMLEFT",  0, -10 },
-      { "TOPRIGHT", devScrollBox, "BOTTOMRIGHT", 0, -10 },
+      { "TOPRIGHT", devScrollBox, "BOTTOMRIGHT", -75, -10 },
       { "BOTTOM",   0,            10 },
     },
     font_text = "COPY DEV OUTPUT"
+  })
+  local clear = widgets.RoundedButton.CreateFrame(devFrame, {
+    points = {
+      { "TOPLEFT",  copy, "TOPRIGHT",  15, 0 },
+      { "TOPRIGHT", devScrollBox, "BOTTOMRIGHT", 0, -10 },
+      { "BOTTOM",   0,            10 },
+    },
+    font_text = "|A:talents-button-reset:16:16|a Clear"
   })
 
   local copyFrame = widgets.RoundedFrame.CreateFrame(UIParent, {
@@ -185,6 +193,10 @@ function addon:DevInit()
 
   copy:SetScript("OnMouseDown", function()
     updateCopyText()
+  end)
+
+  clear:SetScript("OnMouseDown", function ()
+    devScrollView:UpdateContentData({})
   end)
 
   function addon:AddDevLine(text, currentTime)
