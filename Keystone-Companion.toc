@@ -1,5 +1,5 @@
 ## Interface: 100206, 100207
-## Version: 2.3.5
+## Version: 2.3.6
 ## Title: Keystone Companion
 ## IconTexture: Interface\AddOns\Keystone-Companion\assets\textures\icons\addon
 ## Author: Kaelon/Jordy141
@@ -7,7 +7,7 @@
 ## SavedVariables: KeystoneCompanionDB, KeystoneCompanionDebug
 ## DefaultState: enabled
 ## OptionalDeps: MythicDungeonTools
-## X-Build-Type: Alpha
+## X-Build-Type: Beta
 ## X-Curse-Project-ID: 984971
 ## X-WoWI-ID: 26711
 ## X-Wago-ID: 96do4ENO
