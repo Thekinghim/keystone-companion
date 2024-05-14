@@ -211,15 +211,13 @@ function addon:TimerInit()
             return
         end
         if event == "CHALLENGE_MODE_START" then
-            self:ReleaseFrame()
             self:FillFrame()
-            self:SetScript("OnUpdate", self.UpdateFrame)
         elseif event == "CHALLENGE_MODE_COMPLETED" then
             saveBestTimes(self.runData.mapID, self.runData.week, self.runData.level, self:GetBossTimes())
-            self:devPrint("MAP ID", self.runData.mapID)
-            self:devPrint("RUN WEEK", self.runData.week)
-            self:devPrint("RUN LEVEL", self.runData.level)
-            self:devPrint("BOSS TIMES")
+            addon:devPrint("MAP ID", self.runData.mapID)
+            addon:devPrint("RUN WEEK", self.runData.week)
+            addon:devPrint("RUN LEVEL", self.runData.level)
+            addon:devPrint("BOSS TIMES")
             DevTools_Dump(self:GetBossTimes())
             self.last = 0
             self:SetScript("OnUpdate", nil)
@@ -293,13 +291,15 @@ function addon:TimerInit()
     function timerFrame:GetBossTimes()
         local times = {}
         for index, boss in pairs(self.bosses) do
-            self:devPrint(string.format("Boss %d died %s", index, boss.dead))
+            addon:devPrint(string.format("Boss %d died %s", index, boss.dead))
             times[index] = boss.dead
         end
         return times
     end
 
     function timerFrame:FillFrame()
+        self:ReleaseFrame()
+        self:SetScript("OnUpdate", self.UpdateFrame)
         self:ResetCurrentPull()
         if ObjectiveTrackerFrame and ObjectiveTrackerFrame:IsVisible() then
             ObjectiveTrackerFrame:Hide()
@@ -327,6 +327,7 @@ function addon:TimerInit()
 
         local bossAnchor = self.timeBar
         for bossIndex = 1, self.runData.maxCriteria - 1 do
+            addon:devPrint(self.runData.maxCriteria, C_Scenario.GetCriteriaInfo(bossIndex))
             local bossBar = createBossBar(bossAnchor)
             self.bosses[bossIndex] = bossBar
             bossBar.dead = false
@@ -403,7 +404,7 @@ function addon:TimerInit()
         local liveIndex = 0
         for bossIndex = 1, self.runData.maxCriteria - 1 do
             local bossBar = self.bosses[bossIndex]
-            local dead = select(11, C_Scenario.GetCriteriaInfo(bossIndex))
+            local dead = select(10, C_Scenario.GetCriteriaInfo(bossIndex))
             if dead and dead > 0 and not bossBar.dead then
                 bossBar.dead = dead
                 local deathTime = dead - currentTime
