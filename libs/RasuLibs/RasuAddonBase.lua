@@ -45,9 +45,9 @@ function lib:CreateAddon(name, db, defaultDB, loc, defaultLoc)
     ---@class RasuAddonBase : RasuBaseMixin
     local addon = CreateFromMixins(AddonBase)
     self.RegisteredAddons[name] = addon
-    addon.Version = C_AddOns.GetAddOnMetadata(name, "Version")
+    addon.Version = C_AddOns.GetAddOnMetadata(name, "Version") or "1.0.0"
     addon.Name = name
-    addon.DisplayName = C_AddOns.GetAddOnMetadata(name, "Title")
+    addon.DisplayName = C_AddOns.GetAddOnMetadata(name, "Title") or name
     addon.Database = db
     addon.DefaultDatabase = defaultDB
     if loc and (loc[GetLocale()] or defaultLoc) then
@@ -286,6 +286,7 @@ end
 function AddonBase:SetDatabaseValue(databasePath, newValue)
     local dbTable = self.Database
     if type(dbTable) ~= "table" then error("Database is not a table!", 2) end
+    if self:InitDatabasePath(databasePath, newValue) then return end
     local keys = {}
     for step in databasePath:gmatch("[^%.]+") do
         table.insert(keys, step)
@@ -333,6 +334,32 @@ function AddonBase:CreateDatabaseCallback(databasePath, callback)
     callback(databasePath, self:GetDatabaseValue(databasePath))
 end
 
+---@param databasePath string
+---@param forceState boolean
 function AddonBase:ToggleDatabaseValue(databasePath, forceState)
     self:SetDatabaseValue(databasePath, forceState ~= nil and forceState or not self:GetDatabaseValue(databasePath))
+end
+
+---@param databasePath string
+---@param defaultValue any
+---@return boolean? wasDefaultSet
+function AddonBase:InitDatabasePath(databasePath, defaultValue)
+    local dbTable = self.Database
+    if type(dbTable) ~= "table" then error("Database is not a table!", 2) end
+    local steps = {}
+    for step in databasePath:gmatch("[^%.]+") do
+        table.insert(steps, step)
+    end
+
+    for i, step in ipairs(steps) do
+        if dbTable[step] == nil then
+            if i == #steps then
+                dbTable[step] = defaultValue
+                return true
+            else
+                dbTable[step] = {}
+            end
+        end
+        dbTable = dbTable[step]
+    end
 end

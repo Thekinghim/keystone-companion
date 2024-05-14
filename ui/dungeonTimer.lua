@@ -13,11 +13,8 @@ local dungeonNameFixes = {
 }
 
 function addon:TimerInit()
-    local db = self.Database
     local uiSettings = Private.UI.Settings.Timer
-    if not db.bestTimes then
-        db.bestTimes = {}
-    end
+    self:InitDatabasePath("bestTimes", {})
     local mdt = MDT
 
     -- Creates a Tooltip hook to show MDT count on Unit Tooltips
@@ -46,9 +43,9 @@ function addon:TimerInit()
     timerFrame.currentPull = {}
     local bossFrames = {}
     local function getBestTimes(mapID, affixID, keyLevel)
-        if not db.bestTimes then return end
-        if db.bestTimes[mapID] and db.bestTimes[mapID][affixID] and db.bestTimes[mapID][affixID][keyLevel] and type(db.bestTimes[mapID][affixID][keyLevel]) == "table" then
-            return db.bestTimes[mapID][affixID][keyLevel]
+        local bestTimes = self:GetDatabaseValue("bestTimes")
+        if bestTimes[mapID] and bestTimes[mapID][affixID] and bestTimes[mapID][affixID][keyLevel] and type(bestTimes[mapID][affixID][keyLevel]) == "table" then
+            return bestTimes[mapID][affixID][keyLevel]
         end
     end
 
@@ -59,9 +56,7 @@ function addon:TimerInit()
                 dbTimes[index] = newTime
             end
         end
-        if not db.bestTimes[mapID] then db.bestTimes[mapID] = {} end
-        if not db.bestTimes[mapID][affixID] then db.bestTimes[mapID][affixID] = {} end
-        db.bestTimes[mapID][affixID][keyLevel] = dbTimes
+        self:SetDatabaseValue(string.format("bestTimes.%s.%s.%s", mapID, affixID, keyLevel), dbTimes)
     end
 
     local function getEnemyForces()
@@ -123,24 +118,24 @@ function addon:TimerInit()
         self:MakeMovable(not makeMovable, self.SaveAnchors)
 
         self:Show()
-        if not makeMovable and (not C_ChallengeMode.IsChallengeModeActive() or not db.settings.timerSettings.active) then
+        if not makeMovable and (not C_ChallengeMode.IsChallengeModeActive() or not addon:GetDatabaseValue("settings.timerSettings.active")) then
             self:Hide()
         end
     end
 
     function timerFrame:SaveAnchors()
-        local point, _, relativePoint, offsetX, offsetY = self:GetPoint();
-        db.settings.timerSettings.anchor = {
+        local point, _, relativePoint, offsetX, offsetY = self:GetPoint()
+        addon:SetDatabaseValue("settings.timerSettings.anchor", {
             point = point,
             relativePoint = relativePoint,
             offsetX = offsetX,
             offsetY = offsetY
-        }
+        })
     end
 
     function timerFrame:SetActivated(state)
         if state == nil then return end
-        db.settings.timerSettings.active = state
+        addon:SetDatabaseValue("settings.timerSettings.active", state)
         self:ToggleMoveable(self:IsMovable())
         if C_ChallengeMode.IsChallengeModeActive() then
             self:OnEvent("CHALLENGE_MODE_START")
@@ -151,7 +146,7 @@ function addon:TimerInit()
         if not percent then return end
         local scale = percent / 100
         self:SetScale(scale)
-        db.settings.timerSettings.scale = percent
+        addon:SetDatabaseValue("settings.timerSettings.scale", percent)
         self:SaveAnchors()
     end
 
@@ -165,20 +160,17 @@ function addon:TimerInit()
         if not percent then return end
         local alpha = percent / 100
         self:SetAlpha(alpha)
-        db.settings.timerSettings.alpha = percent
+        addon:SetDatabaseValue("settings.timerSettings.alpha", percent)
     end
 
     function timerFrame:LoadSettings()
-        if not db.settings then db.settings = {} end
-        if not db.settings.timerSettings or db.settings.timerSettings.anchor[1] ~= nil then
-            db.settings.timerSettings = {
-                active = true,
-                scale = 80,
-                anchor = { point = "RIGHT", relativePoint = "RIGHT", offsetX = -25, offsetY = 0 },
-                alpha = 100
-            }
-        end
-        local settings = db.settings.timerSettings
+        addon:InitDatabasePath("settings.timerSettings", {
+            active = true,
+            scale = 80,
+            anchor = { point = "RIGHT", relativePoint = "RIGHT", offsetX = -25, offsetY = 0 },
+            alpha = 100
+        })
+        local settings = addon:GetDatabaseValue("settings.timerSettings")
         self:SetAnchors(settings.anchor)
         self:ScaleFrame(settings.scale)
         self:ChangeAlpha(settings.alpha)
@@ -203,10 +195,10 @@ function addon:TimerInit()
     end
 
     function timerFrame:OnEvent(event, ...)
-        if not db.settings.timerSettings then
+        if not addon:GetDatabaseValue("settings.timerSettings") then
             self:LoadSettings()
         end
-        if not db.settings.timerSettings.active and event ~= "PLAYER_ENTERING_WORLD" then
+        if not addon:GetDatabaseValue("settings.timerSettings.active") and event ~= "PLAYER_ENTERING_WORLD" then
             self:ReleaseFrame()
             return
         end

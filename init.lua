@@ -40,9 +40,6 @@ Private.LibDBIcon = LibStub:GetLibrary("LibDBIcon-1.0")
 Private.Addon = KeystoneCompanion
 
 -- [[ ADDON FUNCTIONS ]] --
-function KeystoneCompanion:isDev()
-  return self:GetDatabaseValue("settings.DevMode")
-end
 
 function KeystoneCompanion.colorise(color, msg)
   if type(color) == "table" then
@@ -62,15 +59,9 @@ function KeystoneCompanion:InitDataBrokerIcon()
         nil, nil, nil, true)
     end
   })
-
-  self.Database.libDBIcon = self.Database.libDBIcon or defaultDB.libDBIcon
+  self:InitDatabasePath("libDBIcon", defaultDB.libDBIcon)
   if (not Private.LibDBIcon:GetMinimapButton("Keystone Companion")) then
     Private.LibDBIcon:Register("Keystone Companion", dataBrokerObj, self:GetDatabaseValue("libDBIcon"))
-  end
-  if self:GetDatabaseValue("settings.MinimapButton") then
-    Private.LibDBIcon:Show("Keystone Companion")
-  else
-    Private.LibDBIcon:Hide("Keystone Companion")
   end
 end
 
@@ -98,5 +89,7 @@ function KeystoneCompanion:OnInitialize()
 
   self:InitDataBrokerIcon() -- this File
 
+end
+function KeystoneCompanion:OnEnable()
   Private.InitDatabaseCallbacks() -- Database/Database.lua
 end

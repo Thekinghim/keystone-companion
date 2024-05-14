@@ -13,16 +13,14 @@ local UI = CreateRoundedFrame(UIParent, {
 });
 Private.UI = { Frame = UI };
 UI:MakeMovable(false, function(self)
-  local point, relativeTo, relativePoint, offsetX, offsetY = self:GetPoint();
-  addon.Database.UI = addon.Database.UI or {};
-  addon.Database.UI = {
+  local point, relativeTo, relativePoint, offsetX, offsetY = self:GetPoint()
+  addon:SetDatabaseValue("UI", {
     point = point,
     relativeTo = relativeTo,
     relativePoint = relativePoint,
     offsetX = offsetX,
-    offsetY =
-        offsetY
-  }
+    offsetY = offsetY
+  })
 end)
 
 UI:Hide();
