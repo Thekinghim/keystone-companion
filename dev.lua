@@ -65,7 +65,7 @@ function addon:DevInit()
   devFrame:MakeMovable()
   devFrame:SetResizable(true)
   local screenWidth, screenheight = UIParent:GetSize()
-  devFrame:SetResizeBounds(325, 175, screenWidth * 0.8, screenheight * 0.8)
+  devFrame:SetResizeBounds(205, 175, screenWidth * 0.8, screenheight * 0.8)
   devFrame:SetClampedToScreen(true)
   if not self:isDev() then
     devFrame:Hide()
@@ -74,7 +74,7 @@ function addon:DevInit()
   local devTitle = devFrame:CreateFontString()
   devTitle:SetFontObject(styles.FONT_OBJECTS.HEADING)
   devTitle:SetPoint("TOP", 0, -10)
-  devTitle:SetText("Keystone Companion: Dev Debug")
+  devTitle:SetText("KSC: Dev Debug")
 
   local devScrollBox, devScrollView = widgets.ScrollableFrame.CreateFrame(devFrame, {
     width = 500,
@@ -110,15 +110,15 @@ function addon:DevInit()
   local copy = widgets.RoundedButton.CreateFrame(devFrame, {
     points = {
       { "TOPLEFT",  devScrollBox, "BOTTOMLEFT",  0, -10 },
-      { "TOPRIGHT", devScrollBox, "BOTTOMRIGHT", -75, -10 },
+      { "TOPRIGHT", devScrollBox, "BOTTOMRIGHT", -50, -10 },
       { "BOTTOM",   0,            10 },
     },
     font_text = "COPY DEV OUTPUT"
   })
   local clear = widgets.RoundedButton.CreateFrame(devFrame, {
     points = {
-      { "TOPLEFT",  copy, "TOPRIGHT",  15, 0 },
-      { "TOPRIGHT", devScrollBox, "BOTTOMRIGHT", 0, -10 },
+      { "TOPLEFT",  copy, "TOPRIGHT",  7.5, 0 },
+      { "TOPRIGHT", copy, "TOPRIGHT", 60, -10 },
       { "BOTTOM",   0,            10 },
     },
     font_text = "|A:talents-button-reset:16:16|a Clear"
