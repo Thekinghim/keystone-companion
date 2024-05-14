@@ -320,6 +320,7 @@ function addon:TimerInit()
 
         local bossAnchor = self.timeBar
         for bossIndex = 1, self.runData.maxCriteria - 1 do
+            addon:devPrint(self.runData.maxCriteria, C_Scenario.GetCriteriaInfo(bossIndex))
             local bossBar = createBossBar(bossAnchor)
             self.bosses[bossIndex] = bossBar
             bossBar.dead = false

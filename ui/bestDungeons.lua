@@ -140,7 +140,7 @@ local function createWeeklyBest()
     weeklyBest = CreateRoundedFrame(ChallengesFrame, {
         height = 225,
         width = 130,
-        points = { { "TOPLEFT", 20, -75 } },
+        points = { { "TOPRIGHT", -20, -75 } },
         border_size = 2,
     })
     local title = weeklyBest:CreateFontString()
