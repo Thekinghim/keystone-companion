@@ -5,4 +5,5 @@
     <Script file="deDE.lua"/>
     <Script file="itIT.lua"/>
     <Script file="frFR.lua"/>
+    <Script file="ruRU.lua"/>
 </Ui>
