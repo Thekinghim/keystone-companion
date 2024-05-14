@@ -40,9 +40,6 @@ Private.LibDBIcon = LibStub:GetLibrary("LibDBIcon-1.0")
 Private.Addon = KeystoneCompanion
 
 -- [[ ADDON FUNCTIONS ]] --
-function KeystoneCompanion:isDev()
-  return self.DB.settings.DevMode
-end
 
 function KeystoneCompanion.colorise(color, msg)
   if type(color) == "table" then
@@ -62,25 +59,14 @@ function KeystoneCompanion:InitDataBrokerIcon()
         nil, nil, nil, true)
     end
   })
-
-  self.DB.libDBIcon = self.DB.libDBIcon or defaultDB.libDBIcon
+  self:InitDatabasePath("libDBIcon", defaultDB.libDBIcon)
   if (not Private.LibDBIcon:GetMinimapButton("Keystone Companion")) then
-    Private.LibDBIcon:Register("Keystone Companion", dataBrokerObj, self.DB.libDBIcon)
-  end
-  if (self.DB.settings.MinimapButton ~= false) then
-    Private.LibDBIcon:Show("Keystone Companion")
-  else
-    Private.LibDBIcon:Hide("Keystone Companion")
+    Private.LibDBIcon:Register("Keystone Companion", dataBrokerObj, self:GetDatabaseValue("libDBIcon"))
   end
 end
 
 function KeystoneCompanion:ToggleMinimapButton(forceState)
-  self.DB.settings.MinimapButton = forceState ~= nil and forceState or not self.DB.settings.MinimapButton
-  if self.DB.settings.MinimapButton then
-    Private.LibDBIcon:Show("Keystone Companion")
-  else
-    Private.LibDBIcon:Hide("Keystone Companion")
-  end
+  self:ToggleDatabaseValue("settings.MinimapButton", forceState)
 end
 
 -- [[ ADDON INIT ]] --
@@ -101,5 +87,9 @@ function KeystoneCompanion:OnInitialize()
   self:TimerInit() -- ui/dungeonTimer.lua
   self:DevInit()   -- dev.lua
 
-  self:InitDataBrokerIcon()
+  self:InitDataBrokerIcon() -- this File
+
+end
+function KeystoneCompanion:OnEnable()
+  Private.InitDatabaseCallbacks() -- Database/Database.lua
 end

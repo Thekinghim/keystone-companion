@@ -1,11 +1,12 @@
-local _, Private = ...
-local UI = Private.UI
-local styles = Private.constants.styles
-local widgets = Private.widgets
-local getTexturePath = Private.utils.path.getTexturePath
+---@class KeystoneCompanionPrivate
+local Private = select(2, ...)
 ---@class KeystoneCompanion
 local addon = Private.Addon
-local loc = Private.Addon.Loc
+local loc = addon.Loc
+local styles = Private.constants.styles
+local UI = Private.UI
+local widgets = Private.widgets
+local getTexturePath = Private.utils.path.getTexturePath
 
 UI.Settings = CreateFrame('Frame', 'KeystoneCompanionSettings', UI.Frame)
 UI.Settings:SetSize(411, 461)
@@ -20,22 +21,9 @@ UI.Settings.Minimap.Activate = widgets.CheckBox.CreateFrame(UI.Settings, {
   font_text = loc["Show UI button on minimap"],
   font_object = styles.FONT_OBJECTS.BOLD,
   callback = function(_, checked)
-    addon.DB.settings.MinimapButton = checked
-    if (addon.DB.settings.MinimapButton) then
-      Private.LibDBIcon:Show("Keystone Companion")
-    else
-      Private.LibDBIcon:Hide("Keystone Companion")
-    end
+    addon:SetDatabaseValue("settings.MinimapButton", checked)
   end
 })
-
-function RerenderSettings()
-  if (addon.DB.settings.MinimapButton ~= false) then
-    UI.Settings.Minimap.Activate:SetChecked(true)
-  else
-    UI.Settings.Minimap.Activate:SetChecked(false)
-  end
-end
 
 UI.Settings.Timer = {}
 UI.Settings.Timer.Activate = widgets.CheckBox.CreateFrame(UI.Settings, {
@@ -95,7 +83,6 @@ UI.SettingsButton:SetScript('OnLeave', function()
 end)
 UI.SettingsButton:SetScript('OnMouseDown', function()
   if (UI.Frame.Party:IsShown()) then
-    RerenderSettings();
     UI.Frame.Party:Hide();
     UI.Settings:Show();
   else

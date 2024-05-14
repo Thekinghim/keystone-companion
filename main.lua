@@ -19,11 +19,13 @@ function addon:ToggleUI()
 end
 
 addon:RegisterEvent("PLAYER_ENTERING_WORLD", "MAIN.LUA", function(self, event)
+  ---@cast self KeystoneCompanion
   if event == "PLAYER_ENTERING_WORLD" then
-    if (self.DB.UI ~= nil) then
+    if self:GetDatabaseValue("UI") then
+      local point = self:GetDatabaseValue("UI")
       Private.UI.Frame:ClearAllPoints()
-      Private.UI.Frame:SetPoint(self.DB.UI.point, self.DB.UI.relativeTo,
-        self.DB.UI.relativePoint, self.DB.UI.offsetX, self.DB.UI.offsetY)
+      Private.UI.Frame:SetPoint(point.point, point.relativeTo,
+        point.relativePoint, point.offsetX, point.offsetY)
     else
       Private.UI.Frame:SetPoint("CENTER", UIParent, "CENTER")
     end
@@ -137,7 +139,7 @@ end
 addon:RegisterCommand({ "keystonecompanion", "kc" }, function(self, args)
   ---@cast self KeystoneCompanion
   if #args == 0 then
-    ToggleUI()
+    self:ToggleUI()
   end
   local enabled = self.colorise(styles.COLORS.GREEN_LIGHT, loc["enabled"])
   local disabled = self.colorise(styles.COLORS.RED_LIGHT, loc["disabled"])
