@@ -67,6 +67,7 @@ local function createScrollable(parent, options)
     ---@field SetElementExtent fun(self:ScrollView, extent:number)
     ---@field Flush fun(self:ScrollView)
     ---@field SetDataProvider fun(self:ScrollView, dataProvider:table)
+    ---@field GetDataProvider fun(self:ScrollView)
     local scrollView = nil
     if options.type == "LIST" then
         scrollView = CreateScrollBoxListLinearView()
@@ -105,12 +106,18 @@ local function createScrollable(parent, options)
     end)
     setAnchors()
 
-    function scrollView:UpdateContentData(data)
-        local scrollPercent = scrollBox:GetScrollPercentage()
-        self:Flush()
-        local dataProvider = CreateDataProvider()
-        self:SetDataProvider(dataProvider)
+    function scrollView:UpdateContentData(data, keepOldData)
         if not data then return end
+        local scrollPercent = scrollBox:GetScrollPercentage()
+        local dataProvider = self:GetDataProvider()
+        if not dataProvider then
+            dataProvider = CreateDataProvider()
+            self:SetDataProvider(dataProvider)
+        end
+        if not keepOldData then
+            dataProvider:Flush()
+        else
+        end
         for _, part in ipairs(data) do
             dataProvider:Insert(part)
         end

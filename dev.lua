@@ -35,6 +35,7 @@ function addon:devPrint(...)
   if (self:isDev()) then
     local argStr = argsToString(...)
     if argStr:match("BAG_UPDATE") then return end -- This fires a lot so we don't log it for performance reasons
+    if argStr:match("UNIT_THREAT_LIST_UPDATE") then return end -- This fires a lot so we don't log it for performance reasons
     local currentTime = date("%m/%d/%y %H:%M:%S")
     if self:GetDatabaseValue("settings.DevChat") then
       self:Print("|cffff0000(Dev) |r", argStr)
@@ -109,7 +110,7 @@ function addon:DevInit()
 
   local copy = widgets.RoundedButton.CreateFrame(devFrame, {
     points = {
-      { "TOPLEFT",  devScrollBox, "BOTTOMLEFT",  0, -10 },
+      { "TOPLEFT",  devScrollBox, "BOTTOMLEFT",  0,   -10 },
       { "TOPRIGHT", devScrollBox, "BOTTOMRIGHT", -50, -10 },
       { "BOTTOM",   0,            10 },
     },
@@ -117,9 +118,9 @@ function addon:DevInit()
   })
   local clear = widgets.RoundedButton.CreateFrame(devFrame, {
     points = {
-      { "TOPLEFT",  copy, "TOPRIGHT",  7.5, 0 },
-      { "TOPRIGHT", copy, "TOPRIGHT", 60, -10 },
-      { "BOTTOM",   0,            10 },
+      { "TOPLEFT",  copy, "TOPRIGHT", 7.5, 0 },
+      { "TOPRIGHT", copy, "TOPRIGHT", 60,  -10 },
+      { "BOTTOM",   0,    10 },
     },
     font_text = "|A:talents-button-reset:16:16|a Clear"
   })
@@ -155,10 +156,10 @@ function addon:DevInit()
 
   local function getData(inputTbl)
     inputTbl = inputTbl or {}
-    local oldSize = devScrollView:GetDataProviderSize()
-    if oldSize > 0 then
-      devScrollView:ForEachElementData(function(oldData)
-        tinsert(inputTbl, oldData)
+    local dataSize = devScrollView:GetDataProviderSize()
+    if dataSize > 0 then
+      devScrollView:ForEachElementData(function(data)
+        tinsert(inputTbl, data)
       end)
     end
     return inputTbl
@@ -195,15 +196,13 @@ function addon:DevInit()
     updateCopyText()
   end)
 
-  clear:SetScript("OnMouseDown", function ()
+  clear:SetScript("OnMouseDown", function()
     devScrollView:UpdateContentData({})
   end)
 
   function addon:AddDevLine(text, currentTime)
     local debugText = string.format("[%s] %s", currentTime, text)
-    local newData = getData()
-    tinsert(newData, { text = debugText })
-    devScrollView:UpdateContentData(newData)
+    devScrollView:UpdateContentData({ { text = debugText } }, true)
   end
 
   if BugGrabber then
