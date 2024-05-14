@@ -207,10 +207,10 @@ function addon:TimerInit()
             self:FillFrame()
         elseif event == "CHALLENGE_MODE_COMPLETED" then
             saveBestTimes(self.runData.mapID, self.runData.week, self.runData.level, self:GetBossTimes())
-            self:devPrint("MAP ID", self.runData.mapID)
-            self:devPrint("RUN WEEK", self.runData.week)
-            self:devPrint("RUN LEVEL", self.runData.level)
-            self:devPrint("BOSS TIMES")
+            addon:devPrint("MAP ID", self.runData.mapID)
+            addon:devPrint("RUN WEEK", self.runData.week)
+            addon:devPrint("RUN LEVEL", self.runData.level)
+            addon:devPrint("BOSS TIMES")
             DevTools_Dump(self:GetBossTimes())
             self.last = 0
             self:SetScript("OnUpdate", nil)
@@ -249,7 +249,7 @@ function addon:TimerInit()
     end
 
     function timerFrame:RemoveFromCurrentPull(guid)
-        self.currentPull[guid] = false
+        self.currentPull[guid] = nil
     end
 
     function timerFrame:GetCurrentPull()
@@ -284,7 +284,7 @@ function addon:TimerInit()
     function timerFrame:GetBossTimes()
         local times = {}
         for index, boss in pairs(self.bosses) do
-            self:devPrint(string.format("Boss %d died %s", index, boss.dead))
+            addon:devPrint(string.format("Boss %d died %s", index, boss.dead))
             times[index] = boss.dead
         end
         return times
@@ -400,6 +400,8 @@ function addon:TimerInit()
             if dead and dead > 0 and not bossBar.dead then
                 bossBar.dead = dead
                 local deathTime = dead - currentTime
+                addon:devPrint("CURRENT TIME:", currentTime)
+                addon:devPrint("BOSS TIME:", deathTime)
                 bossBar.name:SetTextColor(styles.COLORS.GREEN_LIGHT:GetRGBA())
                 bossBar.time:SetTextColor(styles.COLORS.GREEN_LIGHT:GetRGBA())
                 bossBar.time:SetText(SecondsToClock(deathTime))
