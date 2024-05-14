@@ -47,12 +47,13 @@ function addon:TimerInit()
         if bestTimes[mapID] and bestTimes[mapID][affixID] and bestTimes[mapID][affixID][keyLevel] and type(bestTimes[mapID][affixID][keyLevel]) == "table" then
             return bestTimes[mapID][affixID][keyLevel]
         end
+        return {}
     end
 
     local function saveBestTimes(mapID, affixID, keyLevel, times)
-        local dbTimes = getBestTimes(mapID, affixID, keyLevel) or {}
+        local dbTimes = getBestTimes(mapID, affixID, keyLevel)
         for index, newTime in pairs(times) do
-            if not dbTimes[index] or dbTimes[index] > newTime then
+            if (not dbTimes[index]) or (dbTimes[index] > newTime) then
                 dbTimes[index] = newTime
             end
         end
@@ -248,7 +249,7 @@ function addon:TimerInit()
     end
 
     function timerFrame:RemoveFromCurrentPull(guid)
-        self.currentPull[guid] = false
+        self.currentPull[guid] = nil
     end
 
     function timerFrame:GetCurrentPull()
@@ -400,6 +401,8 @@ function addon:TimerInit()
             if dead and dead > 0 and not bossBar.dead then
                 bossBar.dead = dead
                 local deathTime = dead - currentTime
+                addon:devPrint("CURRENT TIME:", currentTime)
+                addon:devPrint("BOSS TIME:", deathTime)
                 bossBar.name:SetTextColor(styles.COLORS.GREEN_LIGHT:GetRGBA())
                 bossBar.time:SetTextColor(styles.COLORS.GREEN_LIGHT:GetRGBA())
                 bossBar.time:SetText(SecondsToClock(deathTime))
