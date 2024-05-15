@@ -1,13 +1,13 @@
 ## Interface: 100206, 100207
-## Version: 2.3.6
+## Version: 2.3.7
 ## Title: Keystone Companion
 ## IconTexture: Interface\AddOns\Keystone-Companion\assets\textures\icons\addon
-## Author: Kaelon/Jordy141
+## Author: Lars/RiplockS
 ## Notes: See your party's M+ keystones, dungeon reagents, and dungeon portals.
 ## SavedVariables: KeystoneCompanionDB, KeystoneCompanionDebug
 ## DefaultState: enabled
 ## OptionalDeps: MythicDungeonTools
-## X-Build-Type: Beta
+## X-Build-Type: Release
 ## X-Curse-Project-ID: 984971
 ## X-WoWI-ID: 26711
 ## X-Wago-ID: 96do4ENO
