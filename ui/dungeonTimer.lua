@@ -400,8 +400,8 @@ function addon:TimerInit()
             local bossBar = self.bosses[bossIndex]
             local dead = select(11, C_Scenario.GetCriteriaInfo(bossIndex))
             if dead and dead > 0 and not bossBar.dead then
-                bossBar.dead = dead
                 local deathTime = currentTime - dead
+                bossBar.dead = deathTime
                 addon:devPrint("CURRENT TIME:", currentTime)
                 addon:devPrint("BOSS TIME:", deathTime)
                 bossBar.name:SetTextColor(styles.COLORS.GREEN_LIGHT:GetRGBA())
