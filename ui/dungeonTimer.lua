@@ -211,7 +211,7 @@ function addon:TimerInit()
             addon:devPrint("RUN WEEK", self.runData.week)
             addon:devPrint("RUN LEVEL", self.runData.level)
             addon:devPrint("BOSS TIMES")
-            DevTools_Dump(self:GetBossTimes())
+            self:GetBossTimes()
             self.last = 0
             self:SetScript("OnUpdate", nil)
         elseif event == "PLAYER_ENTERING_WORLD" then
@@ -285,8 +285,9 @@ function addon:TimerInit()
         local times = {}
         for index, boss in pairs(self.bosses) do
             addon:devPrint(string.format("Boss %d died %s", index, boss.dead))
-            times[index] = boss.dead
+            tinsert(times, boss.dead)
         end
+        sort(times)
         return times
     end
 
@@ -399,8 +400,8 @@ function addon:TimerInit()
             local bossBar = self.bosses[bossIndex]
             local dead = select(11, C_Scenario.GetCriteriaInfo(bossIndex))
             if dead and dead > 0 and not bossBar.dead then
-                bossBar.dead = dead
-                local deathTime = dead - currentTime
+                local deathTime = currentTime - dead
+                bossBar.dead = deathTime
                 addon:devPrint("CURRENT TIME:", currentTime)
                 addon:devPrint("BOSS TIME:", deathTime)
                 bossBar.name:SetTextColor(styles.COLORS.GREEN_LIGHT:GetRGBA())

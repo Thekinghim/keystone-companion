@@ -198,6 +198,9 @@ function addon:DevInit()
 
   clear:SetScript("OnMouseDown", function()
     devScrollView:UpdateContentData({})
+    if IsShiftKeyDown() then
+      KeystoneCompanionDebug.messages = {}
+    end
   end)
 
   function addon:AddDevLine(text, currentTime)
