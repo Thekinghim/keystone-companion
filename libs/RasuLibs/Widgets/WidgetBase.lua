@@ -13,7 +13,11 @@ end
 ---@field RoundedFrame RoundedFrameAPI
 ---@field ScrollableFrame ScrollableFrameAPI
 ---@field Slider SliderAPI
+---@field TextBox TextBoxAPI
 lib.Widgets = {}
+
+
+---@alias strata "BACKGROUND"|"LOW"|"MEDIUM"|"HIGH"|"DIALOG"|"FULLSCREEN"|"FULLSCREEN_DIALOG"|"TOOLTIP"
 
 ---@class RasuGUIStyles
 lib.styles = {
