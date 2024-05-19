@@ -10,4 +10,5 @@
     <Script file="talentCheck.lua"/>
     <Script file="scoreCalculator.lua"/>
     <script file="SettingsPanel.lua"/>
+    <script file="dungeonTeleports.lua"/>
 </Ui>
