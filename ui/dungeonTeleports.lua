@@ -54,19 +54,53 @@ local spellCache = {}
 local function teleportButtonInit(button, data)
     ---@cast button Button
     if not button.initialized then
+        local textFrame = CreateFrame("Frame", nil, button)
         local icon = button:CreateTexture(nil, "BACKGROUND")
         local mask = button:CreateMaskTexture(nil, "BACKGROUND")
-        local text = button:CreateFontString()
-        text:SetFont(styles.FONTS.HEADING, 12, "OUTLINE")
+        local text = textFrame:CreateFontString()
+        local cooldown = CreateFrame("Cooldown", nil, button, "CooldownFrameTemplate")
+        local cooldownText = textFrame:CreateFontString()
+        textFrame:SetAllPoints()
+        textFrame:SetFrameStrata("HIGH")
+        cooldownText:SetPoint("BOTTOMRIGHT", -5, 5)
+        cooldownText:SetFont(styles.FONTS.BOLD, 9, "OUTLINE")
+        cooldownText:Hide()
+        cooldown:SetAllPoints()
+        cooldown:SetHideCountdownNumbers(true)
+        cooldown:SetDrawEdge(false)
         text:SetAllPoints()
+        text:SetFont(styles.FONTS.HEADING, 12, "OUTLINE")
         mask:SetAllPoints(icon)
         mask:SetAtlas("UI-Frame-IconMask")
         icon:AddMaskTexture(mask)
+
         button.icon = icon
         button.text = text
+        button.cooldown = cooldown
+        button.cooldownText =cooldownText
         button.initialized = true
+        button.lastUpdate = 0
+
         button:SetAttribute("type", "spell")
         button:RegisterForClicks("AnyUp", "AnyDown")
+        button:SetScript("OnUpdate", function (self)
+            if not self:IsVisible() then return end
+            local now = GetTime()
+            if self.lastUpdate + 0.1 < now then
+                local start, duration, enable = GetSpellCooldown(self:GetAttribute("spell"))
+                self.cooldown:SetCooldown(start, duration, enable)
+                self.lastUpdate = now
+                if not self.cooldownText:IsVisible() then return end
+                local secondsLeft = start + duration - now
+                self.cooldownText:SetText(secondsLeft > 0 and Private.TimeFormatter:Format(secondsLeft) or "")
+            end
+        end)
+        button:SetScript("OnEnter", function (self)
+            self.cooldownText:Show()
+        end)
+        button:SetScript("OnLeave", function (self)
+            self.cooldownText:Hide()
+        end)
     end
     button:SetAttribute("spell", data.spellID)
     button.icon:SetTexture(GetSpellTexture(data.spellID))
@@ -80,7 +114,7 @@ local function teleportButtonInit(button, data)
         spellCache[data.spellID] = {
             name = name,
             desc = desc,
-            search = name .. desc
+            search = name .. desc .. dungeonShorts[data.spellID]
         }
         widgets.BaseMixin.AddTooltip(button,
             string.format("%s\n%s%s", name, styles.COLORS.TEXT_SECONDARY:GenerateHexColorMarkup(), desc))
@@ -129,6 +163,7 @@ local function createTeleportFrame()
 
     local function isMatchingFilter(spellID, filter)
         if (not filter) or type(filter) ~= "string" then return true end
+        filter = filter:lower()
         filter = filter:gsub("%%", "%%%%"):gsub("%+", "%%+")
         local spellInfo = spellCache[spellID]
         if not spellInfo then return true end
