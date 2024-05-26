@@ -10,4 +10,5 @@
     <Script file="CheckBox.lua" />
     <Script file="Slider.lua" />
     <Script file="RoundedButton.lua" />
+    <Script file="TextBox.lua" />
 </Ui>

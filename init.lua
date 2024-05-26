@@ -9,6 +9,8 @@ local getTexturePath = Private.utils.path.getTexturePath
 local rasuGUI = LibStub("RasuGUI")
 local locale = Private.Locales
 local defaultDB = Private.DefaultDatabase
+local timeFormatter = CreateFromMixins(SecondsFormatterMixin);
+timeFormatter:Init(60, 3, true, true);
 
 -- [[ CREATING ADDON AS GLOBAL AND ADDING VARIABLES ]] --
 ---@class KeystoneCompanion : RasuAddonBase
@@ -38,6 +40,7 @@ Private.LibSerialize = LibStub:GetLibrary("LibSerialize")
 Private.LibDataBroker = LibStub:GetLibrary("LibDataBroker-1.1")
 Private.LibDBIcon = LibStub:GetLibrary("LibDBIcon-1.0")
 Private.Addon = KeystoneCompanion
+Private.TimeFormatter = timeFormatter
 
 -- [[ ADDON FUNCTIONS ]] --
 
